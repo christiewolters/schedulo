@@ -1,7 +1,17 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    max-width: 100%;
+    /*you can never be bigger than your parent*/
+    /* border:1px solid grey; */
+}
+
 body {
     background-color: rgb(241, 242, 246)
 }
 
+/* LOGIN PAGE */
 label {
     color: rgb(155, 151, 151);
     font-size: 1.4rem;
@@ -9,8 +19,121 @@ label {
 }
 
 .login-panel {
-    max-width:600px;
-    margin:10vh auto;
-    padding-left:3rem!important;
-    padding-right:3rem!important;
+    max-width: 600px;
+    margin: 10vh auto;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
 }
+
+.width-100 {
+    width: 100px;
+}
+
+.width-50 {
+    width: 50px;
+}
+
+/* END LOGIN PAGE */
+
+/* BUILDAVAILABILITY */
+.availability-panel-header {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.availability-list > div {
+    text-align: center;
+    display: inline-block;
+}
+
+.availability-list .day {
+    width: 10%;
+    border: black 1px solid;
+}
+
+.availability-list .dates {
+    width: 80%;
+    border: black 1px solid;
+}
+
+.availability-list .remove {
+    width: 10%;
+    border: black 1px solid;
+    min-width: 50px;
+}
+
+.availability-list .add {
+    width: 25px;
+    border: black 1px solid;
+}
+
+.availability-panel-bottom {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* END BUILDAVAILABILITY */
+
+/* Trash Button */
+.remove-btn-icon {
+    color: #DA4453;
+    /*$grapefruit-dark*/
+    background-color: transparent;
+    border: transparent;
+    padding-left: 3px;
+    padding-right: 6px;
+}
+
+.remove-btn-icon.disabled {
+    color: #AAB2BD;
+    /*$mediumgray-dark*/
+    background-color: transparent;
+}
+
+.remove-btn-icon:hover,
+.remove-btn-icon:focus,
+.remove-btn-icon:active,
+.remove-btn-icon.active {
+    color: #ED5565;
+    /*$grapefruit-light*/
+    background-color: transparent;
+}
+
+.remove-btn-icon:active,
+.remove-btn-icon.active {
+    color: #AAB2BD;
+    /*$mediumgray-dark*/
+}
+/* End Trash Button */
+
+/* Add Button */
+.plus-btn-icon {
+    color: #3BAFDA;
+    /*$aqua-dark*/
+    background-color: transparent;
+    border: transparent;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.plus-btn-icon.disabled {
+    color: #AAB2BD;
+    /*$mediumgray-dark*/
+    background-color: transparent;
+}
+
+.plus-btn-icon:hover,
+.plus-btn-icon:focus,
+.plus-btn-icon:active,
+.plus-btn-icon.active {
+    color: #4FC1E9;
+    /*$aqua-light*/
+    background-color: transparent;
+}
+
+.plus-btn-icon:active,
+.plus-btn-icon.active {
+    color: #AAB2BD;
+    /*$mediumgray-dark*/
+}
+/* End Add Button */

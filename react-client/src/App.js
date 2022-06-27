@@ -63,6 +63,9 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="/employee">
+            <BuildAvailability />
+          </Route>
           {/* <Route path="/solarpanels/add">
           <SolarPanelForm />
         </Route>

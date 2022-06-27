@@ -69,8 +69,8 @@ function Login() {
 
   return (
     <>
-      <div class="panel panel-default login-panel">
-        <div class="panel-body p-5">
+      <div className="panel panel-default login-panel">
+        <div className="panel-body p-5">
           
           <h3 className="text-center">Log In to Your Account</h3>
 

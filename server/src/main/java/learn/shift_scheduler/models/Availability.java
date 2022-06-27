@@ -16,6 +16,9 @@ public class Availability {
         this.employeeId = employeeId;
     }
 
+    public Availability() {
+    }
+
     public int getAvailabilityId() {
         return availabilityId;
     }

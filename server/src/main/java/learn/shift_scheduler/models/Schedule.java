@@ -14,6 +14,9 @@ public class Schedule {
         this.endDate = endDate;
     }
 
+    public Schedule() {
+    }
+
     public int getScheduleId() {
         return scheduleId;
     }

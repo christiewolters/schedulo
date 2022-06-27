@@ -9,7 +9,7 @@ public class Employee {
     private int appUserId;
 
     public Employee(){
-    };
+    }
 
     public Employee(int employeeId, String firstName, String lastName, int appUserId) {
         this.employeeId = employeeId;

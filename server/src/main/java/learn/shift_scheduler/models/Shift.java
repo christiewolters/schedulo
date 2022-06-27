@@ -18,6 +18,10 @@ public class Shift {
         this.scheduleId = scheduleId;
     }
 
+    public Shift() {
+
+    }
+
     public int getShiftId() {
         return shiftId;
     }

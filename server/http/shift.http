@@ -1,0 +1,30 @@
+@url = http://localhost:8080/api/shiftschedule
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjM4NjY1NH0.6obcFVzRKrKJX-KrR1JFGpEJW2-p9KvOtGfj0fKut04
+GET {{url}} HTTP/1.1
+
+###
+
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+###
+
+GET {{url}}/1 HTTP/1.1 
+
+###
+
+POSt {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "employeeId": 1,
+    "startTime": "2020-02-02T09:00:00",
+    "endTime": "2020-02-02T18:00:00",
+    "scheduleId": 1
+}

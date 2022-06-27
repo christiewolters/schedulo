@@ -48,9 +48,13 @@ create table shift(
     employee_id int not null,
     start_time datetime not null,
     end_time datetime not null,
+    schedule_id int,
     constraint fk_shift_employee_id
         foreign key (employee_id)
-        references employee(employee_id)
+        references employee(employee_id),
+	constraint fk_shift_schedule_id
+		foreign key (schedule_id)
+        references `schedule`(schedule_id)
 );
 
 create table availability(

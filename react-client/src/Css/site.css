@@ -1,12 +1,3 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    max-width: 100%;
-    /*you can never be bigger than your parent*/
-    /* border:1px solid grey; */
-}
-
 body {
     background-color: rgb(241, 242, 246)
 }
@@ -35,44 +26,6 @@ label {
 
 /* END LOGIN PAGE */
 
-/* BUILDAVAILABILITY */
-.availability-panel-header {
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-.availability-list > div {
-    text-align: center;
-    display: inline-block;
-}
-
-.availability-list .day {
-    width: 10%;
-    border: black 1px solid;
-}
-
-.availability-list .dates {
-    width: 80%;
-    border: black 1px solid;
-}
-
-.availability-list .remove {
-    width: 10%;
-    border: black 1px solid;
-    min-width: 50px;
-}
-
-.availability-list .add {
-    width: 25px;
-    border: black 1px solid;
-}
-
-.availability-panel-bottom {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-/* END BUILDAVAILABILITY */
 
 /* Trash Button */
 .remove-btn-icon {
@@ -105,6 +58,7 @@ label {
     /*$mediumgray-dark*/
 }
 /* End Trash Button */
+
 
 /* Add Button */
 .plus-btn-icon {

@@ -14,8 +14,8 @@ function BuildAvailability() {
             <tr>
               <td>Sun</td>
               <td>Mark</td>
-              <td className="width-50"><button type="button" className="remove-btn-icon"><i className="glyphicon glyphicon-trash"></i></button></td>
-              <td className="width-50"><button type="button" className="plus-btn-icon"><i class="glyphicon glyphicon-plus"></i></button></td>
+              <td className="width-50"><button type="button" className="btn btn-danger"><i className="glyphicon glyphicon-trash"></i></button></td>
+              <td className="width-50"><button type="button" className="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button></td>
             </tr>
             <tr>
               <td>Mon</td>

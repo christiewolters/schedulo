@@ -72,6 +72,8 @@ delimiter //
 create procedure set_known_good_state()
 begin
 
+	set sql_safe_updates = 0;
+    
 	delete from `schedule`;
     alter table `schedule` auto_increment = 1;
     delete from shift;
@@ -97,8 +99,6 @@ insert into app_user_role
     (1, 2),
     (2, 1);
     
-    
+    set sql_safe_updates = 1;
 end //
 delimiter ;
-
-call set_known_good_state();

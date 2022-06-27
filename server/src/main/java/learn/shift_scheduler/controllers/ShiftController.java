@@ -1,14 +1,12 @@
 package learn.shift_scheduler.controllers;
 
+import learn.shift_scheduler.domain.ShiftResult;
 import learn.shift_scheduler.domain.ShiftService;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.xml.crypto.Data;
 import java.util.List;
@@ -34,5 +32,14 @@ public class ShiftController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(shifts, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Shift shift) throws DataAccessException{
+        ShiftResult result = service.create(shift);
+        if (!result.isSuccess()){
+            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(result.getShift(), HttpStatus.CREATED);
     }
 }

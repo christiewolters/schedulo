@@ -45,10 +45,11 @@ create table employee(
 
 create table shift(
 	shift_id int primary key auto_increment,
+    schedule_id int,
     employee_id int not null,
     start_time datetime not null,
     end_time datetime not null,
-    schedule_id int,
+    
     constraint fk_shift_employee_id
         foreign key (employee_id)
         references employee(employee_id),
@@ -67,26 +68,26 @@ create table availability(
         references employee(employee_id)
 );
 
-
+insert into app_role (`name`) values 
+	('EMPLOYEE'),
+    ('MANAGER');
+    
 delimiter //
 create procedure set_known_good_state()
 begin
 
-	set sql_safe_updates = 0;
-    
 	delete from `schedule`;
-    alter table `schedule` auto_increment = 1;
+    alter table `schedule` auto_increment = 0;
     delete from shift;
     alter table shift auto_increment = 1;
     delete from employee;
     alter table employee auto_increment = 1;
     delete from availability;
     alter table availability auto_increment = 1;
-    
-    
-    insert into app_role (`name`) values 
-	('EMPLOYEE'),
-    ('MANAGER');
+    delete from app_user;
+    alter table app_user auto_increment = 1;
+    delete from app_user_role;
+    alter table app_user_role auto_increment = 1;
 
 -- passwords are set to "P@ssw0rd!"
 insert into app_user (username, password_hash, disabled)
@@ -99,6 +100,9 @@ insert into app_user_role
     (1, 2),
     (2, 1);
     
-    set sql_safe_updates = 1;
+insert into `schedule` (start_date,end_date) values 
+('2020-01-01 00:00', '2020-12-31 23:59');
+    
 end //
 delimiter ;
+

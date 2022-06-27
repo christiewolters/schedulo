@@ -48,7 +48,7 @@ create table shift(
     employee_id int not null,
     start_time datetime not null,
     end_time datetime not null,
-    schedule_id int,
+    schedule_id int not null,
     constraint fk_shift_employee_id
         foreign key (employee_id)
         references employee(employee_id),

@@ -2,6 +2,7 @@ package learn.shift_scheduler.data;
 
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,4 +22,9 @@ public interface ShiftRepository {
 
     //Add shift to database
     Shift create(Shift shift) throws DataAccessException;
+
+    boolean update(Shift shift);
+
+    @Transactional
+    boolean deleteById(int id);
 }

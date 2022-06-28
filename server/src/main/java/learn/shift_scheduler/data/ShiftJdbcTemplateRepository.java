@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -90,5 +91,28 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
         shift.setShiftId(keyHolder.getKey().intValue());
 
         return shift;
+    }
+
+    @Override
+    public boolean update(Shift shift){
+        final String sql = "update shift set " +
+                "schedule_id = ?, " +
+                "employee_id = ?, " +
+                "start_time = ?, " +
+                "end_time = ? " +
+                "where shift_id = ?";
+
+        return jdbcTemplate.update(sql,
+                shift.getScheduleId(),
+                shift.getEmployeeId(),
+                shift.getStartTime(),
+                shift.getEndTime(),
+                shift.getShiftId()) > 0;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteById(int id){
+        return jdbcTemplate.update("delete from shift where shift_id = ?", id) > 0;
     }
 }

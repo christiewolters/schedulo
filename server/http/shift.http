@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/shifts
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfRU1QTE9ZRUUsUk9MRV9NQU5BR0VSIiwiZXhwIjoxNjU2NDExMzAyfQ.s61hgd9r_ryl8dl-tipF5AXqvQKGfYIhbtS2G7P-0RQ
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfRU1QTE9ZRUUsUk9MRV9NQU5BR0VSIiwiZXhwIjoxNjU2NDU2MTM3fQ.G3tR-Hc6oOskirOINuiZYxZeHLkB3Gj7nyAwuB2gSB0
 GET {{url}} HTTP/1.1
 
 ###

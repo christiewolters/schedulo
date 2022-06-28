@@ -56,14 +56,16 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
 
     @Override
     public List<Shift> findByEmployeeId(int employee_id) throws DataAccessException{
-        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where employee_id = ?;";
+        final String sql = "select * from (select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time from shift s " +
+                "inner join `schedule` sc on s.schedule_id = sc.schedule_id where sc.finalized = 1 order by start_time asc) " +
+                "finalized where finalized.employee_id = ?;";
 
         return jdbcTemplate.query(sql, mapper, employee_id);
     }
 
     @Override
     public List<Shift> findByScheduleId(int schedule_id) throws DataAccessException{
-        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where schedule_id = ?;";
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where schedule_id = ? ;";
 
         return jdbcTemplate.query(sql, mapper, schedule_id);
     }

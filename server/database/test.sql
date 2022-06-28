@@ -76,20 +76,21 @@ insert into app_role (`name`) values
 delimiter //
 create procedure set_known_good_state()
 begin
-	set sql_safe_updates = 0;
     /* The error is not schedule, it's something to do with sql_safe_updates / set_known_good_state */
-	delete from `schedule`;
-    alter table `schedule` auto_increment = 1;
-    delete from shift;
-    alter table shift auto_increment = 1;
-    delete from employee;
-    alter table employee auto_increment = 1;
     delete from availability;
     alter table availability auto_increment = 1;
-    delete from app_user;
-    alter table app_user auto_increment = 1;
+	delete from shift;
+    alter table shift auto_increment = 1;
+	delete from employee;
+    alter table employee auto_increment = 1;
+	delete from `schedule`;
+    alter table `schedule` auto_increment = 1;
+
     delete from app_user_role;
     alter table app_user_role auto_increment = 1;
+    delete from app_user;
+    alter table app_user auto_increment = 1;
+
 
 -- passwords are set to "P@ssw0rd!"
 insert into app_user (app_user_id, username, password_hash, disabled)
@@ -113,16 +114,16 @@ insert into app_user_role
 	(1, 1),
     (2, 2);
     
-insert into `schedule`(schedule_id, start_date, end_date) values
-(1, '2022-06-05 00:00', '2022-06-11 23:59'),
-(2, '2022-06-12 00:00', '2022-06-18 23:59');
+insert into `schedule`(schedule_id, start_date, end_date, finalized) values
+(1, '2022-06-05 00:00', '2022-06-11 23:59', 1),
+(2, '2022-06-12 00:00', '2022-06-18 23:59', 0);
     
 insert into shift(shift_id, schedule_id, employee_id, start_time, end_time) values
 (1, 1, 1, '2022-06-05 08:00', '2022-06-05 12:00'),
 (2, 1, 2, '2022-06-05 12:00', '2022-06-05 04:00'),
 (3, 1, 4, '2022-06-05 10:00', '2022-06-05 04:00'),
-(4, 1, 3, '2022-06-05 04:00', '2022-06-05 08:00'),
-(5, 1, null, '2022-06-05 04:00', '2022-06-05 10:00'),
+(4, 2, 3, '2022-06-05 04:00', '2022-06-05 08:00'),
+(5, 2, null, '2022-06-05 04:00', '2022-06-05 10:00'),
 (6, 2, null, '2022-06-13 12:00', '2022-06-13 08:00');
 
 insert into availability(availability_id, start_time, end_time, employee_id) values
@@ -141,8 +142,7 @@ end //
 
 delimiter ;
 
-set sql_safe_updates = 0;
+
 call set_known_good_state();
-set sql_safe_updates = 1;
 
 select * from app_user;

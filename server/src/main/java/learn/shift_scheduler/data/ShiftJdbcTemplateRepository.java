@@ -28,6 +28,7 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
         Shift shift = new Shift();
 
         shift.setShiftId(resultSet.getInt("shift_id"));
+        shift.setScheduleId(resultSet.getInt("schedule_id"));
         shift.setEmployeeId(resultSet.getInt("employee_id"));
 
         LocalDateTime start = LocalDateTime.parse(resultSet.getString("start_time"), formatter);
@@ -36,9 +37,7 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
         LocalDateTime end = LocalDateTime.parse(resultSet.getString("end_time"), formatter);
         shift.setEndTime(end);
 
-        shift.setScheduleId(resultSet.getInt("schedule_id"));
         return shift;
-
     };
 
     @Override
@@ -49,10 +48,24 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
     }
 
     @Override
-    public List<Shift> findById(int id) throws DataAccessException{
+    public Shift findById(int id) throws DataAccessException{
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where shift_id = ?;";
+
+        return jdbcTemplate.query(sql, mapper, id).stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public List<Shift> findByEmployeeId(int employee_id) throws DataAccessException{
         final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where employee_id = ?;";
 
-        return jdbcTemplate.query(sql, mapper, id);
+        return jdbcTemplate.query(sql, mapper, employee_id);
+    }
+
+    @Override
+    public List<Shift> findByScheduleId(int schedule_id) throws DataAccessException{
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where schedule_id = ?;";
+
+        return jdbcTemplate.query(sql, mapper, schedule_id);
     }
 
     @Override

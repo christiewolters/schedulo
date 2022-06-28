@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-import NotFound from './Components/NotFound';
 import Login from './Components/Login';
 import AuthContext from './AuthContext';
-import EmployeeHome from './Components/EmployeeHome';
-import BuildAvailability from './Components/BuildAvailability';
+
+import EmployeeHome from './Pages/EmployeeHome';
+import ManagerHome from './Pages/ManagerHome';
+import NotFound from './Pages/NotFound';
 
 function App() {
   // "null" means that we don't have a logged in user
@@ -48,45 +49,53 @@ function App() {
 
   return (
     <div className="container">
-    <AuthContext.Provider value={auth}>
+      <AuthContext.Provider value={auth}>
 
-      <Router>
+        <Router>
 
-        <Switch>
-          <Route path="/" exact>
-          <EmployeeHome/>
-          </Route>
-          <Route path="/about">
-          </Route>
-          <Route path="/contact">
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/employee">
-            <BuildAvailability />
-          </Route>
-          {/* <Route path="/solarpanels/add">
-          <SolarPanelForm />
-        </Route>
-        <Route path="/solarpanels/edit/:id">
-          <SolarPanelForm />
-        </Route> */}
-          <Route path={['/employee/availability', '/employee/view_schedule']}>
+          <Switch>
+
+            <Route path="/" exact>
+              {auth.user ? (
+                <EmployeeHome />
+              ) : (
+                <Redirect to="/login" />
+              )}
+            </Route>
+
+            <Route path="/manager">
+              <ManagerHome />
+            </Route>
+
+            <Route path="/employee">
+              <EmployeeHome />
+            </Route>
+
+            <Route path={['/employee/availability', '/employee/view_schedule']}>
+              {auth.user ? (
+                <ManagerHome />
+              ) : (
+                <Redirect to="/login" />
+              )}
+            </Route>
+
+            <Route path="/login">
             {auth.user ? (
-              <BuildAvailability />
-            ) : (
-              <Redirect to="/login" />
-            )}
-          </Route>
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
+                <Redirect to="/" />
+              ) : (
+                <Login />
+              )}
+            </Route>
 
-      </Router>
+            <Route>
+              <NotFound />
+            </Route>
+            
+          </Switch>
 
-    </AuthContext.Provider>
+        </Router>
+
+      </AuthContext.Provider>
     </div>
   );
 }

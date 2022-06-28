@@ -57,7 +57,7 @@ function Login() {
           history.push('/');
         } else {
           // we have error messages
-          setErrors(['login failure']);
+          setErrors(['Username or password is incorrect.']);
         }
       })
       .catch(console.log);

@@ -1,8 +1,12 @@
+import Navbar from "../Components/Navbar";
+
 function EmployeeHome() {
+
     return (
-        <>
-        <h1>This is the big title</h1>
-      <h2>This is the employee home page</h2>
+      <>
+      <Navbar />
+      <h1>This is the Employee's Home Page</h1>
+      <h2>This is h2</h2>
       <h3>This is h3</h3>
       <h4>This is h4</h4>
       <h5>This is h5</h5>

@@ -24,13 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll() // anonymous
                 .antMatchers(HttpMethod.GET,
-                        "/api/shiftschedule", "/api/shiftschedule/*", "/api/shiftschedule/shift/*").permitAll() // anonymous... no authentication required
+                        "/api/shifts", "/api/shifts/*", "/api/shifts/employee/*", "/api/shifts/schedule/*").permitAll() // anonymous... no authentication required
                 .antMatchers(HttpMethod.POST,
-                        "/api/shiftschedule").hasAnyRole("EMPLOYEE", "MANAGER")
+                        "/api/shifts").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.PUT,
-                        "/api/shiftschedule/*").hasAnyRole("EMPLOYEE", "MANAGER")
+                        "/api/shifts/*").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.DELETE,
-                        "/api/shiftschedule/*").hasAnyRole("MANAGER")
+                        "/api/shifts/*").hasAnyRole("MANAGER")
                 .antMatchers("/**").denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))

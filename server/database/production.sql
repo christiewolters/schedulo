@@ -2,10 +2,11 @@ drop database if exists shift_scheduler;
 create database shift_scheduler;
 use shift_scheduler;
 
-create table `schedule`(
+create table `schedule` (
 	schedule_id int primary key auto_increment,
     start_date date not null,
-    end_date date not null
+    end_date date not null,
+    finalized bit not null default 0
 );
 
 create table app_user (
@@ -40,15 +41,15 @@ create table employee(
     app_user_id int not null,
     constraint fk_employee_app_user_id
         foreign key (app_user_id)
-        references app_user_role(app_user_id)
+        references app_user(app_user_id)
 );
 
 create table shift(
 	shift_id int primary key auto_increment,
-    employee_id int not null,
+    schedule_id int not null,
+    employee_id int null,
     start_time datetime not null,
     end_time datetime not null,
-    schedule_id int not null,
     constraint fk_shift_employee_id
         foreign key (employee_id)
         references employee(employee_id),
@@ -70,7 +71,3 @@ create table availability(
 insert into app_role (`name`) values 
 	('EMPLOYEE'),
     ('MANAGER');
-
-
-
-

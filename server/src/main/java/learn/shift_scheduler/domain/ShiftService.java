@@ -16,12 +16,24 @@ public class ShiftService {
         this.repository = repository;
     }
 
+    //Get all shifts in the database
     public List<Shift> findAll() throws DataAccessException{
         return repository.findAll();
     }
 
-    public List<Shift> findById(int id) throws DataAccessException{
+    //find single shift by shift_id
+    public Shift findById(int id) throws DataAccessException{
         return repository.findById(id);
+    }
+
+    //find all shifts with employee_id
+    public List<Shift> findByEmployeeId(int employee_id) throws DataAccessException{
+        return repository.findByEmployeeId(employee_id);
+    }
+
+    //find all shifts with schedule_id
+    public List<Shift> findByScheduleId(int schedule_id) throws DataAccessException{
+        return repository.findByScheduleId(schedule_id);
     }
 
     public ShiftResult create(Shift shift) throws DataAccessException{
@@ -47,9 +59,10 @@ public class ShiftService {
             return result;
         }
 
-        if (shift.getEmployeeId() < 1){
+/*          Removing - shift can be created but yet to be assigned to an employee (i.e. no employee available for shift)
+            if (shift.getEmployeeId() < 1){
             result.addErrorMessage("Employee Id must be greater than 0", ResultType.INVALID);
-        }
+        }*/
 
         if (shift.getStartTime() == null){
             result.addErrorMessage("Shift Start time is required", ResultType.INVALID);
@@ -60,17 +73,18 @@ public class ShiftService {
         }
 
         if (shift.getScheduleId() <= 0){
-            result.addErrorMessage("Schedule Id must be greater than 0", ResultType.INVALID);
+            result.addErrorMessage("Shift must be assigned to a schedule", ResultType.INVALID);
         }
 
-        if (result.isSuccess()){
-            List<Shift> existingShifts = repository.findById(shift.getEmployeeId());
+        //validates that new shift does not overlap an existing shift
+        if (result.isSuccess() && shift.getEmployeeId() != 0){
+            List<Shift> existingShifts = repository.findByEmployeeId(shift.getEmployeeId());
             LocalDate existingDate = null;
              for (Shift existingShift : existingShifts){
-                existingDate = existingShift.getStartTime().toLocalDate();
-                if (shift.getStartTime().toLocalDate().isEqual(existingDate) ||
-                    shift.getEndTime().toLocalDate().isEqual(existingDate)){
-                    result.addErrorMessage("Employees can only have one shift per day.", ResultType.INVALID);
+                 //date range overlaps
+                if( !shift.getStartTime().isAfter(existingShift.getEndTime() ) &&
+                        !shift.getEndTime().isBefore(existingShift.getStartTime())  ){
+                    result.addErrorMessage("Employee is already assigned to a shift at that time.", ResultType.INVALID);
                 }
              }
 

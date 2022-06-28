@@ -7,11 +7,13 @@ public class Schedule {
     private int scheduleId;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean finalized;
 
-    public Schedule(int scheduleId, LocalDate startDate, LocalDate endDate) {
+    public Schedule(int scheduleId, LocalDate startDate, LocalDate endDate, boolean finalized) {
         this.scheduleId = scheduleId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.finalized = finalized;
     }
 
     public Schedule() {
@@ -39,6 +41,14 @@ public class Schedule {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public boolean getFinalized() {
+        return finalized;
+    }
+
+    public void setFinalized(boolean finalized) {
+        this.finalized = finalized;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package learn.shift_scheduler.controllers;
 
-import learn.shift_scheduler.domain.ShiftResult;
+import learn.shift_scheduler.domain.Result;
+import learn.shift_scheduler.domain.ResultType;
 import learn.shift_scheduler.domain.ShiftService;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
@@ -8,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 @RestController
@@ -58,10 +58,37 @@ public class ShiftController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Shift shift) throws DataAccessException{
-        ShiftResult result = service.create(shift);
+        Result<Shift> result = service.create(shift);
         if (!result.isSuccess()){
-            return new ResponseEntity<>(result.getErrorMessages(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(result.getShift(), HttpStatus.CREATED);
+        return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{shift_id}")
+    public ResponseEntity<?> update(@PathVariable int shift_id, @RequestBody Shift shift) throws DataAccessException{
+        if (shift_id != shift.getShiftId()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT); // 409
+        }
+
+        Result<Shift> result = service.update(shift);
+        if (!result.isSuccess()){
+            if (result.getType() == ResultType.NOT_FOUND){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            else{
+                return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{shift_id}")
+    public ResponseEntity<Void> delete(@PathVariable int shift_id) throws DataAccessException{
+        Result<Shift> result = service.deleteById(shift_id);
+        if (result.getType() == ResultType.NOT_FOUND){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

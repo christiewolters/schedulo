@@ -8,19 +8,19 @@ function Navbar() {
 
     return (
         <>
-<nav class="navbar navbar-inverse" role="navigation">
-                  <div class="container-fluid">
-                    <div class="navbar-header">
-                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-7">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+<nav className="navbar navbar-inverse" role="navigation">
+                  <div className="container-fluid">
+                    <div className="navbar-header">
+                      <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-7">
+                        <span className="sr-only">Toggle navigation</span>
+                        <span className="icon-bar"></span>
+                        <span className="icon-bar"></span>
+                        <span className="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="#">Shift Scheduler</a>
+                      <a className="navbar-brand" href="#">Shift Scheduler</a>
                     </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
-                      <p class="navbar-text navbar-right">Signed in as {auth.user.username}. <a class="navbar-link" href="">Sign out.</a></p>
+                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
+                      <p className="navbar-text navbar-right">Signed in as {auth.user.username}. <a className="navbar-link" href="">Sign out.</a></p>
                     </div>
                   </div>
                 </nav>
@@ -36,7 +36,7 @@ function Navbar() {
                 )}
 
                 {auth.user.hasRole("ROLE_MANAGER") && (
-                    <li><Link to="/">Schedules</Link></li>
+                    <li><Link to="/manager/schedules">Schedules</Link></li>
                 )}
 
                 {auth.user && (

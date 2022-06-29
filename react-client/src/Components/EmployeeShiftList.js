@@ -33,8 +33,12 @@ function EmployeeShiftList() {
 
   return (
     <section>
-      <h3 className="text-center">My Shifts</h3>
-      <table className="table table-striped table-hover table-sm">
+      
+      <div className="panel panel-default">
+        <div className="panel-heading">
+        <h4 className="m-0 p-0">My Shifts</h4>
+        </div>
+      <table className="table table-hover table-sm">
         <thead>
           <tr>
             <th>Date</th>
@@ -53,6 +57,7 @@ function EmployeeShiftList() {
 
         </tbody>
       </table>
+      </div>
     </section>
   );
 }

@@ -10,6 +10,7 @@ import AuthContext from './AuthContext';
 import EmployeeHome from './Pages/EmployeeHome';
 import ManagerHome from './Pages/ManagerHome';
 import NotFound from './Pages/NotFound';
+import ViewSchedules from './Pages/ViewSchedules';
 
 function App() {
   // "null" means that we don't have a logged in user
@@ -67,6 +68,12 @@ function App() {
               ) : (
                 <Login />
               )}
+            </Route>
+
+            <Route path="/manager/schedules" exact>
+              { !auth.user ? (<Redirect to="/login" />) 
+              : auth.user.hasRole("ROLE_MANAGER") ? 
+              (<ViewSchedules />) : (<NotFound /> )}
             </Route>
 
             <Route>

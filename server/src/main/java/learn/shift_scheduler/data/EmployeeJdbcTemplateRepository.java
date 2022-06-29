@@ -34,7 +34,7 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
 
     @Override
     public List<Employee> findAll() throws DataAccessException{
-        final String sql = "select first_name, last_name, wage from employee " +
+        final String sql = "select first_name, last_name, wage from employee e " +
                 "inner join app_user au on e.app_user_id = au.app_user_id " +
                 "where au.disabled = 0;";
 

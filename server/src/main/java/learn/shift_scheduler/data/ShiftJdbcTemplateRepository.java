@@ -38,26 +38,28 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
         LocalDateTime end = LocalDateTime.parse(resultSet.getString("end_time"), formatter);
         shift.setEndTime(end);
 
+        shift.setEarned(resultSet.getString("earned"));
+
         return shift;
     };
 
     @Override
     public List<Shift> findAll() throws DataAccessException{
-        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift;";
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id, earned from shift;";
 
         return jdbcTemplate.query(sql, mapper);
     }
 
     @Override
     public Shift findById(int id) throws DataAccessException{
-        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where shift_id = ?;";
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id, earned from shift where shift_id = ?;";
 
         return jdbcTemplate.query(sql, mapper, id).stream().findFirst().orElse(null);
     }
 
     @Override
     public List<Shift> findByEmployeeId(int employeeId) throws DataAccessException{
-        final String byEmployeeIdSql = "select * from (select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time from shift s " +
+        final String byEmployeeIdSql = "select * from (select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time, s.earned from shift s " +
                 "inner join `schedule` sc on s.schedule_id = sc.schedule_id where sc.finalized = 1 order by start_time asc) " +
                 "finalized where finalized.employee_id = ?;";
 
@@ -66,7 +68,7 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
 
     @Override
     public List<Shift> findByUsername(String username) throws DataAccessException{
-        final String byUsernameSql = "select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time from app_user au " +
+        final String byUsernameSql = "select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time, s.earned from app_user au " +
                 "left outer join employee e on au.app_user_id = e.app_user_id " +
                 "left outer join shift s on e.employee_id = s.employee_id " +
                 "left outer join schedule sh on s.schedule_id = sh.schedule_id " +
@@ -78,15 +80,15 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
 
     @Override
     public List<Shift> findByScheduleId(int schedule_id) throws DataAccessException{
-        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id from shift where schedule_id = ? ;";
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id, earned from shift where schedule_id = ? ;";
 
         return jdbcTemplate.query(sql, mapper, schedule_id);
     }
 
     @Override
     public Shift create(Shift shift) throws DataAccessException{
-        final String sql = "insert into shift (employee_id, start_time, end_time, schedule_id) " +
-                "values (?,?,?,?);";
+        final String sql = "insert into shift (employee_id, start_time, end_time, schedule_id, earned) " +
+                "values (?,?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -95,6 +97,7 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
             statement.setString(2,    shift.getStartTime().toString());
             statement.setString(3,    shift.getEndTime().toString());
             statement.setInt(4,    shift.getScheduleId());
+            statement.setString(5, shift.getEarned());
             return statement;
         }, keyHolder);
         if (rowsAffected == 0) {
@@ -111,7 +114,8 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
                 "schedule_id = ?, " +
                 "employee_id = ?, " +
                 "start_time = ?, " +
-                "end_time = ? " +
+                "end_time = ?, " +
+                "earned = ? " +
                 "where shift_id = ?;";
 
         return jdbcTemplate.update(sql,
@@ -119,6 +123,7 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
                 shift.getEmployeeId(),
                 shift.getStartTime().toString(),
                 shift.getEndTime().toString(),
+                shift.getEarned(),
                 shift.getShiftId()) > 0;
     }
 

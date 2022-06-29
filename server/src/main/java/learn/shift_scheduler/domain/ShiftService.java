@@ -110,6 +110,10 @@ public class ShiftService {
             result.addMessage("Shift must be assigned to a schedule", ResultType.INVALID);
         }
 
+        if (shift.getEarned() == null || shift.getEarned().isBlank()){
+            result.addMessage("Earned amount is required (Dinero Object String)", ResultType.INVALID);
+        }
+
         //validates that new shift does not overlap an existing shift
         if (result.isSuccess() && shift.getEmployeeId() != 0){
             List<Shift> existingShifts = repository.findByEmployeeId(shift.getEmployeeId());

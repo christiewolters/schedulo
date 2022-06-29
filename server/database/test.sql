@@ -98,21 +98,23 @@ insert into app_user (app_user_id, username, password_hash, disabled)
     (1, 'john@smith.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
     (2, 'sally@jones.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
     (3, 'jason@wells.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
-    (4, 'christina@mckenzy.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0);
+    (4, 'christina@mckenzy.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
+    (5, 'arin@brown.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0);
     
 
 insert into employee(employee_id, first_name, last_name, app_user_id) values
 	(1, 'John', 'Smith', 1),
 	(2, 'Sally', 'Jones', 2),
     (3, 'Jason', 'Wells', 3),
-    (4, 'Christina', 'McKenzy', 4);
+    (4, 'Christina', 'McKenzy', 4),
+    (5, 'Arin', 'Brown', 5);
 
-insert into app_user_role
-    values
+insert into app_user_role(app_user_id, app_role_id) values
     (1, 2),
     (2, 1),
-	(1, 1),
-    (2, 2);
+	(3, 1),
+    (4, 2),
+    (5, 1);
     
 insert into `schedule`(schedule_id, start_date, end_date, finalized) values
 (1, '2022-06-05 00:00', '2022-06-11 23:59', 1),
@@ -124,7 +126,10 @@ insert into shift(shift_id, schedule_id, employee_id, start_time, end_time) valu
 (3, 1, 4, '2022-06-05 10:00', '2022-06-05 04:00'),
 (4, 2, 3, '2022-06-05 04:00', '2022-06-05 08:00'),
 (5, 2, null, '2022-06-05 04:00', '2022-06-05 10:00'),
-(6, 2, null, '2022-06-13 12:00', '2022-06-13 08:00');
+(6, 2, null, '2022-06-13 12:00', '2022-06-13 08:00'),
+(7, 1, 1, '2022-06-06 09:00', '2022-06-06 12:00'),
+(8, 1, 1, '2022-06-07 10:00', '2022-06-07 12:30'),
+(9, 2, 1, '2022-06-14 8:30', '2022-06-14 12:00');
 
 insert into availability(availability_id, start_time, end_time, employee_id) values
 (1, '2022-06-05 00:00', '2022-06-11 23:59', 1),
@@ -142,7 +147,8 @@ end //
 
 delimiter ;
 
-
+set sql_safe_updates = 0;
 call set_known_good_state();
+set sql_safe_updates = 1;
 
 select * from app_user;

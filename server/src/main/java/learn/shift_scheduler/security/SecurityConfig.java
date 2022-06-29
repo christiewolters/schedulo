@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll() // anonymous
                 .antMatchers(HttpMethod.GET,
-                        "/api/shifts", "/api/shifts/*", "/api/shifts/employee/*", "/api/shifts/schedule/*").permitAll() // anonymous... no authentication required
+                        "/api/shifts/user/*", "/api/shifts/employee/*", "/api/shifts/schedule/*", "/api/shifts/*", "/api/shifts" ).permitAll() // anonymous... no authentication required
                 .antMatchers(HttpMethod.POST,
                         "/api/shifts").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.PUT,

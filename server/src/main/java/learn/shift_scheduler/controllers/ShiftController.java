@@ -46,6 +46,16 @@ public class ShiftController {
         return new ResponseEntity<>(shifts, HttpStatus.OK);
     }
 
+    //get all shifts by username
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<Shift>> findByUsername(@PathVariable String username) throws DataAccessException {
+        List<Shift> shifts = service.findByUsername(username);
+        if (shifts.size() == 0){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(shifts, HttpStatus.OK);
+    }
+
     //get all shifts by schedule_id
     @GetMapping("/schedule/{schedule_id}")
     public ResponseEntity<List<Shift>> findByScheduleId(@PathVariable int schedule_id) throws DataAccessException {

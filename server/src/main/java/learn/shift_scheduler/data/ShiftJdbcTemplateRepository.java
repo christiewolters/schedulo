@@ -57,11 +57,24 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
 
     @Override
     public List<Shift> findByEmployeeId(int employee_id) throws DataAccessException{
-        final String sql = "select * from (select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time from shift s " +
+        final String by_employee_id_sql = "select * from (select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time from shift s " +
                 "inner join `schedule` sc on s.schedule_id = sc.schedule_id where sc.finalized = 1 order by start_time asc) " +
                 "finalized where finalized.employee_id = ?;";
 
-        return jdbcTemplate.query(sql, mapper, employee_id);
+        return jdbcTemplate.query(by_employee_id_sql, mapper, employee_id);
+    }
+
+    //TODO: Kill me.
+    @Override
+    public List<Shift> findByUsername(String username) throws DataAccessException{
+        final String by_username_sql = "select s.shift_id, s.schedule_id, s.employee_id, s.start_time, s.end_time from app_user au " +
+                "left outer join employee e on au.app_user_id = e.app_user_id " +
+                "left outer join shift s on e.employee_id = s.employee_id " +
+                "left outer join schedule sh on s.schedule_id = sh.schedule_id " +
+                "where au.username = ? and sh.finalized = 1 " +
+                "order by start_time asc;";
+
+        return jdbcTemplate.query(by_username_sql, mapper, username);
     }
 
     @Override

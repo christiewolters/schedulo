@@ -1,0 +1,60 @@
+import date from 'date-and-time';
+import { useEffect, useState, useContext } from 'react';
+
+import AuthContext from '../AuthContext';
+
+function EmployeeShiftList() {
+  const [Shifts, setShifts] = useState([]);
+
+  const auth = useContext(AuthContext);
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/shifts/user/${auth.user.username}`)
+      .then(response => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          return Promise.reject(`Unexpected status code: ${response.status}`);
+        }
+      })
+      .then(data => setShifts(data))
+      .catch(console.log);
+  }, [auth.user.username]);   
+
+  const dateFormat = (time) => {
+    let newdate = new Date(time);
+    return date.format(newdate, 'h:mm A');
+  }
+
+  const getDay = (time) => {
+    let newdate = new Date(time);
+    return date.format(newdate, 'dddd, MMM D');
+  }
+
+  return (
+    <section>
+      <h3 className="text-center">My Shifts</h3>
+      <table className="table table-striped table-hover table-sm">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          { Shifts ? Shifts.map( shift => (
+            <tr key={shift.shiftId}>
+              <td>{ getDay(shift.startTime) }</td>
+              <td>{ dateFormat(shift.startTime) }</td>
+              <td>{ dateFormat(shift.endTime) }</td>
+            </tr>
+          )) : (<tr>You have no shifts to display.</tr>)}
+
+        </tbody>
+      </table>
+    </section>
+  );
+}
+
+export default EmployeeShiftList;

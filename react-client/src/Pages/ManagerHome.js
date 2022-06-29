@@ -1,10 +1,12 @@
 import Navbar from "../Components/Navbar";
+import EmployeeShiftList from "../Components/EmployeeShiftList";
 
 function ManagerHome() {
     return (
       <>
       <Navbar />
-      <h1>This is the Manager's Home Page</h1>
+      <h1 className="text-center">Manager's Home Page</h1>
+      <EmployeeShiftList />
       <h2>This is h2</h2>
       <h3>This is h3</h3>
       <h4>This is h4</h4>

@@ -61,14 +61,6 @@ function App() {
               (<ManagerHome />) : (<EmployeeHome/>)}
             </Route>
 
-            {/* <Route path={['/employee/availability', '/employee/view_schedule']}>
-              {auth.user ? (
-                <ManagerHome />
-              ) : (
-                <Redirect to="/login" />
-              )}
-            </Route> */}
-
             <Route path="/login">
             {auth.user ? (
                 <Redirect to="/" />

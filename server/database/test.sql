@@ -98,20 +98,23 @@ insert into app_user (app_user_id, username, password_hash, disabled)
     (1, 'john@smith.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
     (2, 'sally@jones.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
     (3, 'jason@wells.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
-    (4, 'christina@mckenzy.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0);
+    (4, 'christina@mckenzy.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0),
+    (5, 'arin@brown.com', '$2a$10$ntB7CsRKQzuLoKY3rfoAQen5nNyiC/U60wBsWnnYrtQQi8Z3IZzQa', 0);
     
 
 insert into employee(employee_id, first_name, last_name, app_user_id) values
 	(1, 'John', 'Smith', 1),
 	(2, 'Sally', 'Jones', 2),
     (3, 'Jason', 'Wells', 3),
-    (4, 'Christina', 'McKenzy', 4);
+    (4, 'Christina', 'McKenzy', 4),
+    (5, 'Arin', 'Brown', 5);
 
 insert into app_user_role(app_user_id, app_role_id) values
     (1, 2),
     (2, 1),
 	(3, 1),
-    (4, 2);
+    (4, 2),
+    (5, 1);
     
 insert into `schedule`(schedule_id, start_date, end_date, finalized) values
 (1, '2022-06-05 00:00', '2022-06-11 23:59', 1),

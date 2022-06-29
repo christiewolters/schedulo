@@ -27,6 +27,7 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
         employee.setFirstName(resultSet.getString("first_name"));
         employee.setLastName(resultSet.getString("last_name"));
         employee.setAppUserId(resultSet.getInt("app_user_id"));
+        employee.setWage(resultSet.getDouble("wage"));
 
         return employee;
     };

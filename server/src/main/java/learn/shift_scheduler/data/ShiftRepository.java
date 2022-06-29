@@ -17,6 +17,9 @@ public interface ShiftRepository {
     //Get all shifts by employee_id
     List<Shift> findByEmployeeId(int id);
 
+    //Get all shifts by username
+    List<Shift> findByUsername(String username);
+
     //Get all shifts by schedule_id
     List<Shift> findByScheduleId(int id);
 
@@ -27,4 +30,5 @@ public interface ShiftRepository {
 
     @Transactional
     boolean deleteById(int id);
+
 }

@@ -31,6 +31,11 @@ public class ShiftService {
         return repository.findByEmployeeId(employee_id);
     }
 
+    //find all shifts with username
+    public List<Shift> findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
     //find all shifts with schedule_id
     public List<Shift> findByScheduleId(int schedule_id) throws DataAccessException{
         return repository.findByScheduleId(schedule_id);

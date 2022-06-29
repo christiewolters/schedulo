@@ -56,28 +56,18 @@ function App() {
           <Switch>
 
             <Route path="/" exact>
-              {auth.user ? (
-                <EmployeeHome />
-              ) : (
-                <Redirect to="/login" />
-              )}
+              { !auth.user ? (<Redirect to="/login" />) 
+              : auth.user.hasRole("ROLE_MANAGER") ? 
+              (<ManagerHome />) : (<EmployeeHome/>)}
             </Route>
 
-            <Route path="/manager">
-              <ManagerHome />
-            </Route>
-
-            <Route path="/employee">
-              <EmployeeHome />
-            </Route>
-
-            <Route path={['/employee/availability', '/employee/view_schedule']}>
+            {/* <Route path={['/employee/availability', '/employee/view_schedule']}>
               {auth.user ? (
                 <ManagerHome />
               ) : (
                 <Redirect to="/login" />
               )}
-            </Route>
+            </Route> */}
 
             <Route path="/login">
             {auth.user ? (

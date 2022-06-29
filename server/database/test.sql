@@ -76,20 +76,20 @@ insert into app_role (`name`) values
 delimiter //
 create procedure set_known_good_state()
 begin
-	set sql_safe_updates = 0;
     /* The error is not schedule, it's something to do with sql_safe_updates / set_known_good_state */
-	delete from `schedule`;
-    alter table `schedule` auto_increment = 1;
+    delete from availability;
+    alter table availability auto_increment = 1;
     delete from shift;
     alter table shift auto_increment = 1;
     delete from employee;
     alter table employee auto_increment = 1;
-    delete from availability;
-    alter table availability auto_increment = 1;
-    delete from app_user;
-    alter table app_user auto_increment = 1;
+    delete from `schedule`;
+    alter table `schedule` auto_increment = 1;
+
     delete from app_user_role;
     alter table app_user_role auto_increment = 1;
+    delete from app_user;
+    alter table app_user auto_increment = 1;
 
 -- passwords are set to "P@ssw0rd!"
 insert into app_user (app_user_id, username, password_hash, disabled)
@@ -106,12 +106,11 @@ insert into employee(employee_id, first_name, last_name, app_user_id) values
     (3, 'Jason', 'Wells', 3),
     (4, 'Christina', 'McKenzy', 4);
 
-insert into app_user_role
-    values
+insert into app_user_role(app_user_id, app_role_id) values
     (1, 2),
     (2, 1),
-	(1, 1),
-    (2, 2);
+	(3, 1),
+    (4, 2);
     
 insert into `schedule`(schedule_id, start_date, end_date) values
 (1, '2022-06-05 00:00', '2022-06-11 23:59'),

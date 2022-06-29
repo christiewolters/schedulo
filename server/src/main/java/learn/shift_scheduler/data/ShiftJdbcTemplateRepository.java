@@ -117,8 +117,8 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
         return jdbcTemplate.update(sql,
                 shift.getScheduleId(),
                 shift.getEmployeeId(),
-                shift.getStartTime(),
-                shift.getEndTime(),
+                shift.getStartTime().toString(),
+                shift.getEndTime().toString(),
                 shift.getShiftId()) > 0;
     }
 

@@ -85,8 +85,8 @@ public class ScheduleJdbcTemplateRepository implements ScheduleRepository {
                 "where schedule_id = ?;";
 
         return jdbcTemplate.update(sql,
-                schedule.getStartDate(),
-                schedule.getEndDate(),
+                schedule.getStartDate().toString(),
+                schedule.getEndDate().toString(),
                 schedule.getFinalized()) > 0;
     }
 

@@ -4,7 +4,6 @@ import learn.shift_scheduler.data.ShiftRepository;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service

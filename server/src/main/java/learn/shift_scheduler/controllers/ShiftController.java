@@ -94,7 +94,7 @@ public class ShiftController {
     }
 
     @DeleteMapping("/{shift_id}")
-    public ResponseEntity<Void> delete(@PathVariable int shift_id) throws DataAccessException{
+    public ResponseEntity<Void> deleteById(@PathVariable int shift_id) throws DataAccessException{
         Result<Shift> result = service.deleteById(shift_id);
         if (result.getType() == ResultType.NOT_FOUND){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

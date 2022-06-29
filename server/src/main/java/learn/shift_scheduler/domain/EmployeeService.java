@@ -4,9 +4,11 @@ import learn.shift_scheduler.data.EmployeeRepository;
 import learn.shift_scheduler.models.Employee;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EmployeeService {
 
     private final EmployeeRepository repository;

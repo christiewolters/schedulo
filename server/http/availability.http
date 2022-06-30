@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/availabilities
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjI2OTYwfQ.XNejbAv2OdQyaI0g9whu55Zx_dzDddfb9TQjQrY3lKc
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjMwNjIyfQ.vrLo8SL6NsV3duv8MOorUzKjYlwy4jYHJ8h4BxT8XB4
 ###
 
 POST http://localhost:8080/api/authenticate HTTP/1.1
@@ -13,14 +13,17 @@ Content-Type: application/json
 ###
 
 GET {{url}} HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
-GET {{url}}/1 HTTP/1.1 
+GET {{url}}/13 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
-GET {{url}}/employee/1 HTTP/1.1 
+GET {{url}}/employee/1 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
@@ -48,7 +51,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-DELETE {{url}}/1 HTTP/1.1
+DELETE {{url}}/12 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###

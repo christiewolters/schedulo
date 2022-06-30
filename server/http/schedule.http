@@ -1,0 +1,108 @@
+@url = http://localhost:8080/api/schedules
+@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjYzNDAxMX0.f4O_6-hXzXmnT5QGbl-HVmjuEd2jilwSdykNtnXb-ws
+@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjM0MTAxfQ.m4EATr87Ehdn5v560tVzYwZlBd_xgQl82pqe4lq1nhg
+
+### Manager token fetch
+
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Employee token fetch
+
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "sally@jones.com",
+  "password": "P@ssw0rd!"
+}
+
+### MANAGER
+### ALL SHOULD WORK
+
+GET {{url}} HTTP/1.1
+Authorization: Bearer {{managerToken}}
+
+
+###
+
+GET {{url}}/1 HTTP/1.1
+Authorization: Bearer {{managerToken}}
+
+###
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{managerToken}}
+
+{
+  "scheduleId": 0,
+  "startDate": "2022-07-05",
+  "endDate": "2022-07-11",
+  "finalized": true
+}
+
+###
+
+PUT {{url}}/3 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{managerToken}}
+
+{
+  "scheduleId": 3,
+  "startDate": "2022-08-05",
+  "endDate": "2022-08-11",
+  "finalized": true
+}
+
+###
+
+DELETE {{url}}/3 HTTP/1.1
+Authorization: Bearer {{managerToken}}
+
+### EMPLOYEE
+### NONE SHOULD WORK
+GET {{url}} HTTP/1.1
+Authorization: Bearer {{employeeToken}}
+
+
+###
+
+GET {{url}}/1 HTTP/1.1
+Authorization: Bearer {{employeeToken}}
+
+###
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{employeeToken}}
+
+{
+  "scheduleId": 0,
+  "startDate": "2022-07-05",
+  "endDate": "2022-07-11",
+  "finalized": true
+}
+
+###
+
+PUT {{url}}/3 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{employeeToken}}
+
+{
+  "scheduleId": 3,
+  "startDate": "2022-08-05",
+  "endDate": "2022-08-11",
+  "finalized": true
+}
+
+###
+
+DELETE {{url}}/3 HTTP/1.1
+Authorization: Bearer {{employeeToken}}

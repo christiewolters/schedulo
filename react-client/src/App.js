@@ -10,6 +10,7 @@ import AuthContext from './AuthContext';
 import EmployeeHome from './Pages/EmployeeHome';
 import ManagerHome from './Pages/ManagerHome';
 import NotFound from './Pages/NotFound';
+import NoPermission from './Pages/NoPermission';
 import ViewSchedules from './Pages/ViewSchedules';
 
 function App() {
@@ -73,7 +74,7 @@ function App() {
             <Route path="/manager/schedules" exact>
               { !auth.user ? (<Redirect to="/login" />) 
               : auth.user.hasRole("ROLE_MANAGER") ? 
-              (<ViewSchedules />) : (<NotFound /> )}
+              (<ViewSchedules />) : (<NoPermission /> )}
             </Route>
 
             <Route>

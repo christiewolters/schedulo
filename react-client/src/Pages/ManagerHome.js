@@ -2,8 +2,8 @@ import Navbar from "../Components/Navbar";
 import EmployeeShiftList from "../Components/EmployeeShiftList";
 
 function ManagerHome() {
-    return (
-      <>
+  return (
+    <>
       <Navbar />
       <h1 className="text-center">Manager's Home Page</h1>
       <EmployeeShiftList />
@@ -13,8 +13,8 @@ function ManagerHome() {
       <h5>This is h5</h5>
       <h6>This is h6</h6>
       <p>This is paragraph text.</p>
-      </>
-    );
-  }
-  
-  export default ManagerHome;
+    </>
+  );
+}
+
+export default ManagerHome;

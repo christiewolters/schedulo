@@ -1,12 +1,13 @@
 import Navbar from "../Components/Navbar";
+import SchedulesList from "../Components/SchedulesList";
 
 function ViewSchedules() {
     return (
         <>
-        <Navbar />
-        <p>view schedules here</p>
+            <Navbar />
+            <SchedulesList />
         </>
-        );
-    }
-    
-    export default ViewSchedules;
+    );
+}
+
+export default ViewSchedules;

@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from 'react';
 import AuthContext from '../AuthContext';
 
 function EmployeeShiftList() {
-  const [Shifts, setShifts] = useState([]);
+  const [shifts, setShifts] = useState([]);
 
   const auth = useContext(AuthContext);
 
@@ -19,7 +19,9 @@ function EmployeeShiftList() {
       })
       .then(data => setShifts(data))
       .catch(console.log);
-  }, [auth.user.username]);   
+  }, [auth.user.username]);
+
+  console.log(shifts);
 
   const dateFormat = (time) => {
     let newdate = new Date(time);
@@ -32,12 +34,10 @@ function EmployeeShiftList() {
   }
 
   return (
-    <section>
-      
-      <div className="panel panel-default">
-        <div className="panel-heading">
+    <section className="panel panel-default">
+      <div className="panel-heading">
         <h4 className="m-0 p-0">My Shifts</h4>
-        </div>
+      </div>
       <table className="table table-hover table-sm">
         <thead>
           <tr>
@@ -47,17 +47,16 @@ function EmployeeShiftList() {
           </tr>
         </thead>
         <tbody>
-          { Shifts ? Shifts.map( shift => (
+          {shifts ? shifts.map(shift => (
             <tr key={shift.shiftId}>
-              <td>{ getDay(shift.startTime) }</td>
-              <td>{ dateFormat(shift.startTime) }</td>
-              <td>{ dateFormat(shift.endTime) }</td>
+              <td>{getDay(shift.startTime)}</td>
+              <td>{dateFormat(shift.startTime)}</td>
+              <td>{dateFormat(shift.endTime)}</td>
             </tr>
           )) : (<tr>You have no shifts to display.</tr>)}
 
         </tbody>
       </table>
-      </div>
     </section>
   );
 }

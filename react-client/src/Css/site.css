@@ -2,6 +2,10 @@ body {
     background-color: rgb(241, 242, 246)
 }
 
+.inline {
+    display: inline-block;
+}
+
 /* LOGIN PAGE */
 label {
     color: rgb(155, 151, 151);
@@ -25,6 +29,41 @@ label {
 }
 
 /* END LOGIN PAGE */
+
+
+
+/* VIEW SCHEDULES PAGE */
+.list-group>li {
+    list-style-type: none;
+}
+
+.float-right {
+    float: right;
+}
+
+.parent {
+    position: relative;
+    text-align: center;
+    height: 64px;
+}
+
+.child {
+    /* ... */
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.list-subheader {
+    background-color: #AAB2BD;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: #F5F7FA;
+}
+
+/* END VIEW SCHEDULES PAGE */
+
 
 
 /* Trash Button */
@@ -57,6 +96,7 @@ label {
     color: #AAB2BD;
     /*$mediumgray-dark*/
 }
+
 /* End Trash Button */
 
 
@@ -90,4 +130,5 @@ label {
     color: #AAB2BD;
     /*$mediumgray-dark*/
 }
+
 /* End Add Button */

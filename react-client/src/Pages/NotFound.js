@@ -1,6 +1,6 @@
 function NotFound() {
     return (
-      <h2>Not Found</h2>
+      <h3 className="text-center">Page Was Not Found.</h3>
     );
   }
   

@@ -24,14 +24,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll() // anonymous
                 .antMatchers(HttpMethod.GET,
-                        "/api/shifts/user/*", "/api/shifts/employee/*", "/api/shifts/schedule/*", "/api/shifts/*", "/api/shifts" ).permitAll() // anonymous... no authentication required
+                        "/api/shifts/user/*",
+                        "/api/shifts/employee/*",
+                        "/api/shifts/schedule/*",
+                        "/api/shifts/*",
+                        "/api/availabilities/employee/*",
+                        "/api/availabilities/*",
+                        "/api/employees/user/*",
+                        "/api/employees/*",
+                        "/api/availabilities/*",
+                        "/api/availabilities",
+                        "/api/shifts" ).permitAll() // anonymous... no authentication required
                 .antMatchers(HttpMethod.POST,
-                        "/api/shifts").hasAnyRole("EMPLOYEE", "MANAGER")
+                        "/api/shifts",
+                        "/api/availabilities").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.PUT,
-                        "/api/shifts/*").hasAnyRole("EMPLOYEE", "MANAGER")
+                        "/api/shifts/*",
+                        "/api/availabilities/*").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.DELETE,
-                        "/api/shifts/*").hasAnyRole("MANAGER")
-                .antMatchers("/**").denyAll()
+                        "/api/shifts/*",
+                        "/api/availabilities/*").hasAnyRole("EMPLOYEE", "MANAGER")
+                .antMatchers("/**").permitAll() //TODO: Change this back to denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
                 .sessionManagement()

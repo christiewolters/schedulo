@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-
+//TODO: Add e.app_user_id to all the sql selects
 @Repository
 public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
     private final JdbcTemplate jdbcTemplate;
@@ -52,7 +52,7 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
 
     @Override
     public Employee findByUsername(String username) throws DataAccessException{
-        final String sql = "select employee_id, first_name, last_name, wage from employee e " +
+        final String sql = "select employee_id, first_name, last_name, e.app_user_id, wage from employee e " +
                 "inner join app_user au on e.app_user_id = au.app_user_id " +
                 "where au.username = ?;";
 

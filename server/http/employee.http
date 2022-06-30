@@ -40,7 +40,7 @@ Authorization: Bearer {{managerToken}}
 ###
 
 GET {{url}}/user/sally@jones.com
-Authorization: Bearer {{employeeToken}}
+Authorization: Bearer {{managerToken}}
 
 ### create should not work for employee
 

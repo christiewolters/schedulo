@@ -1,6 +1,6 @@
 @url = http://localhost:8080/api/shifts
-@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjYzMTkxNn0.R2wJJcPpMG5WVDNu3jqoMEgslbf-731GlDg-g4CInpU
-@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjMzMTE0fQ.y5RAAoeqmz8XXUCCTho185FETfwXXYvFi7Oib1tm7To
+@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjYzNjk5Mn0.AXqPZcTu4WVIfvK_t0K56dAoRN6KzRJ2eiBnVb1qNe0
+@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjM3MDAzfQ.m2mNHJ4I7dnD9wmwrP3d77j4jomimjRsgKVZTKBf9Uc
 
 
 
@@ -42,7 +42,7 @@ Authorization: Bearer {{managerToken}}
 ###
 
 GET {{url}}/user/john@smith.com HTTP/1.1 
-Authorization: Bearer {{managerToken}}
+Authorization: Bearer {{employeeToken}}
 
 ###
 
@@ -51,7 +51,7 @@ Authorization: Bearer {{managerToken}}
 
 ###
 GET {{url}}/schedule/1 HTTP/1.1 
-Authorization: Bearer {{managerToken}}
+Authorization: Bearer {{employeeToken}}
 
 ###
 

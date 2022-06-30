@@ -1,6 +1,6 @@
 @url = http://localhost:8080/api/employees
-@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjMxMzczfQ.pBwW3PFIOkf5nAWJKLWT_QDiGO3LipxS6uINM0mgkLk
-@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjYzMTYyM30.2xpLuescQPM-yWEgDFGmnlp4zVrqjPMzKyjPrbU9dhY
+@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjM1MTIyfQ._Nu89CY2HyYuN68FcXVg7NeEEcRBiaamlDQYbyt1bZ8
+@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjYzNTA2N30.KlerQR8iJ8PQHsp_ZtcvUx5eZsHsAon1fNpBaJDWdx4
 ### Employee token fetch
 
 POST http://localhost:8080/api/authenticate HTTP/1.1
@@ -42,5 +42,55 @@ Authorization: Bearer {{employeeToken}}
 GET {{url}}/user/sally@jones.com
 Authorization: Bearer {{employeeToken}}
 
-###
+### create should not work for employee
 
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{employeeToken}}
+
+{
+  "employeeId": 6,
+  "firstName": "Benny",
+  "lastName": "Benson",
+  "appUserId": 6,
+  "wage": 0.0
+}
+
+### update should not work for employee
+
+PUT {{url}}/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{employeeToken}}
+
+{
+  "employeeId": 1,
+  "firstName": "John",
+  "lastName": "Smith",
+  "appUserId": 1,
+  "wage": 10.0
+}
+
+### update should work for manager
+PUT {{url}}/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{managerToken}}
+
+{
+  "employeeId": 1,
+  "firstName": "John",
+  "lastName": "Smith",
+  "appUserId": 1,
+  "wage": 10.0
+}
+
+### delete should work for manager
+
+DELETE {{url}}/5 HTTP/1.1
+Authorization: Bearer {{managerToken}}
+
+### delete should not work for employee
+
+DELETE {{url}}/5 HTTP/1.1
+Authorization: Bearer {{employeeToken}}
+
+###

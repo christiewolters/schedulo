@@ -88,13 +88,14 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
         final String sql = "update employee set " +
                 "first_name = ?, " +
                 "last_name = ?, " +
-                "wage = ?, " +
+                "wage = ? " +
                 "where employee_id = ?;";
 
         return jdbcTemplate.update(sql,
                 employee.getFirstName(),
                 employee.getLastName(),
-                employee.getWage()) > 0;
+                employee.getWage(),
+                employee.getEmployeeId()) > 0;
     }
 
     @Override

@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/availabilities
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NTgyOTI1fQ.QaNEqemNewikYPNB-ZJEZbOYdj7uBiGI01nEVQQJcWg
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjI2OTYwfQ.XNejbAv2OdQyaI0g9whu55Zx_dzDddfb9TQjQrY3lKc
 ###
 
 POST http://localhost:8080/api/authenticate HTTP/1.1
@@ -35,7 +35,6 @@ Authorization: Bearer {{token}}
 }
 
 ###
-// TODO: INTERNAL SERVER ERROR bad SQL grammar
 PUT {{url}}/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}

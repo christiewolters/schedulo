@@ -86,14 +86,15 @@ public class AvailabilityJdbcTemplateRepository implements AvailabilityRepositor
     public boolean update(Availability availability){
         final String sql = "update availability set " +
                 "start_time = ?, " +
-                "end_time = ? " +
-                "employee_id = ?, " +
+                "end_time = ?, " +
+                "employee_id = ? " +
                 "where availability_id = ?;";
 
         return jdbcTemplate.update(sql,
                 availability.getStartTime().toString(),
                 availability.getEndTime().toString(),
-                availability.getEmployeeId()) > 0;
+                availability.getEmployeeId(),
+                availability.getAvailabilityId()) > 0;
     }
 
     @Override

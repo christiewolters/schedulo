@@ -4,7 +4,6 @@ import learn.shift_scheduler.domain.AvailabilityService;
 import learn.shift_scheduler.domain.Result;
 import learn.shift_scheduler.domain.ResultType;
 import learn.shift_scheduler.models.Availability;
-import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

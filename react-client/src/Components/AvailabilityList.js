@@ -11,15 +11,6 @@ function AvailabilityList() {
 
   const history = useHistory();
 
-  //helper method to make read strings into date objects (couldn't figure out how to do this with map)
-  const convertToDate = (availabilities) => {
-    for (let a of availabilities) {
-      a.startTime = new Date(a.startTime);
-      a.endTime = new Date(a.endTime);
-    }
-    return availabilities;
-  }
-
 
   //get all
   useEffect(() => {
@@ -31,7 +22,7 @@ function AvailabilityList() {
           return Promise.reject(`Unexpected status code: ${response.status}`);
         }
       })
-      .then(data => convertToDate(data))
+      .then( data => data.map( a => {a.startTime = new Date(a.startTime); a.endTime = new Date(a.endTime); return a;} ))
       .then(data => setAvailabilities(data))
       .catch(console.log);
   }, [auth.employee.employeeId]); // An empty dependency array tells to run our side effect once when the component is initially loaded. 
@@ -91,17 +82,70 @@ function AvailabilityList() {
                   <Link className="btn btn-primary btn-sm mr-2" to={`/availabilitiess/edit/${availability.id}`}>
                     <i className="bi bi-pencil-square"></i> Edit
                   </Link>
-                  {auth.user && auth.user.hasRole('ROLE_ADMIN') && (
                     <button className="btn btn-danger btn-sm" onClick={() => handleDeleteAvail(availability.id)}>
                       <i className="bi bi-trash"></i> Delete
                     </button>
-                  )}
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Delete Availability Model
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 class="modal-title" id="exampleModalLabel">Delete this availability?</h5>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+  Add Availability Model
+</button>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 class="modal-title" id="addModalLabel">Add Availability</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <label>Start Time</label>
+          <input type="date"></input>
+          <label>end Time</label>
+          <input type="date"></input>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     </>
   );
 }

@@ -39,6 +39,7 @@ create table employee(
     first_name varchar(25) not null,
     last_name varchar(25) not null,
     app_user_id int not null,
+    wage double not null default 0,
     constraint fk_employee_app_user_id
         foreign key (app_user_id)
         references app_user(app_user_id)
@@ -50,6 +51,7 @@ create table shift(
     employee_id int null,
     start_time datetime not null,
     end_time datetime not null,
+    earned varchar(255) not null default '',
     constraint fk_shift_employee_id
         foreign key (employee_id)
         references employee(employee_id),

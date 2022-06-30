@@ -4,7 +4,6 @@ import learn.shift_scheduler.data.ShiftRepository;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -109,6 +108,10 @@ public class ShiftService {
 
         if (shift.getScheduleId() <= 0){
             result.addMessage("Shift must be assigned to a schedule", ResultType.INVALID);
+        }
+
+        if (shift.getEarned() == null || shift.getEarned().isBlank()){
+            result.addMessage("Earned amount is required (Dinero Object String)", ResultType.INVALID);
         }
 
         //validates that new shift does not overlap an existing shift

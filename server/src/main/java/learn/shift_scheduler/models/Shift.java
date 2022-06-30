@@ -10,12 +10,14 @@ public class Shift {
     private LocalDateTime endTime;
     private int scheduleId;
 
-    public Shift(int shiftId, int employeeId, LocalDateTime startTime, LocalDateTime endTime, int scheduleId) {
+    private String earned = "";
+    public Shift(int shiftId, int employeeId, LocalDateTime startTime, LocalDateTime endTime, int scheduleId, String earned) {
         this.shiftId = shiftId;
         this.employeeId = employeeId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.scheduleId = scheduleId;
+        this.earned = earned;
     }
 
     public Shift() {
@@ -62,16 +64,24 @@ public class Shift {
         this.scheduleId = scheduleId;
     }
 
+    public String getEarned() {
+        return earned;
+    }
+
+    public void setEarned(String earned) {
+        this.earned = earned;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shift shift = (Shift) o;
-        return shiftId == shift.shiftId && employeeId == shift.employeeId && scheduleId == shift.scheduleId && Objects.equals(startTime, shift.startTime) && Objects.equals(endTime, shift.endTime);
+        return shiftId == shift.shiftId && employeeId == shift.employeeId && scheduleId == shift.scheduleId && Objects.equals(startTime, shift.startTime) && Objects.equals(endTime, shift.endTime) && Objects.equals(earned, shift.earned);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(shiftId, employeeId, startTime, endTime, scheduleId);
+        return Objects.hash(shiftId, employeeId, startTime, endTime, scheduleId, earned);
     }
 }

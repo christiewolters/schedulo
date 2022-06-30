@@ -1,0 +1,25 @@
+@url = http://localhost:8080/api/employees
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NTg1NTQzfQ.QyJ0cVBbUAK5QgmRilrgvEDw2gl05Y6vEpUq047GrUc
+###
+
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "sally@jones.com",
+  "password": "P@ssw0rd!"
+}
+
+### //findAll
+
+GET {{url}} HTTP/1.1
+
+### //findById
+
+GET {{url}}/1 HTTP/1.1
+
+###
+
+GET {{url}}/user/sally@jones.com
+
+###

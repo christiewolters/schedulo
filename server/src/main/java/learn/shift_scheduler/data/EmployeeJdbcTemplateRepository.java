@@ -34,7 +34,7 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
 
     @Override
     public List<Employee> findAll() throws DataAccessException{
-        final String sql = "select first_name, last_name, wage from employee e " +
+        final String sql = "select employee_id, first_name, last_name, wage, e.app_user_id from employee e " +
                 "inner join app_user au on e.app_user_id = au.app_user_id " +
                 "where au.disabled = 0;";
 
@@ -43,7 +43,7 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
 
     @Override
     public Employee findById(int id) throws DataAccessException{
-        final String sql = "select employee_id, first_name, last_name, wage from employee e " +
+        final String sql = "select employee_id, first_name, last_name, wage, e.app_user_id from employee e " +
                 "inner join app_user au on e.app_user_id = au.app_user_id " +
                 "where au.disabled = 0 and e.employee_id = ?;";
 
@@ -88,13 +88,14 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
         final String sql = "update employee set " +
                 "first_name = ?, " +
                 "last_name = ?, " +
-                "wage = ?, " +
+                "wage = ? " +
                 "where employee_id = ?;";
 
         return jdbcTemplate.update(sql,
                 employee.getFirstName(),
                 employee.getLastName(),
-                employee.getWage()) > 0;
+                employee.getWage(),
+                employee.getEmployeeId()) > 0;
     }
 
     @Override

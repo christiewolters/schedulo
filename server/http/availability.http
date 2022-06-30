@@ -13,14 +13,17 @@ Content-Type: application/json
 ###
 
 GET {{url}} HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
-GET {{url}}/1 HTTP/1.1 
+GET {{url}}/13 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
-GET {{url}}/employee/1 HTTP/1.1 
+GET {{url}}/employee/1 HTTP/1.1
+Authorization: Bearer {{token}}
 
 ###
 
@@ -35,7 +38,6 @@ Authorization: Bearer {{token}}
 }
 
 ###
-// TODO: INTERNAL SERVER ERROR bad SQL grammar
 PUT {{url}}/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}

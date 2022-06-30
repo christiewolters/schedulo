@@ -23,7 +23,7 @@ public class ScheduleJdbcTemplateRepository implements ScheduleRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final RowMapper<Schedule> mapper = (resultSet, rowIndex) -> {
         Schedule schedule = new Schedule();
@@ -81,13 +81,14 @@ public class ScheduleJdbcTemplateRepository implements ScheduleRepository {
         final String sql = "update schedule set " +
                 "start_date = ?, " +
                 "end_date = ?, " +
-                "finalized = ?, " +
+                "finalized = ? " +
                 "where schedule_id = ?;";
 
         return jdbcTemplate.update(sql,
                 schedule.getStartDate().toString(),
                 schedule.getEndDate().toString(),
-                schedule.getFinalized()) > 0;
+                schedule.getFinalized(),
+                schedule.getScheduleId()) > 0;
     }
 
     @Override

@@ -1,11 +1,12 @@
 import './Css/site.css';
 import './Css/boot-spacing.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 import Login from './Components/Login';
 import AuthContext from './AuthContext';
+import AvailabilityList from './Components/AvailabilityList'
 
 import EmployeeHome from './Pages/EmployeeHome';
 import ManagerHome from './Pages/ManagerHome';
@@ -17,6 +18,7 @@ function App() {
   // "null" means that we don't have a logged in user
   // anything other than null, means we have a logged in user
   const [user, setUser] = useState(null);
+  const [employee, setEmployee] = useState(null);
 
   const login = (token) => {
     const { sub: username, authorities } = jwt_decode(token);
@@ -43,10 +45,30 @@ function App() {
     setUser(null);
   };
 
+//get employee from backend
+useEffect(() => {
+  // Make sure that we have an "user" value...
+  if (user) {
+    fetch(`http://localhost:8080/api/employees/user/${user.username}`)
+      .then(response => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          return Promise.reject(`Unexpected status code: ${response.status}`);
+        }
+      })
+      .then(data => setEmployee(data))
+      .catch(console.log);
+  }
+}, [user]); // Hey React... please call my arrow function every time the "id" route parameter changes value
+
+
+
   const auth = {
     user,
     login,
-    logout
+    logout,
+    employee
   };
 
   return (
@@ -75,6 +97,10 @@ function App() {
               { !auth.user ? (<Redirect to="/login" />) 
               : auth.user.hasRole("ROLE_MANAGER") ? 
               (<ViewSchedules />) : (<NoPermission /> )}
+            </Route>
+
+            <Route path="/employee/availability">
+              <AvailabilityList />
             </Route>
 
             <Route>

@@ -21,8 +21,6 @@ function EmployeeShiftList() {
       .catch(console.log);
   }, [auth.user.username]);
 
-  console.log(shifts);
-
   const dateFormat = (time) => {
     let newdate = new Date(time);
     return date.format(newdate, 'h:mm A');

@@ -29,13 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/employees",
                         "/api/schedules/*",
                         "/api/schedules",
-                        "/api/shifts/**",
                         "/api/availabilities/**").hasAnyRole("MANAGER")
                 .antMatchers(HttpMethod.GET,
-                        "/api/shifts/**",
                         "/api/availabilities/**").hasAnyRole("EMPLOYEE")
                 .antMatchers(HttpMethod.GET,
-                        "/api/employees/**").hasAnyRole("EMPLOYEE", "MANAGER")
+                        "/api/employees/**",
+                        "/api/shifts/**").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.POST,
                         "/api/availabilities").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.POST,

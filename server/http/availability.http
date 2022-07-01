@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/availabilities
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3MTkxMTd9.SfobP0Mo73_B3EKwifTf6AT8Lrxlu29Bf3RTAd2q--g
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3MjEzOTd9.oPiX1YnWwG1NEKDpdeuBzO-CbnZBCscx4dsGTsmyWuU
 
 ###
 
@@ -45,7 +45,7 @@ Authorization: Bearer {{token}}
 
 {
     "startTime": "2020-02-02T09:00:00",
-    "endTime": "2020-02-02T18:00:00",
+    "endTime": "2020-02-02T19:00:00",
     "employeeId": 1
 }
 

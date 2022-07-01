@@ -47,7 +47,9 @@ public class AvailabilityController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Availability availability) throws DataAccessException{
+    public ResponseEntity<?> create(@RequestBody Availability availability, UsernamePasswordAuthenticationToken principal) throws DataAccessException{
+        AppUser appUser = (AppUser) principal.getPrincipal();
+        availability.setEmployeeId(appUser.getAppUserId());
         Result<Availability> result = service.create(availability);
         if (!result.isSuccess()){
             return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);

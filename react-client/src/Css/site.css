@@ -30,7 +30,10 @@ label {
 
 /* END LOGIN PAGE */
 
-
+.red {
+    color: red;
+    background-color: red;
+}
 
 /* VIEW SCHEDULES PAGE */
 .list-group>li {

@@ -6,6 +6,7 @@ import learn.shift_scheduler.models.Availability;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -90,6 +91,9 @@ public class AvailabilityService {
             result.addMessage("Availability end time must be after start time", ResultType.INVALID);
         }
 
+        if (availability.getStartTime().isBefore(LocalDateTime.now())){
+            result.addMessage("Availability can not start in the past", ResultType.INVALID);
+        }
         if (result.isSuccess()) {
             List<Availability> existingAvailabilities = repository.findAll();
 

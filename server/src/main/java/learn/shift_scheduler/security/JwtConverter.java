@@ -2,6 +2,7 @@ package learn.shift_scheduler.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import learn.shift_scheduler.models.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,23 +24,24 @@ public class JwtConverter {
     private final int EXPIRATION_MINUTES = 480;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
 
-    public String getTokenFromUser(User user) {
+    public String getTokenFromUser(AppUser appUser) {
 
-        String authorities = user.getAuthorities().stream()
+        String authorities = appUser.getAuthorities().stream()
                 .map(i -> i.getAuthority())
                 .collect(Collectors.joining(",")); // ROLE_USER,ROLE_ADMIN
 
         // 3. Use JJWT classes to build a token.
         return Jwts.builder() // the builder pattern
                 .setIssuer(ISSUER)
-                .setSubject(user.getUsername())
+                .setSubject(appUser.getUsername())
                 .claim("authorities", authorities)
+                .claim("appUserId", appUser.getAppUserId())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
                 .signWith(key)
                 .compact();
     }
 
-    public User getUserFromToken(String token) {
+    public AppUser getUserFromToken(String token) {
 
         if (token == null || !token.startsWith("Bearer ")) {
             return null;
@@ -54,12 +56,12 @@ public class JwtConverter {
                     .parseClaimsJws(token.substring(7));
 
             String username = jws.getBody().getSubject();
-            String authStr = (String) jws.getBody().get("authorities");
-            List<GrantedAuthority> authorities = Arrays.stream(authStr.split(","))
-                    .map(i -> new SimpleGrantedAuthority(i))
-                    .collect(Collectors.toList());
 
-            return new User(username, username, authorities);
+            String authStr = (String) jws.getBody().get("authorities");
+            List<String> authorities = List.of(authStr.split(","));
+
+            int appUserId = (int) jws.getBody().get("appUserId");
+            return new AppUser(appUserId, username, username, false, authorities);
 
         } catch (JwtException e) {
             // 5. JWT failures are modeled as exceptions.

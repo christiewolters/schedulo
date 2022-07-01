@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import jwt_decode from 'jwt-decode';
 import Login from './Components/Login';
 import AuthContext from './AuthContext';
-import AvailabilityList from './Components/AvailabilityList'
+import Availability from './Pages/Availability';
 import EmployeeHome from './Pages/EmployeeHome';
 import ManagerHome from './Pages/ManagerHome';
 import NotFound from './Pages/NotFound';
@@ -85,7 +85,7 @@ function App() {
     return null;
   }
 
-  
+
   return (
     <div className="container">
       <AuthContext.Provider value={auth}>
@@ -108,7 +108,7 @@ function App() {
             <Route path="/employee/availability">
               {!auth.user ? (<Redirect to="/login" />)
                 : auth.user.hasRole("ROLE_EMPLOYEE") ?
-                  (<AvailabilityList />) : (<NoPermission />)}
+                  (<Availability />) : (<NoPermission />)}
             </Route>
             <Route>
               <NotFound />

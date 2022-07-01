@@ -9,7 +9,12 @@ function EmployeeShiftList() {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/shifts/user/${auth.user.username}`)
+    const init = {
+      headers: {
+        'Authorization' : `Bearer ${auth.user.token}`
+      },
+    };
+    fetch(`http://localhost:8080/api/shifts/user/${auth.user.username}`, init)
       .then(response => {
         if (response.status === 200) {
           return response.json();
@@ -19,7 +24,7 @@ function EmployeeShiftList() {
       })
       .then(data => setShifts(data))
       .catch(console.log);
-  }, [auth.user.username]);
+  }, [auth.user]);
 
   const dateFormat = (time) => {
     let newdate = new Date(time);

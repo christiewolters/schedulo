@@ -21,13 +21,14 @@ function App() {
   const [employee, setEmployee] = useState(null);
 
   const login = (token) => {
-    const { sub: username, authorities } = jwt_decode(token);
+    const { sub: username, authorities, appUserId } = jwt_decode(token);
 
     const roles = authorities.split(',');
 
     // create our user object
     const userToLogin = {
       username,
+      appUserId,
       roles,
       token,
       hasRole(role) {
@@ -49,7 +50,10 @@ function App() {
 useEffect(() => {
   // Make sure that we have an "user" value...
   if (user) {
-    fetch(`http://localhost:8080/api/employees/user/${user.username}`)
+    const init = {
+      headers: {"Authorization": `Bearer ${user.token}`
+    }};
+    fetch(`http://localhost:8080/api/employees/user/${user.username}`, init )
       .then(response => {
         if (response.status === 200) {
           return response.json();
@@ -86,11 +90,8 @@ useEffect(() => {
             </Route>
 
             <Route path="/login">
-            {auth.user ? (
-                <Redirect to="/" />
-              ) : (
-                <Login />
-              )}
+            {auth.user ? 
+            (<Redirect to="/" />) : (<Login />)}
             </Route>
 
             <Route path="/manager/schedules" exact>
@@ -100,7 +101,9 @@ useEffect(() => {
             </Route>
 
             <Route path="/employee/availability">
-              <AvailabilityList />
+            { !auth.user ? (<Redirect to="/login" />) 
+              : auth.user.hasRole("ROLE_EMPLOYEE") ? 
+              (<AvailabilityList />) : (<NoPermission /> )}
             </Route>
 
             <Route>

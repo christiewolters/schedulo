@@ -1,6 +1,6 @@
 @url = http://localhost:8080/api/employees
-@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiZXhwIjoxNjU2NjM2MTYyfQ.Y7lFjObCnctb2WbjwYEeSVrUev-_Gpz75XnbtF4t8lk
-@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImV4cCI6MTY1NjYzNjE2OH0.ZGzXJByChvsmthxmNN3CNStY-A9FyklFykGTKJNGSQE
+@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3MTg0ODh9.PMbiYYmrSIkMiuZVPHwUl-A-94SQ09qD0e4Iu0cBSys
+@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImFwcFVzZXJJZCI6MSwiZXhwIjoxNjU2NzE4NTI5fQ.zUroJxgnabwauWh6LItUxGFLHN16g2TR1WH0uRlNr8k
 ### Employee token fetch
 
 POST http://localhost:8080/api/authenticate HTTP/1.1
@@ -22,6 +22,11 @@ Content-Type: application/json
   "password": "P@ssw0rd!"
 }
 
+### finduser by token
+GET {{url}}/employee HTTP/1.1
+Authorization: Bearer {{managerToken}}
+
+
 ### //findAll (should fail for employee)
 
 GET {{url}} HTTP/1.1
@@ -34,7 +39,7 @@ Authorization: Bearer {{managerToken}}
 
 ### //findById
 
-GET {{url}}/1 HTTP/1.1
+GET {{url}}/2 HTTP/1.1
 Authorization: Bearer {{managerToken}}
 
 ###

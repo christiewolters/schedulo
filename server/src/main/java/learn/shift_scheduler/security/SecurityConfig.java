@@ -22,19 +22,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll() // anonymous
+                .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
+                .antMatchers(HttpMethod.GET,
+                        "/api/shifts/user",
+                        "/api/availabilities/user",
+                        "/api/employees/employee").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.GET,
                         "/api/shifts",
+                        "/api/shifts/**",
                         "/api/availabilities",
                         "/api/employees",
+                        "/api/employees/**",
                         "/api/schedules/*",
                         "/api/schedules",
                         "/api/availabilities/**").hasAnyRole("MANAGER")
-                .antMatchers(HttpMethod.GET,
-                        "/api/availabilities/**").hasAnyRole("EMPLOYEE")
-                .antMatchers(HttpMethod.GET,
-                        "/api/employees/**",
-                        "/api/shifts/**").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.POST,
                         "/api/availabilities").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.POST,

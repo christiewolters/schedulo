@@ -3,10 +3,13 @@ package learn.shift_scheduler.controllers;
 import learn.shift_scheduler.domain.EmployeeService;
 import learn.shift_scheduler.domain.Result;
 import learn.shift_scheduler.domain.ResultType;
+import learn.shift_scheduler.models.AppUser;
 import learn.shift_scheduler.models.Employee;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +29,21 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> findById(@PathVariable int id){
+    public ResponseEntity<Employee> findById(@PathVariable int id, UsernamePasswordAuthenticationToken principal){
         Employee employee = service.findById(id);
+        if (employee == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<Employee> findByUser(UsernamePasswordAuthenticationToken principal) throws DataAccessException{
+        AppUser appUser = (AppUser) principal.getPrincipal();
+
+
+
+        Employee employee = service.findById(appUser.getAppUserId());
         if (employee == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

@@ -41,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,
                         "/api/shifts",
                         "/api/employees",
-                        "/api/schedules").hasAnyRole("MANAGER")
+                        "/api/schedules",
+                        "/api/appuser").hasAnyRole("MANAGER")
                 .antMatchers(HttpMethod.PUT,
                         "/api/availabilities/*").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers(HttpMethod.PUT,

@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/api/availabilities")
 public class AvailabilityController {
     private final AvailabilityService service;
-
     public AvailabilityController(AvailabilityService service) {
         this.service = service;
     }

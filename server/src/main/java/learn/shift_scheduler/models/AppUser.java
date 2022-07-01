@@ -1,5 +1,6 @@
 package learn.shift_scheduler.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -32,6 +33,42 @@ public class AppUser extends User {
 
     public void setAppUserId(int appUserId) {
         this.appUserId = appUserId;
+    }
+
+    @Override
+    @JsonIgnore
+    public Collection<GrantedAuthority> getAuthorities() {
+        return super.getAuthorities();
+    }
+
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return super.isEnabled();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return super.isAccountNonExpired();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return super.isAccountNonLocked();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return super.isCredentialsNonExpired();
     }
 
     public static List<GrantedAuthority> convertRolesToAuthorities(List<String> roles) {

@@ -20,7 +20,7 @@ function Navbar() {
                       <a className="navbar-brand" href="#">Shift Scheduler</a>
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
-                      <p className="navbar-text navbar-right">Signed in as {auth.employee.firstName} {auth.employee.lastName}. <a className="navbar-link" href="">Sign out.</a></p>
+                      <p className="navbar-text navbar-right">Signed in as {auth.user.username}. <a className="navbar-link" href="">Sign out.</a></p>
                     </div>
                   </div>
                 </nav>

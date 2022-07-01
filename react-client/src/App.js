@@ -19,16 +19,26 @@ function App() {
   // anything other than null, means we have a logged in user
   const [user, setUser] = useState(null);
   const [employee, setEmployee] = useState(null);
+  const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('schedulerToken');
+    if(token) {
+      login(token);
+    }
+    setRestoreLoginAttemptCompleted(true);
+  }, []);
 
   const login = (token) => {
+    localStorage.setItem('schedulerToken', token);
     const { sub: username, authorities, appUserId } = jwt_decode(token);
 
     const roles = authorities.split(',');
 
     // create our user object
     const userToLogin = {
-      username,
       appUserId,
+      username,
       roles,
       token,
       hasRole(role) {
@@ -44,6 +54,7 @@ function App() {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('schedulerToken');
   };
 
 //get employee from backend
@@ -66,7 +77,7 @@ useEffect(() => {
   }
 }, [user]); // Hey React... please call my arrow function every time the "id" route parameter changes value
 
-
+console.log(employee)
 
   const auth = {
     user,
@@ -74,6 +85,12 @@ useEffect(() => {
     logout,
     employee
   };
+
+  console.log(auth);
+
+  if (!restoreLoginAttemptCompleted) {
+    return null;
+  }
 
   return (
     <div className="container">

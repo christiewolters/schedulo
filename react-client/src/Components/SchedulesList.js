@@ -1,79 +1,45 @@
-import { useEffect, useState, useContext } from 'react';
+import date from 'date-and-time'; import { useEffect, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import AuthContext from '../AuthContext';
 
 function SchedulesList() {
 
-    const dummySchedules =
-        [
-            {
-                "scheduleId": 1,
-                "startDate": "2022-06-05T08:00:00",
-                "endDate": "2022-06-05T12:00:00",
-                "finalized": 1
-            },
-            {
-                "scheduleId": 2,
-                "startDate": "2022-06-06T09:00:00",
-                "endDate": "2022-06-06T12:00:00",
-                "finalized": 1
-            },
-            {
-                "scheduleId": 3,
-                "startDate": "2022-06-07T10:00:00",
-                "endDate": "2022-06-07T12:30:00",
-                "finalized": 1
-            },
-            {
-                "scheduleId": 4,
-                "startDate": "2022-06-06T09:00:00",
-                "endDate": "2022-06-06T12:00:00",
-                "finalized": 0
-            },
-            {
-                "scheduleId": 5,
-                "startDate": "2022-06-06T09:00:00",
-                "endDate": "2022-06-06T12:00:00",
-                "finalized": 0
-            },
-        ];
-
-    //TEMPORTY FILLER CODE FOR DUMMY DATA
-    // const dummySchedules = [
-    //     { scheduleId: 1, startDate: '2022-07-03 00:00:00', endDate: '2022-07-09 23:59:00', finalized: false },
-    //     { scheduleId: 2, startDate: '2022-06-12 00:00:00', endDate: '2022-06-18 23:59:00', finalized: true },
-    //     { scheduleId: 3, startDate: '2022-06-05 00:00:00', endDate: '2022-06-11 23:59:00', finalized: true }
-    // ];
-
-    const [schedules, setSchedules] = useState(dummySchedules);
-
-
-
-    // const [schedules, setSchedules] = useState([]);
+    const [schedules, setSchedules] = useState([]);
 
     const auth = useContext(AuthContext);
 
     const history = useHistory();
 
-    // useEffect(() => {
-    //     fetch('http://localhost:8080/api/schedules')
-    //         .then(response => {
-    //             if (response.status === 200) {
-    //                 return response.json();
-    //             } else {
-    //                 return Promise.reject(`Unexpected status code: ${response.status}`);
-    //             }
-    //         })
-    //         .then(data => setSchedules(data))
-    //         .catch(console.log);
-    // }, []); // An empty dependency array tells to run our side effect once when the component is initially loaded.    
+    //findAll
+    useEffect(() => {
+        const init = {
+            headers: {
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+        };
+        fetch('http://localhost:8080/api/schedules', init)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(data => data.map(schedule => {
+                schedule.startDate = new Date(schedule.startDate);
+                schedule.endDate = new Date(schedule.endDate);
+                return schedule;
+            }))
+            .then(data => setSchedules(data))
+            .catch(console.log);
+    }, [auth.user.token]); // An empty dependency array tells to run our side effect once when the component is initially loaded.    
 
-
+    //delete
     const handleDeleteSchedule = (scheduleId) => {
         const schedule = schedules.find(schedule => schedule.id === scheduleId);
 
-        if (window.confirm(`Delete schedule ${schedule.startDate}-${schedule.endDate}?`)) {
+        if (window.confirm(`Delete schedule ${date.format(schedule.startDate, 'MM/DD/YYYY')}-${date.format(schedule.endDate, 'MM/DD/YYYY')}?`)) {
             const init = {
                 method: 'DELETE',
                 headers: {
@@ -98,30 +64,41 @@ function SchedulesList() {
         }
     };
 
+
+
+
+
+
+
     return (
         <>
-    <section className="panel panel-default">
-      <div className="panel-heading">
-        <h4 className="m-0 p-0">My Schedules</h4>
-      </div>
-
-
-            <div className="parent">
-                <div className="child">
-                    <button className="btn btn-primary my-4 mr-4" onClick={() => history.push('/schedules/add')}>
-                        <i className="bi bi-plus-circle"></i> Add Schedule
-                    </button>
+            <section className="panel panel-default">
+                <div className="panel-heading parent">
+                    <h4 className="m-0 p-0 inline">My Schedules</h4>
+                    <span><i className="glyphicon glyphicon-plus pr-4"></i></span>
                 </div>
+
+
+                <div className="parent title-spacing center">
+                    <div className="child">
+                        <button className="btn btn-primary my-4 mr-4" onClick={() => history.push('/schedules/add')}>
+                            <i className="bi bi-plus-circle"></i> Add Schedule
+                        </button>
+                    </div>
                     <h5 className="mt-4 pt-3 inline">Upcoming Schedules</h5>
-            </div>
+                </div>
 
                 <div className="list-group">
-                <div className="list-subheader">Current Schedules</div>
-                    {schedules.filter(s => s.finalized === 1).map(schedule => (
-                        <Link to={`/schedules/edit/${schedule.id}`} key={schedule.scheduleId} className="list-group-item text-center">
-                            {schedule.startDate} - {schedule.endDate}
+                    <div className="list-subheader">Current Schedules</div>
+                    {schedules.filter(s => s.endDate - new Date() >= 0).map(schedule => (
+                        <Link to={`/schedules/edit/${schedule.id}`} key={schedule.scheduleId}
+                            className={schedule.finalized ? "list-group-item text-center disabled" : "list-group-item text-center"} >
+                            {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')}
 
                             <span className="float-right">
+                                {schedule.finalized && (
+                                    <span>locked</span>
+                                )}
                                 <button type="button" className="remove-btn-icon" onClick={() => handleDeleteSchedule(schedule.id)}>
                                     <i className="glyphicon glyphicon-trash"></i>
                                 </button>
@@ -130,16 +107,21 @@ function SchedulesList() {
                     ))}
 
                     <div className="list-subheader">Past Schedules</div>
-                    {schedules.filter(s => s.finalized === 0).map(schedule => (
-                        <Link to={`/schedules/edit/${schedule.id}`} key={schedule.scheduleId} className="list-group-item text-center disabled">
-                            {schedule.startDate} - {schedule.endDate}
+                    {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
+                        <div className="parent">
+                            <Link to={`/schedules/edit/${schedule.id}`} key={schedule.scheduleId} className="list-group-item text-center disabled">
+                                {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')}
 
-                            <span className="float-right">
-                                <button type="button" className="remove-btn-icon" onClick={() => handleDeleteSchedule(schedule.id)}>
-                                    <i className="glyphicon glyphicon-trash"></i>
-                                </button>
-                            </span>
-                        </Link>
+                                <span className="child vertical-center">
+                                    {schedule.finalized && (
+                                        <i className="	glyphicon glyphicon-lock pr-4"></i>
+                                    )}
+                                    <button type="button" className="remove-btn-icon pr-4" onClick={() => handleDeleteSchedule(schedule.id)}>
+                                        <i className="glyphicon glyphicon-trash"></i>
+                                    </button>
+                                </span>
+                            </Link>
+                        </div>
                     ))}
                 </div>
 

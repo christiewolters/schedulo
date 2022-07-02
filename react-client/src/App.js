@@ -5,20 +5,20 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import jwt_decode from 'jwt-decode';
 import Login from './Components/Login';
 import AuthContext from './AuthContext';
-import Availability from './Pages/Availability';
 import EmployeeHome from './Pages/EmployeeHome';
 import ManagerHome from './Pages/ManagerHome';
 import NotFound from './Pages/NotFound';
 import NoPermission from './Pages/NoPermission';
 import ViewSchedules from './Pages/ViewSchedules';
-function App() {
+import Availability from './Pages/Availability';
+import Shifts from './Pages/Shifts';
+import Navbar from './Components/Navbar';
 
+function App() {
   // "null" means that we don't have a logged in user
   // anything other than null, means we have a logged in user
   const [user, setUser] = useState(null);
-  const [employee, setEmployee] = useState(null);
   const [restoreLoginAttemptCompleted, setRestoreLoginAttemptCompleted] = useState(false);
-
   useEffect(() => {
     const token = localStorage.getItem('schedulerToken');
     if (token) {
@@ -31,7 +31,6 @@ function App() {
       setRestoreLoginAttemptCompleted(true);
     }
   }, []);
-
   const login = (token) => {
     localStorage.setItem('schedulerToken', token);
     const { sub: username, authorities, appUserId } = jwt_decode(token);
@@ -46,9 +45,6 @@ function App() {
         return this.roles.includes(role);
       }
     };
-    console.log(userToLogin);
-    // update the global user state variable
-    setUser(userToLogin);
     const init = {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -63,60 +59,75 @@ function App() {
           return Promise.reject(`Unexpected status code: ${response.status}`);
         }
       })
-      .then(data => setEmployee(data))
+      .then(data => {
+        // Add an employee property to the user object.
+        userToLogin.employee = data;
+        console.log(userToLogin);
+        // update the global user state variable
+        setUser(userToLogin);
+      })
       .catch(console.log);
   };
-
   const logout = () => {
     setUser(null);
     localStorage.removeItem('schedulerToken');
   };
-
   const auth = {
     user,
     login,
-    logout,
-    employee
+    logout
   };
-
   console.log(auth);
-
   if (!restoreLoginAttemptCompleted) {
     return null;
   }
-
-
   return (
-    <div className="container">
+
+    
+    
       <AuthContext.Provider value={auth}>
         <Router>
+          <Navbar />
+        <div className="container">
           <Switch>
+
             <Route path="/" exact>
               {!auth.user ? (<Redirect to="/login" />)
                 : auth.user.hasRole("ROLE_MANAGER") ?
                   (<ManagerHome />) : (<EmployeeHome />)}
             </Route>
+
             <Route path="/login">
               {auth.user ?
                 (<Redirect to="/" />) : (<Login />)}
             </Route>
+
             <Route path="/manager/schedules" exact>
               {!auth.user ? (<Redirect to="/login" />)
                 : auth.user.hasRole("ROLE_MANAGER") ?
                   (<ViewSchedules />) : (<NoPermission />)}
             </Route>
+
             <Route path="/employee/availability">
               {!auth.user ? (<Redirect to="/login" />)
                 : auth.user.hasRole("ROLE_EMPLOYEE") ?
                   (<Availability />) : (<NoPermission />)}
             </Route>
+
+            <Route path="/shifts" exact>
+              {!auth.user ? (<Redirect to="/login" />)
+                : <Shifts />}
+            </Route>
+
             <Route>
               <NotFound />
             </Route>
+
           </Switch>
+          </div>
         </Router>
       </AuthContext.Provider>
-    </div>
+    
   );
 }
 export default App;

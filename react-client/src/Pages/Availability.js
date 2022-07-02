@@ -5,7 +5,9 @@ function Availability() {
 
     return (
       <>
-      <Navbar />
+      <h3 className="text-center">Availability</h3>
+      <h5 className="text-center">Tell your boss when you are available to work.</h5> 
+      <h6 className="text-center">You won't be scheduled if you don't!</h6>
       <AvailabilityList />
       </>
     );

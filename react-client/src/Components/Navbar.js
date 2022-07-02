@@ -1,10 +1,20 @@
-import { NavLink, Link } from 'react-router-dom';
-import React, { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../AuthContext';
 
 function Navbar() {
     const auth = useContext(AuthContext);
     console.log(auth);
+
+    if (!auth || auth.user === null) {
+        return null;
+      }
+      const location = useLocation();
+      const [url, setUrl] = useState(null);
+
+      useEffect(() => {
+        setUrl(location.pathname);
+      }, [location]);
 
     return (
         <>
@@ -17,23 +27,23 @@ function Navbar() {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="#">Shift Scheduler</a>
+                        <span><Link to="/" className="navbar-brand">Shift Scheduler</Link></span>
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
 
 
                         <ul className="nav navbar-nav">
 
-                            <li className={(window.location.pathname == "/" ? "active" : "")} ><NavLink to="/" activeClassName="active">My Shifts</NavLink></li>
+                            <li className={(url === "/shifts" ? "active" : "")} ><Link to="/shifts">My Shifts</Link></li>
 
                             {auth.user.hasRole("ROLE_EMPLOYEE") && (
                                 <>
-                                    <li className={(window.location.pathname == "/employee/availability" ? "active" : "")}><Link to="/employee/availability">My Availability</Link></li>
+                                    <li className={(url === "/employee/availability" ? "active" : "")}><Link to="/employee/availability">My Availability</Link></li>
                                 </>
                             )}
 
                             {auth.user.hasRole("ROLE_MANAGER") && (
-                                <li  className={(window.location.pathname == "/manager/schedules" ? "active" : "")}><Link to="/manager/schedules">Schedules</Link></li>
+                                <li  className={(url === "/manager/schedules" ? "active" : "")}><Link to="/manager/schedules">Schedules</Link></li>
                             )}
 
                         </ul>
@@ -42,7 +52,7 @@ function Navbar() {
 
                         {auth.user && (
                             <p className="navbar-text navbar-right">
-                                Signed in as {auth.employee.firstName} {auth.employee.lastName}.
+                                Signed in as {auth.user.employee.firstName} {auth.user.employee.lastName}.
                                 <a className="navbar-link" href="" onClick={() => auth.logout()}> Sign out.</a>
                             </p>
                         )}

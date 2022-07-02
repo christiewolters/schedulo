@@ -7,10 +7,14 @@ body {
 }
 
 /* LOGIN PAGE */
-label {
+.form-label {
     color: rgb(155, 151, 151);
     font-size: 1.4rem;
     font-weight: 300;
+}
+
+.no-bullets {
+    list-style-type: none;
 }
 
 .login-panel {
@@ -30,10 +34,6 @@ label {
 
 /* END LOGIN PAGE */
 
-.red {
-    color: red;
-    background-color: red;
-}
 
 /* VIEW SCHEDULES PAGE */
 .list-group>li {
@@ -44,10 +44,16 @@ label {
     float: right;
 }
 
+.title-spacing {
+    height: 64px;
+}
+
+.center {
+    text-align: center;
+}
+
 .parent {
     position: relative;
-    text-align: center;
-    height: 64px;
 }
 
 .child {
@@ -56,6 +62,27 @@ label {
     top: 0;
     right: 0;
 }
+
+.round-btn {
+    /* height: 80px;
+    line-height: 80px;  
+    width: 80px;  
+    font-size: 2em;
+    font-weight: bold; */
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
 
 .list-subheader {
     background-color: #AAB2BD;

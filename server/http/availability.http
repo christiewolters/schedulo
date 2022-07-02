@@ -1,5 +1,5 @@
 @url = http://localhost:8080/api/availabilities
-@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3MTkxMTd9.SfobP0Mo73_B3EKwifTf6AT8Lrxlu29Bf3RTAd2q--g
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3NDQ4OTZ9._M8tlBlgrbPRfz0hcZEeCLzywdVe8OIrQZK59Gt1kkc
 
 ###
 
@@ -39,6 +39,17 @@ Authorization: Bearer {{token}}
 
 ###
 
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startTime": "2020-02-02T09:00:00",
+    "endTime": "2020-02-02T18:00:00",
+    "employeeId": 1
+}
+
+###
 POST {{url}} HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}

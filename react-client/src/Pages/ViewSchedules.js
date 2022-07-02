@@ -4,7 +4,7 @@ import SchedulesList from "../Components/SchedulesList";
 function ViewSchedules() {
     return (
         <>
-            <Navbar />
+            <h3 className="text-center">Schedules</h3>
             <SchedulesList />
         </>
     );

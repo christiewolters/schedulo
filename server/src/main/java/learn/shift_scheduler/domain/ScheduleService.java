@@ -5,6 +5,8 @@ import learn.shift_scheduler.models.Schedule;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -84,6 +86,13 @@ public class ScheduleService {
 
         if (schedule.getEndDate().isBefore(schedule.getStartDate()) || schedule.getEndDate().isEqual(schedule.getStartDate())) {
             result.addMessage("Schedule end date must be after start date", ResultType.INVALID);
+        }
+        if (schedule.getStartDate().isBefore(LocalDate.now())){
+            result.addMessage("Schedule can not start in the past", ResultType.INVALID);
+        }
+
+        if (schedule.getEndDate().getDayOfYear() - schedule.getStartDate().getDayOfYear() != 6){
+            result.addMessage("Schedule must be 7 days long", ResultType.INVALID);
         }
 
         if (result.isSuccess()){

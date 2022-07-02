@@ -86,6 +86,13 @@ public class ShiftJdbcTemplateRepository implements ShiftRepository{
     }
 
     @Override
+    public List<Shift> findByScheduleEmployeeId(int schedule_id, int employee_id) throws DataAccessException{
+        final String sql = "select shift_id, employee_id, start_time, end_time, schedule_id, earned from shift where schedule_id = ? and employee_id = ?;";
+
+        return jdbcTemplate.query(sql, mapper, schedule_id, employee_id);
+    }
+
+    @Override
     public Shift create(Shift shift) throws DataAccessException{
         final String sql = "insert into shift (employee_id, start_time, end_time, schedule_id, earned) " +
                 "values (?,?,?,?,?);";

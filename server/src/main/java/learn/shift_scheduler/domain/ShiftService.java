@@ -39,6 +39,10 @@ public class ShiftService {
     public List<Shift> findByScheduleId(int schedule_id) throws DataAccessException{
         return repository.findByScheduleId(schedule_id);
     }
+    //find shifts with schedule id and user id
+    public List<Shift> findByScheduleEmployeeId(int schedule_id, int employee_id) {
+        return repository.findByScheduleEmployeeId(schedule_id, employee_id);
+    }
 
     public Result<Shift> create(Shift shift) throws DataAccessException{
         Result<Shift> result = validate(shift);
@@ -129,4 +133,6 @@ public class ShiftService {
 
         return result;
     }
+
+
 }

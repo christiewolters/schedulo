@@ -39,7 +39,7 @@ function EmployeeShiftList() {
   return (
     <section className="panel panel-default">
       <div className="panel-heading">
-        <h4 className="m-0 p-0">My Shifts</h4>
+        <h4 className="m-0 p-0">Upcoming Shifts</h4>
       </div>
       <table className="table table-hover table-sm">
         <thead>

@@ -69,6 +69,18 @@ public class ShiftController {
         return new ResponseEntity<>(shifts, HttpStatus.OK);
     }
 
+
+    //get all employee's shifts in a schedule
+    @GetMapping("/schedule/{schedule_id}/{employee_id}")
+    public ResponseEntity<List<Shift>> findByScheduleEmployeeId(@PathVariable("schedule_id") int schedule_id, @PathVariable("employee_id") int employee_id) throws DataAccessException {
+        List<Shift> shifts = service.findByScheduleEmployeeId(schedule_id, employee_id);
+        if (shifts.size() == 0){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(shifts, HttpStatus.OK);
+    }
+
+
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Shift shift) throws DataAccessException{
         Result<Shift> result = service.create(shift);

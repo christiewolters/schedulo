@@ -7,10 +7,14 @@ body {
 }
 
 /* LOGIN PAGE */
-label {
+.form-label {
     color: rgb(155, 151, 151);
     font-size: 1.4rem;
     font-weight: 300;
+}
+
+.no-bullets {
+    list-style-type: none;
 }
 
 .login-panel {
@@ -31,7 +35,6 @@ label {
 /* END LOGIN PAGE */
 
 
-
 /* VIEW SCHEDULES PAGE */
 .list-group>li {
     list-style-type: none;
@@ -41,10 +44,16 @@ label {
     float: right;
 }
 
+.title-spacing {
+    height: 64px;
+}
+
+.center {
+    text-align: center;
+}
+
 .parent {
     position: relative;
-    text-align: center;
-    height: 64px;
 }
 
 .child {
@@ -54,12 +63,33 @@ label {
     right: 0;
 }
 
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
 .list-subheader {
     background-color: #AAB2BD;
     text-align: center;
     padding-top: 4px;
     padding-bottom: 4px;
     color: #F5F7FA;
+}
+
+.cursor-auto {
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.fake-disabled {
+    opacity: 0.7;
+    border-color: #AAB2BD;
+    background-color: #E6E9ED;
+    border-color: transparent;
+
 }
 
 /* END VIEW SCHEDULES PAGE */

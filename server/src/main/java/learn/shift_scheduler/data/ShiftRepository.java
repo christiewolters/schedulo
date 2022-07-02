@@ -23,6 +23,9 @@ public interface ShiftRepository {
     //Get all shifts by schedule_id
     List<Shift> findByScheduleId(int id);
 
+    //get shifts with both this employeeid and scheduleid
+    List<Shift> findByScheduleEmployeeId(int schedule_id, int employee_id);
+
     //Add shift to database
     Shift create(Shift shift) throws DataAccessException;
 
@@ -30,5 +33,6 @@ public interface ShiftRepository {
 
     @Transactional
     boolean deleteById(int id);
+
 
 }

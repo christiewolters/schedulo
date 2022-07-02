@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/employees",
                         "/api/schedules/*",
                         "/api/schedules",
-                        "/api/availabilities/**").hasAnyRole("MANAGER")
+                        "/api/availabilities/**",
+                        "/api/shifts/schedule/**").hasAnyRole("MANAGER")
                 .antMatchers(HttpMethod.GET,
                         "/api/availabilities/**").hasAnyRole("EMPLOYEE")
                 .antMatchers(HttpMethod.GET,
@@ -53,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/schedules/*",
                         "/api/shifts/*",
                         "/api/employees/*").hasAnyRole("MANAGER")
-                .antMatchers("/**").denyAll()
+                .antMatchers("/**").permitAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
                 .sessionManagement()

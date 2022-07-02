@@ -12,6 +12,8 @@ function EditSchedule() {
     //Extract scheduleId from browser path
     const { scheduleId } = useParams();
     console.log("scheduleId : " + scheduleId);
+
+
     //FIRST, get scheduling dates using id in the browser path
     useEffect(() => {
         //Make sure we have an id value
@@ -58,6 +60,7 @@ function EditSchedule() {
 
     console.log("employees : " + employees);
 
+    //Converts dates in schedule to a list of each weekday/date
     const dateList = (schedule) => {
         let dateArray = [];
         let thisDay = new Date(schedule.startDate);
@@ -72,6 +75,31 @@ function EditSchedule() {
         return dateArray;
     };
 
+
+        //THIRD, get employee shifts
+        const getEmployeeShifts = (employee) => {
+            const init = {
+                headers: {
+                    'Authorization': `Bearer ${auth.user.token}`
+                },
+            };
+
+            fetch(`http://localhost:8080/api/shifts/schedule/${scheduleId}/${employee.employeeId}`, init)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(data => {
+                if(!data){return null;}
+            })
+            .catch(console.log);
+        }
+    
+        
+    
 
     return (
         <>
@@ -93,13 +121,13 @@ function EditSchedule() {
                     employees.map( employee => (
                         <tr key={employee.employeeId}>
                             <td>{employee.firstName} {employee.lastName}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+
+                            {getEmployeeShifts(employee).map( shift => (
+                                <td>{shift.startTime}</td>
+                            )
+                            )}
+
+                            
                         </tr>
                     ))}
                 </tbody>

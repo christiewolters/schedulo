@@ -68,7 +68,7 @@ public class ShiftController {
 
 
     //get all employee's shifts in a schedule
-    @GetMapping("/schedule/{schedule_id}/employee/{employee_id}")
+    @GetMapping("/schedule/{schedule_id}/{employee_id}")
     public ResponseEntity<List<Shift>> findByScheduleEmployeeId(@PathVariable("schedule_id") int schedule_id, @PathVariable("employee_id") int employee_id) throws DataAccessException {
         List<Shift> shifts = service.findByScheduleEmployeeId(schedule_id, employee_id);
         if (shifts.size() == 0){

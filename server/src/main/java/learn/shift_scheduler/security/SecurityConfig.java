@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/schedules/*",
                         "/api/shifts/*",
                         "/api/employees/*").hasAnyRole("MANAGER")
-                .antMatchers("/**").permitAll()
+                .antMatchers("/**").denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
                 .sessionManagement()

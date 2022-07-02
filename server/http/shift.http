@@ -1,6 +1,6 @@
 @url = http://localhost:8080/api/shifts
-@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImFwcFVzZXJJZCI6MSwiZXhwIjoxNjU2NzczNDc1fQ.ImFIz305EJ8wLHTSbtO8AKmHnpJcSzAbtgjmEHubmQA
-@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3MTg0MDJ9.NG7SRAjwY4DSBpdDsxBlE5cRzl3z6emc0NuWRUoFfMI
+@managerToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImFwcFVzZXJJZCI6MSwiZXhwIjoxNjU2Nzc1NTAwfQ.o45g6mmgu4qM99ogamllPaSeFaMalfbXmMoHUxiOffU
+@employeeToken = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoic2FsbHlAam9uZXMuY29tIiwiYXV0aG9yaXRpZXMiOiJST0xFX0VNUExPWUVFIiwiYXBwVXNlcklkIjoyLCJleHAiOjE2NTY3NzQ2MjZ9.KScjbO7X7VGXqAsu3i1drSZXad3ebIrry0VVj4djSmM
 
 
 
@@ -31,7 +31,7 @@ Authorization: Bearer {{managerToken}}
 
 ###
 
-GET {{url}}/schedule/1/employee/1 HTTP/1.1
+GET {{url}}/schedule/1/1 HTTP/1.1
 Authorization: Bearer {{managerToken}}
 
 ###

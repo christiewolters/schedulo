@@ -158,9 +158,9 @@ function SchedulesList() {
                 <div className="list-group">
                     <div className="list-subheader">Current Schedules</div>
                     {schedules.filter(s => s.endDate - new Date() >= 0).map(schedule => (
-                        <div className="parent" key={schedule.scheduleId}>
+                        <div className="parent list-group-item" key={schedule.scheduleId}>
                         <Link to={`/schedules/edit/${schedule.scheduleId}`} 
-                            className={schedule.finalized ? "list-group-item text-center disabled" : "list-group-item text-center"} >
+                            className={schedule.finalized ? "list-group-item text-center fake-disabled" : "list-group-item text-center"} >
                             {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')}
                             </Link>
                             <span className="child vertical-center">
@@ -177,8 +177,8 @@ function SchedulesList() {
 
                     <div className="list-subheader">Past Schedules</div>
                     {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
-                        <div className="parent" key={schedule.scheduleId}>
-                            <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center disabled">
+                        <div className="parent list-group-item" key={schedule.scheduleId}>
+                            <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center fake-disabled">
                                 {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')}
                                 </Link>
                                 <span className="child vertical-center">

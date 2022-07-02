@@ -79,6 +79,19 @@ body {
     color: #F5F7FA;
 }
 
+.cursor-auto {
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.fake-disabled {
+    opacity: 0.7;
+    border-color: #AAB2BD;
+    background-color: #E6E9ED;
+    border-color: transparent;
+
+}
+
 /* END VIEW SCHEDULES PAGE */
 
 

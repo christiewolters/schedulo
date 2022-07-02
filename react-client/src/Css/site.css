@@ -63,19 +63,6 @@ body {
     right: 0;
 }
 
-.round-btn {
-    /* height: 80px;
-    line-height: 80px;  
-    width: 80px;  
-    font-size: 2em;
-    font-weight: bold; */
-    border-radius: 50%;
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    cursor: pointer;
-}
-
 .vertical-center {
     margin: 0;
     position: absolute;

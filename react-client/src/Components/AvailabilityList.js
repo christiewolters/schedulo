@@ -123,7 +123,7 @@ function AvailabilityList() {
 
   return (
     <>
-      <button data-dismiss={errors.length === 0 ? "modal" : ""} className="btn btn-primary my-4" data-toggle="modal" data-target="#addModal">
+      <button data-dismiss="modal" className="btn btn-primary my-4" data-toggle="modal" data-target="#addModal">
         Add Availability
       </button>
 

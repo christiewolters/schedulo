@@ -61,8 +61,11 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
 
     @Override
     public Employee create(Employee employee) throws DataAccessException{
-        final String sql = "insert into employee (employee_id, first_name, last_name, wage) " +
-                "values (?,?,?,?);";
+        final String sql = "insert into employee (employee_id, first_name, last_name, app_user_id, wage) " +
+                "values (?,?,?,?,?);";
+
+        Integer maxAppUserId = jdbcTemplate.queryForObject("select max(app_user_id) from app_user;", Integer.class);
+        employee.setAppUserId(maxAppUserId);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -70,7 +73,8 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
             statement.setInt(1, employee.getEmployeeId());
             statement.setString(2,    employee.getFirstName());
             statement.setString(3,    employee.getLastName());
-            statement.setDouble(4, employee.getWage());
+            statement.setInt(4, employee.getAppUserId());
+            statement.setDouble(5, employee.getWage());
             return statement;
         }, keyHolder);
         if (rowsAffected == 0) {
@@ -78,8 +82,7 @@ public class EmployeeJdbcTemplateRepository implements EmployeeRepository{
         }
         employee.setEmployeeId(keyHolder.getKey().intValue());
 
-        Integer maxAppUserId = jdbcTemplate.queryForObject("select max(app_user_id) from app_user;", Integer.class);
-        employee.setAppUserId(maxAppUserId + 1);
+
         return employee;
     }
 

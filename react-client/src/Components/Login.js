@@ -92,7 +92,7 @@ function Login() {
 
               <div className="row pt-4 text-center">
                 <button type="submit" className="btn btn-primary btn-block">Login</button>
-                <small>Need an account? <Link to="/register">Sign up</Link></small>
+                {/* <small>Need an account? <Link to="/register">Sign up</Link></small> */}
               </div>
 
           </form>

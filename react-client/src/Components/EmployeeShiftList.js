@@ -14,7 +14,7 @@ function EmployeeShiftList() {
         'Authorization' : `Bearer ${auth.user.token}`
       },
     };
-    fetch(`http://localhost:8080/api/shifts/user/${auth.user.username}`, init)
+    fetch('http://localhost:8080/api/shifts/user', init)
       .then(response => {
         if (response.status === 200) {
           return response.json();

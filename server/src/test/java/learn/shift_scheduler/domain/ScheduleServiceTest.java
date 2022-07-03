@@ -79,10 +79,19 @@ class ScheduleServiceTest {
         schedule.setFinalized(false);
 
         Result<Schedule> result = service.create(schedule);
-
+        assertFalse(result.isSuccess());
     }
 
-    // continue with nulls
+    @Test
+    void shouldNotCreateWithNullEndDate(){
+        Schedule schedule = new Schedule();
+        schedule.setStartDate(LocalDate.parse("2022-08-01"));
+        schedule.setEndDate(null);
+        schedule.setFinalized(false);
+
+        Result<Schedule> result = service.create(schedule);
+        assertFalse(result.isSuccess());
+    }
 
     @Test
     void update() {

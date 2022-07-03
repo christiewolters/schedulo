@@ -77,10 +77,12 @@ public class ScheduleService {
 
         if (schedule.getStartDate() == null) {
             result.addMessage("Schedule Start Date is required", ResultType.INVALID);
+            return result;
         }
 
         if (schedule.getEndDate() == null) {
             result.addMessage("Schedule End Date is required", ResultType.INVALID);
+            return result;
         }
 
         if (schedule.getEndDate().isBefore(schedule.getStartDate()) || schedule.getEndDate().isEqual(schedule.getStartDate())) {

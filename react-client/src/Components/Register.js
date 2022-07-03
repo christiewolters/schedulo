@@ -92,6 +92,7 @@ function Register(){
                     setErrors(data);
                 }
                 else {
+                    alert("Creation Successful");
                     history.push('/');
                 };
             })

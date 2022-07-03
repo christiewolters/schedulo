@@ -20,7 +20,7 @@ function EditSchedule() {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
 
-    async function functionName() {
+    async function loadPage() {
         await getSchedule();
         console.log("schedule : " + JSON.stringify(schedule));
         await getShifts();
@@ -32,7 +32,7 @@ function EditSchedule() {
         console.log("Done");
         loadTable();
     }
-    functionName().then(console.log("Actually done."));
+    loadPage().then(console.log("Actually done."));
 
 
 
@@ -242,6 +242,58 @@ function EditSchedule() {
     }, [startTime, endTime])
 
 
+
+//add
+  const handleAdd = (event) => {
+    event.preventDefault();
+
+    const form = document.getElementById('addForm');
+    const formData = new FormData(form);
+
+    const shift = {
+        employeeId: formData.get('employeeIdForm'),
+      startTime: formData.get('startTime'),
+      endTime: formData.get('endTime'),
+      scheduleId : scheduleId,
+      earned : "a"
+    }
+    console.log(JSON.stringify(shift));
+
+    const init = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth.user.token}`
+      },
+      body: JSON.stringify(shift)
+    };
+
+    fetch('http://localhost:8080/api/shifts', init)
+      .then(response => {
+        if (response.status === 201 || response.status === 400) {
+          return response.json();
+        } else {
+            setErrors(["All fields are required."]);
+          return Promise.reject(`Unexpected status code: ${response.status}`);
+        }
+      })
+      .then(data => {
+        if (data.shiftId) {
+          console.log(JSON.stringify(data));
+          //TODO: display success message
+          //TODO: RELOAD DATA ON PAGE (should automatically happen if availabilities changes)
+          shifts.push(data);
+
+        } else {
+          //unhappy path
+          console.log("after add" + data);
+          setErrors(data);
+          console.log("errors: " + errors);
+        }
+      })
+      .catch(console.log);
+  };
+
     return (
         <>
             <h3 className="text-center">Edit Schedule</h3>
@@ -262,10 +314,10 @@ function EditSchedule() {
                     <label htmlFor="endTime">Finishing:</label>
                     <input type="datetime-local" className="form-control inline" id="endTime" name="endTime" onChange={(event) => setEndTime(event.target.value)} required></input>
                     <label htmlFor="employeeIdForm">Employee:</label>
-                    <select className="" id="employeeIdForm" name="employeeIdForm" onChange={(event) => setEndTime(event.target.value)} required></select>
+                    <select id="employeeIdForm" name="employeeIdForm" required></select>
 
 
-                    <button className="blue largebutton" onClick="">Add Shift</button>
+                    <button className="blue largebutton" onClick={handleAdd}>Add Shift</button>
                 </fieldset>
             </form>
 

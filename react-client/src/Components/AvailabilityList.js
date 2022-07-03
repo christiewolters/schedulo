@@ -25,7 +25,7 @@ function AvailabilityList() {
         'Authorization': `Bearer ${auth.user.token}`
       },
     };
-    fetch(`http://localhost:8080/api/availabilities/employee/${auth.user.employee.employeeId}`, init)
+    fetch(`http://localhost:8080/api/availabilities/user`, init)
       .then(response => {
         if (response.status === 200) {
           return response.json();

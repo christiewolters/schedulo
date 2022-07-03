@@ -28,7 +28,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> findById(@PathVariable int id, UsernamePasswordAuthenticationToken principal){
+    public ResponseEntity<Employee> findById(@PathVariable int id){
         Employee employee = service.findById(id);
         if (employee == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -43,15 +43,6 @@ public class EmployeeController {
 
 
         Employee employee = service.findById(appUser.getAppUserId());
-        if (employee == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(employee, HttpStatus.OK);
-    }
-
-    @GetMapping("/user/{username}")
-    public ResponseEntity<Employee> findByUsername(@PathVariable String username){
-        Employee employee = service.findByUsername(username);
         if (employee == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

@@ -10,7 +10,7 @@ public interface EmployeeRepository {
 
     Employee findById(int id) throws DataAccessException;
 
-    Employee findByUsername(String username) throws DataAccessException;
+
 
     Employee create(Employee employee) throws DataAccessException;
 

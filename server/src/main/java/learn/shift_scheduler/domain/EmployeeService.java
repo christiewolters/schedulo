@@ -26,9 +26,6 @@ public class EmployeeService {
         return repository.findById(id);
     }
 
-    public Employee findByUsername(String username) throws DataAccessException{
-        return repository.findByUsername(username);
-    }
 
     public Result<Employee> create(Employee employee) throws DataAccessException{
         Result<Employee> result = validate(employee);

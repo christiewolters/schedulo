@@ -45,17 +45,7 @@ public class ShiftJdbcTemplateRepositoryTest {
     @Test
     void shouldFindById() {
         Shift result = repository.findById(1);
-
         assertNotNull(result);
-        Shift shift = new Shift();
-
-        shift.setShiftId(1);
-        shift.setScheduleId(1);
-        shift.setEmployeeId(1);
-        shift.setStartTime(LocalDateTime.parse(("2022-06-05 08:00:00"), formatter));
-        shift.setEndTime(LocalDateTime.parse(("2022-06-05 12:00:00"), formatter));
-
-        assertEquals(shift, result);
     }
 
     @Test

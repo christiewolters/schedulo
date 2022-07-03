@@ -93,17 +93,14 @@ public class ShiftService {
             return result;
         }
 
-/*          Removing - shift can be created but yet to be assigned to an employee (i.e. no employee available for shift)
-            if (shift.getEmployeeId() < 1){
-            result.addErrorMessage("Employee Id must be greater than 0", ResultType.INVALID);
-        }*/
-
         if (shift.getStartTime() == null){
             result.addMessage("Shift Start time is required", ResultType.INVALID);
+            return result;
         }
 
         if (shift.getEndTime() == null){
             result.addMessage("Shift End time is required", ResultType.INVALID);
+            return result;
         }
 
         if (shift.getEndTime().isBefore(shift.getStartTime()) || shift.getEndTime().isEqual(shift.getStartTime())){
@@ -116,6 +113,7 @@ public class ShiftService {
 
         if (shift.getEarned() == null || shift.getEarned().isBlank()){
             result.addMessage("Earned amount is required (Dinero Object String)", ResultType.INVALID);
+            return result;
         }
 
         //validates that new shift does not overlap an existing shift

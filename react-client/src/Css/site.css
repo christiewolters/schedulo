@@ -100,6 +100,10 @@ body {
     color: #DA4453;
 }
 
+.hide {
+    display: none;
+}
+
 
 /* Trash Button */
 .remove-btn-icon {

@@ -19,8 +19,6 @@ function EditSchedule() {
     //Add form
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
-    const [availableEmployees, setAvailableEmployees] = useState([]);
-
 
     async function functionName() {
         await getSchedule();
@@ -55,8 +53,8 @@ function EditSchedule() {
                         return Promise.reject(`Unexpected status code: ${response.status}`);
                     }
                 })
-                .then(data => { schedule = data })
-                .then(data => { makeDateList(data) })
+                .then(data => { schedule = data; return data; })
+                .then(data => { makeDateList(data); return data; })
                 .catch(console.log);
         }
     };
@@ -127,7 +125,7 @@ function EditSchedule() {
                     return Promise.reject(`Unexpected status code: ${response.status}`);
                 }
             })
-            .then(data => employees = data)
+            .then(data => { employees = data })
             .catch(console.log);
     };
 
@@ -180,19 +178,68 @@ function EditSchedule() {
 
     //Select Employee options on add
     useEffect(() => {
+        console.log("entered employee selector. StartTime : " + startTime + " EndTime : " + endTime);
         const selectList = document.getElementById('employeeIdForm');
-        let html = "";
-        let whoAvail = availabilities.filter(a => 
-            (new Date(a.startTime) <= new Date(startTime)) && (new Date(a.endTime) <= new Date(endTime))
-        );
-        for (const employee of employees) {
-            html +=`<option value='${employee.employee.id} '`;
-            if( whoAvail.map(a => a.employeeId).includes(employee.employeeId) ){
-                html += `className="grayed-out" `;
-            }
-            html += `>${employee.firstName} ${employee.lastName}</option>`;
-        }
-    },[startTime, endTime])
+        let html = `<option value="" disabled selected>Select an employee</option>`;
+        let selectEmployees = [];
+        let selectAvailabilities = [];
+
+
+        const init = {
+            headers: {
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+        };
+        fetch(`http://localhost:8080/api/employees`, init)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(employeedata => {
+                selectEmployees = employeedata;
+
+                fetch(`http://localhost:8080/api/availabilities`, init)
+                    .then(response => {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            return Promise.reject(`Unexpected status code: ${response.status}`);
+                        }
+                    })
+                    .then(availdata => {
+                        selectAvailabilities = availdata;
+                        console.log("select ranges: " + startTime + " - " + endTime);
+                        let whoAvail = selectAvailabilities.filter(a =>((new Date(a.startTime) <= new Date(startTime)) && (new Date(endTime) <= new Date(a.endTime))));
+                        console.log("whoAvail" + JSON.stringify(whoAvail));
+                        let availHtml = "";
+                        let unavailHtml = "";
+                        for (const employee of selectEmployees) {
+                            
+                            if (whoAvail.map(a => a.employeeId).includes(employee.employeeId)) {
+                                availHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
+                            }
+                            else {
+                                unavailHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
+                            }
+
+                        }
+                        if(availHtml){
+                            html += '<optgroup label="available">' + availHtml + '</optgroup>';
+                        }
+
+                        if(unavailHtml){
+                            html += '<optgroup label="unavailable">' + unavailHtml + '</optgroup>';
+                        }
+
+                        selectList.innerHTML = html;
+                    })
+                    .catch(console.log);
+            })
+            .catch(console.log);
+    }, [startTime, endTime])
 
 
     return (
@@ -211,17 +258,14 @@ function EditSchedule() {
             <form id="addForm">
                 <fieldset><legend>Add Shift</legend>
                     <label htmlFor="startTime">Starting:</label>
-                    <input type="datetime-local" className="form-control inline" id="startTime" name="startTime" onChange={(event) => setStartTime(event.target.value)}></input>
+                    <input type="datetime-local" className="form-control inline" id="startTime" name="startTime" onChange={(event) => setStartTime(event.target.value)} required></input>
                     <label htmlFor="endTime">Finishing:</label>
-                    <input type="datetime-local" className="form-control inline" id="startTime" name="startTime" onChange={(event) => setEndTime(event.target.value)}></input>
+                    <input type="datetime-local" className="form-control inline" id="endTime" name="endTime" onChange={(event) => setEndTime(event.target.value)} required></input>
                     <label htmlFor="employeeIdForm">Employee:</label>
-                    <select id="employeeIdForm" name="employeeIdForm" value="employee">
-                    </select>
+                    <select className="" id="employeeIdForm" name="employeeIdForm" onChange={(event) => setEndTime(event.target.value)} required></select>
 
 
-
-
-                    <button className="blue largebutton" onClick="">Register</button>
+                    <button className="blue largebutton" onClick="">Add Shift</button>
                 </fieldset>
             </form>
 

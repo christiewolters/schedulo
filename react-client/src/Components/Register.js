@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import AuthContext from '../AuthContext';
 import DisplayErrors from './DisplayErrors';
 import {Link, useHistory } from 'react-router-dom';
-import { data } from 'jquery';
+
 function Register(){
     const auth = useContext(AuthContext);
     const [username, setUsername] = useState('');

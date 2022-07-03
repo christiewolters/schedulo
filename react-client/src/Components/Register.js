@@ -115,7 +115,7 @@ function Register(){
 
     return <>
     <h2>Register an Employee</h2>
-    {errors.size === 0 ? <DisplayErrors errors={errors}/> : null}
+    {errors.size === 0 ? null : <DisplayErrors errors={errors}/>}
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="role">Role: </label>

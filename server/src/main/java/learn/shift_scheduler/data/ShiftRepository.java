@@ -17,6 +17,8 @@ public interface ShiftRepository {
     //Get all shifts by employee_id
     List<Shift> findByEmployeeId(int id);
 
+    List<Shift> findAllByEmployeeId(int employeeId) throws DataAccessException;
+
     //Get all shifts by username
     List<Shift> findByUsername(String username);
 

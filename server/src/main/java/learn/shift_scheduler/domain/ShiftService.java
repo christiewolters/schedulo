@@ -4,6 +4,8 @@ import learn.shift_scheduler.data.ShiftRepository;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,7 +21,6 @@ public class ShiftService {
     public List<Shift> findAll() throws DataAccessException{
         return repository.findAll();
     }
-
     //find single shift by shift_id
     public Shift findById(int id) throws DataAccessException{
         return repository.findById(id);
@@ -28,6 +29,10 @@ public class ShiftService {
     //find all shifts with employee_id
     public List<Shift> findByEmployeeId(int employee_id) throws DataAccessException{
         return repository.findByEmployeeId(employee_id);
+    }
+
+    public List<Shift> findAllByEmployeeId(int employee_id) {
+        return repository.findAllByEmployeeId(employee_id);
     }
 
     //find all shifts with username
@@ -111,6 +116,10 @@ public class ShiftService {
             result.addMessage("Shift must be assigned to a schedule", ResultType.INVALID);
         }
 
+        if (shift.getStartTime().isBefore(LocalDateTime.now())){
+            result.addMessage("Shift can not start in the past", ResultType.INVALID);
+        }
+
         if (shift.getEarned() == null || shift.getEarned().isBlank()){
             result.addMessage("Earned amount is required (Dinero Object String)", ResultType.INVALID);
             return result;
@@ -118,19 +127,25 @@ public class ShiftService {
 
         //validates that new shift does not overlap an existing shift
         if (result.isSuccess() && shift.getEmployeeId() != 0){
-            List<Shift> existingShifts = repository.findByEmployeeId(shift.getEmployeeId());
+            List<Shift> existingShifts = repository.findAllByEmployeeId(shift.getEmployeeId());
              for (Shift existingShift : existingShifts){
                  //date range overlaps
-                if( !shift.getStartTime().isAfter(existingShift.getEndTime() ) &&
-                        !shift.getEndTime().isBefore(existingShift.getStartTime())  ){
+                if( (existingShift.getStartTime().isBefore(shift.getEndTime() ) ||
+                        existingShift.getStartTime().isEqual(shift.getEndTime()))
+                        &&
+                        (existingShift.getEndTime().isAfter(shift.getStartTime()) ||
+                                existingShift.getEndTime().isEqual(shift.getStartTime()))  ){
                     result.addMessage("Employee is already assigned to a shift at that time.", ResultType.INVALID);
+                    return result;
                 }
+
              }
 
         }
 
         return result;
     }
+
 
 
 }

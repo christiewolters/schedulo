@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,15 @@ public class ShiftController {
     @GetMapping("/employee/{employee_id}")
     public ResponseEntity<List<Shift>> findByEmployeeId(@PathVariable int employee_id) throws DataAccessException {
         List<Shift> shifts = service.findByEmployeeId(employee_id);
+        if (shifts.size() == 0){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(shifts, HttpStatus.OK);
+    }
+
+    @GetMapping("/employee/all/{employee_id}")
+    public ResponseEntity<List<Shift>> findAllByEmployeeId(@PathVariable int employee_id) throws DataAccessException{
+        List<Shift> shifts = service.findAllByEmployeeId(employee_id);
         if (shifts.size() == 0){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

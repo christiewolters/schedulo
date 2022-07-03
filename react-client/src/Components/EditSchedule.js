@@ -6,17 +6,52 @@ import AuthContext from '../AuthContext';
 function EditSchedule() {
     const auth = useContext(AuthContext);
 
-    const [employees, setEmployees] = useState([]);
-    const [schedule, setSchedule] = useState(null);
-    const [shifts, setShifts] = useState([]);
-
     //Extract scheduleId from browser path
     const { scheduleId } = useParams();
-    console.log("scheduleId : " + scheduleId);
+
+    let schedule = null;
+    let employees = [];
+    let shifts = [];
+    let dateList = [];
+
+
+
+    async function functionName() {
+        await getSchedule();
+        console.log("schedule : " + JSON.stringify(schedule));
+        await getShifts();
+        console.log("shifts : " + JSON.stringify(shifts));
+        await getEmployees();
+        console.log("employees : " + employees);
+        console.log("Done");
+        loadTable();
+    }
+
+    functionName().then(console.log("Actually done."));
+
+    // useEffect(() => {
+    //     getSchedule()
+    //         .then(console.log("schedule : " + JSON.stringify(schedule)))
+    //         .then(makeDateList())
+    //         .then(console.log("dateList: " + JSON.stringify(dateList)))
+    //         .then(getShifts())
+    //         .then(console.log("shifts : " + JSON.stringify(shifts)))
+    //         .then(getEmployees())
+    //         .then(console.log("employees : " + employees))
+    //         .then(loadTable())
+    //         .catch(
+    //             console.log("didn't work")
+    //         );
+    // }, [scheduleId]);
+
+    // useEffect(() => {
+    //     getShifts()
+    //         .then(loadTable())
+    // }, [shifts.length])
 
 
     //FIRST, get scheduling dates using id in the browser path
-    useEffect(() => {
+    async function getSchedule() {
         //Make sure we have an id value
         if (scheduleId) {
             const init = {
@@ -24,7 +59,7 @@ function EditSchedule() {
                     'Authorization': `Bearer ${auth.user.token}`
                 },
             };
-            fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init)
+            await fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init)
                 .then(response => {
                     if (response.status === 200) {
                         return response.json();
@@ -32,22 +67,71 @@ function EditSchedule() {
                         return Promise.reject(`Unexpected status code: ${response.status}`);
                     }
                 })
-                .then(data => { setSchedule(data) })
+                .then(data => { schedule = data })
+                .then(data => {makeDateList(data)})
                 .catch(console.log);
         }
-    }, [scheduleId, auth.user.token]);
+    };
 
-    console.log("schedule : " + JSON.stringify(schedule));
+    //Converts dates in schedule to a list of each weekday/date
+    function makeDateList(name) {
+        let dateArray = [];
+        let thisDay = new Date(name.startDate);
+        while (thisDay <= new Date(name.endDate)) {
+            dateArray.push(thisDay);
+            let newDate = thisDay.setDate(thisDay.getDate() + 1);
+            thisDay = new Date(newDate);
+        }
+        dateList = dateArray;
+        return dateArray;
+    };
+
+
+    function loadTable() {
+        console.log("entered loadTable");
+        if( schedule === null || shifts.lenth === 0 || employees.length === 0 ){
+            console.log("Couldn't load.");
+            return;
+        }
+        const tableHead = document.getElementById("tableHead");
+        let headHtml = "<th>Employees</th>";
+        const dates = makeDateList(schedule);
+        console.log("dates: " + JSON.stringify(dates));
+        for (const currDate of dates) {
+            headHtml += `<th>${date.format(currDate, 'ddd, MMM D, YYYY')}</th>`;
+        }
+        tableHead.innerHTML = headHtml;
+
+
+        const tableBody = document.getElementById("tableBody");
+        let bodyHtml = "";
+        for(const employee of employees){
+            bodyHtml += `<tr><td>${employee.firstName} ${employee.lastName}</td>`;
+
+            for(const currDate of dates){
+                bodyHtml += "<td>";
+                let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)));
+                for(const thisShift of currShifts){
+                    bodyHtml += `${date.format(thisShift.startTime, 'h:mm A')} - ${date.format(thisShift.endTime, 'h:mm A')}`;
+                }
+                bodyHtml += "</td>";
+            }
+            bodyHtml += "</tr>";
+        }
+        tableBody.innerHTML = bodyHtml;
+    }
+
+
 
 
     //SECOND, get a list of all employees at the company
-    useEffect(() => {
+    async function getEmployees() {
         const init = {
             headers: {
                 'Authorization': `Bearer ${auth.user.token}`
             },
         };
-        fetch(`http://localhost:8080/api/employees`, init)
+        await fetch(`http://localhost:8080/api/employees`, init)
             .then(response => {
                 if (response.status === 200) {
                     return response.json();
@@ -55,33 +139,22 @@ function EditSchedule() {
                     return Promise.reject(`Unexpected status code: ${response.status}`);
                 }
             })
-            .then(data => setEmployees(data))
+            .then(data => employees = data)
             .catch(console.log);
-    }, [auth.user.token]);
-
-    console.log("employees : " + employees);
-
-    //Converts dates in schedule to a list of each weekday/date
-    const dateList = (schedule) => {
-        let dateArray = [];
-        let thisDay = new Date(schedule.startDate);
-        while (thisDay <= new Date(schedule.endDate)) {
-            dateArray.push(thisDay);
-            let newDate = thisDay.setDate(thisDay.getDate() + 1);
-            thisDay = new Date(newDate);
-        }
-        console.log("dateArray: " + JSON.stringify(dateArray));
-        return dateArray;
     };
 
+
+
+
+
     //THIRD, get a list of all shifts for the schedule
-    useEffect(() => {
+    async function getShifts() {
         const init = {
             headers: {
                 'Authorization': `Bearer ${auth.user.token}`
             },
         };
-        fetch(`http://localhost:8080/api/shifts/schedule/${scheduleId}`, init)
+        await fetch(`http://localhost:8080/api/shifts/schedule/${scheduleId}`, init)
             .then(response => {
                 if (response.status === 200) {
                     return response.json();
@@ -94,37 +167,37 @@ function EditSchedule() {
                 shift.endTime = new Date(shift.endTime);
                 return shift;
             }))
-            .then(data => setShifts(data))
+            .then(data => shifts = data)
             .catch(console.log);
-    }, [auth.user.token, scheduleId]);
+    };
 
-    console.log("shifts : " + JSON.stringify(shifts));
 
-    //DISPLAY on the page
-    const renderShifts = (employee) => {
-        let employeeId = employee.employeeId;
-        console.log("rendering...");
-        const tableRow = document.getElementById("employee" + employeeId);
-        if(tableRow === null){return;}
-        let html = `<td>{employee.firstName} {employee.lastName}</td>`;
-        let thisEmployeeShifts = shifts.filter(shift => shift.employeeId = employeeId);
-        let somedates = dateList(schedule);
-        console.log("somedates : " + somedates);
-        console.log("somedates again : " + JSON.stringify(somedates));
-        for (const currDate of somedates){
-            console.log(currDate instanceof Date);
-            console.log(currDate);
-            html += "<td>";
-            let shifts = thisEmployeeShifts.filter(shift => date.isSameDay(currDate, new Date(shift.startTime)));
-            for (const s of shifts ) {
 
-                html += `${date.format(s.startTime, 'h:mm A')} - ${date.format(s.endTime, 'h:mm A')}`;
+    // //DISPLAY on the page
+    // const renderShifts = (employee) => {
+    //     let employeeId = employee.employeeId;
+    //     console.log("rendering...");
+    //     const tableRow = document.getElementById("employee" + employeeId);
+    //     if (tableRow === null) { return; }
+    //     let html = `<td>{employee.firstName} {employee.lastName}</td>`;
+    //     let thisEmployeeShifts = shifts.filter(shift => shift.employeeId = employeeId);
+    //     let somedates = dateList(schedule);
+    //     console.log("somedates : " + somedates);
+    //     console.log("somedates again : " + JSON.stringify(somedates));
+    //     for (const currDate of somedates) {
+    //         console.log(currDate instanceof Date);
+    //         console.log(currDate);
+    //         html += "<td>";
+    //         let shifts = thisEmployeeShifts.filter(shift => date.isSameDay(currDate, new Date(shift.startTime)));
+    //         for (const s of shifts) {
 
-            }
-            html += "</td>";
-        }
-        tableRow.innerHTML = html;
-    }
+    //             html += `${date.format(s.startTime, 'h:mm A')} - ${date.format(s.endTime, 'h:mm A')}`;
+
+    //         }
+    //         html += "</td>";
+    //     }
+    //     tableRow.innerHTML = html;
+    // }
 
     // function testFunction(event){
     //     console.log("Running test function");
@@ -133,7 +206,6 @@ function EditSchedule() {
     //     ));
     // }
 
-    // /*Get Agents from server*/
     // function getShiftsByEmployee(employeeId) {
     //     console.log("employee id : " + employeeId);
     //     let url = `http://localhost:8080/api/shifts/schedule/${scheduleId}/${employeeId}`;
@@ -177,11 +249,7 @@ function EditSchedule() {
     //         .catch(console.log);
     // }
 
-    async function functionName() {
 
-
-        
-    }
 
     return (
         <>
@@ -189,7 +257,7 @@ function EditSchedule() {
 
             <table>
                 <thead>
-                    <tr>
+                    <tr id="tableHead">
                         <th>Employees</th>
                         {/* {schedule &&
                             dateList(schedule).map(thisDate => (
@@ -197,7 +265,7 @@ function EditSchedule() {
                             ))} */}
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody">
                     {/* {employees &&
                         employees.map(employee => (
                             <tr id={"employee" + employee.employeeId} key={employee.employeeId}></tr>

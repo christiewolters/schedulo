@@ -53,7 +53,7 @@ function App() {
       }
     };
     // Return this promise so that we can know when the login() method has completed its work.
-    return fetch(`http://localhost:8080/api/employees/user/${username}`, init)
+    return fetch(`http://localhost:8080/api/employees/employee`, init)
       .then(response => {
         if (response.status === 200) {
           return response.json();

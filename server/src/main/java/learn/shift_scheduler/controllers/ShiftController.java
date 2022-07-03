@@ -3,10 +3,12 @@ package learn.shift_scheduler.controllers;
 import learn.shift_scheduler.domain.Result;
 import learn.shift_scheduler.domain.ResultType;
 import learn.shift_scheduler.domain.ShiftService;
+import learn.shift_scheduler.models.AppUser;
 import learn.shift_scheduler.models.Shift;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,9 +49,10 @@ public class ShiftController {
     }
 
     //get all shifts by username
-    @GetMapping("/user/{username}")
-    public ResponseEntity<List<Shift>> findByUsername(@PathVariable String username) throws DataAccessException {
-        List<Shift> shifts = service.findByUsername(username);
+    @GetMapping("/user")
+    public ResponseEntity<List<Shift>> findByUser(UsernamePasswordAuthenticationToken principal) throws DataAccessException {
+        AppUser appUser = (AppUser) principal.getPrincipal();
+        List<Shift> shifts = service.findByUsername(appUser.getUsername());
         if (shifts.size() == 0){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

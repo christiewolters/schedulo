@@ -58,8 +58,10 @@ public class AvailabilityJdbcTemplateRepository implements AvailabilityRepositor
 
     @Override
     public List<Availability> findByEmployeeId(int id) throws DataAccessException{
+
         final String sql = "select availability_id, start_time, end_time, employee_id from availability where employee_id = ? " +
                 "order by start_time desc;";
+
         return jdbcTemplate.query(sql, mapper, id);
     }
 

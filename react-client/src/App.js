@@ -14,6 +14,7 @@ import EditSchedule from './Components/EditSchedule';
 import Availability from './Pages/Availability';
 import Shifts from './Pages/Shifts';
 import Navbar from './Components/Navbar';
+import Register from './Components/Register'
 
 function App() {
   // "null" means that we don't have a logged in user
@@ -108,7 +109,11 @@ function App() {
                 : auth.user.hasRole("ROLE_MANAGER") ?
                   (<ViewSchedules />) : (<NoPermission />)}
             </Route>
-
+            <Route path="/manager/register" exact>
+            {!auth.user ? (<Redirect to="/login" />)
+                : auth.user.hasRole("ROLE_MANAGER") ?
+                  (<Register />) : (<NoPermission />)}
+            </Route>
             
 
             <Route path="/schedules/edit/:scheduleId" exact>

@@ -3,10 +3,12 @@ package learn.shift_scheduler.controllers;
 import learn.shift_scheduler.domain.AvailabilityService;
 import learn.shift_scheduler.domain.Result;
 import learn.shift_scheduler.domain.ResultType;
+import learn.shift_scheduler.models.AppUser;
 import learn.shift_scheduler.models.Availability;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,6 @@ import java.util.List;
 @RequestMapping("/api/availabilities")
 public class AvailabilityController {
     private final AvailabilityService service;
-
     public AvailabilityController(AvailabilityService service) {
         this.service = service;
     }
@@ -34,9 +35,10 @@ public class AvailabilityController {
         return new ResponseEntity<>(availability, HttpStatus.OK);
     }
 
-    @GetMapping("/employee/{employee_id}")
-    public ResponseEntity<List<Availability>> findByEmployeeId(@PathVariable int employee_id) throws DataAccessException {
-        List<Availability> availabilities = service.findByEmployeeId(employee_id);
+    @GetMapping("/user")
+    public ResponseEntity<List<Availability>> findByEmployeeId(UsernamePasswordAuthenticationToken principal) throws DataAccessException {
+        AppUser appUser = (AppUser) principal.getPrincipal();
+        List<Availability> availabilities = service.findByEmployeeId(appUser.getAppUserId());
         if (availabilities.size() == 0){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -44,7 +46,9 @@ public class AvailabilityController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Availability availability) throws DataAccessException{
+    public ResponseEntity<?> create(@RequestBody Availability availability, UsernamePasswordAuthenticationToken principal) throws DataAccessException{
+        AppUser appUser = (AppUser) principal.getPrincipal();
+        availability.setEmployeeId(appUser.getAppUserId());
         Result<Availability> result = service.create(availability);
         if (!result.isSuccess()){
             return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);

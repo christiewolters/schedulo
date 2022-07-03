@@ -6,15 +6,18 @@ function Navbar() {
     const auth = useContext(AuthContext);
     console.log(auth);
 
-    if (!auth || auth.user === null) {
-        return null;
-      }
+
+
       const location = useLocation();
       const [url, setUrl] = useState(null);
 
       useEffect(() => {
         setUrl(location.pathname);
       }, [location]);
+
+    if (!auth || auth.user === null) {
+        return null;
+    }
 
     return (
         <>
@@ -43,7 +46,10 @@ function Navbar() {
                             )}
 
                             {auth.user.hasRole("ROLE_MANAGER") && (
-                                <li  className={(url === "/manager/schedules" ? "active" : "")}><Link to="/manager/schedules">Schedules</Link></li>
+                                <>
+                                    <li  className={(url === "/manager/schedules" ? "active" : "")}><Link to="/manager/schedules">Schedules</Link></li>
+                                    <li className={(url === "/manager/register" ? "active" : "")}><Link to="/manager/register">Register an Account</Link></li>
+                                </>
                             )}
 
                         </ul>

@@ -86,8 +86,8 @@ class ShiftServiceTest {
         shift.setShiftId(0);
         shift.setScheduleId(2);
         shift.setEmployeeId(2);
-        shift.setStartTime(LocalDateTime.parse("2022-08-05 20:00:00", formatter));
-        shift.setEndTime(LocalDateTime.parse("2022-08-05 23:59:00", formatter));
+        shift.setStartTime(LocalDateTime.parse("2022-09-05 06:00:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-05 16:00:00", formatter));
         shift.setEarned("someAmount");
 
         Result<Shift> result = service.create(shift);
@@ -219,8 +219,8 @@ class ShiftServiceTest {
         shift.setShiftId(0);
         shift.setScheduleId(2);
         shift.setEmployeeId(1);
-        shift.setStartTime(LocalDateTime.parse("2022-06-05 09:59:00", formatter));
-        shift.setEndTime(LocalDateTime.parse("2022-06-05 11:59:00", formatter));
+        shift.setStartTime(LocalDateTime.parse("2022-09-05 09:59:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-05 11:59:00", formatter));
         shift.setEarned("someAmount");
 
         Result<Shift> result = service.create(shift);
@@ -235,12 +235,11 @@ class ShiftServiceTest {
         shift.setShiftId(0);
         shift.setScheduleId(2);
         shift.setEmployeeId(1);
-        shift.setStartTime(LocalDateTime.parse("2022-06-05 08:00:00", formatter));
-        shift.setEndTime(LocalDateTime.parse("2022-06-05 12:00:00", formatter));
         shift.setEarned("someAmount");
+        shift.setStartTime(LocalDateTime.parse("2022-09-05 06:00:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-05 16:00:00", formatter));
 
         Result<Shift> result = service.create(shift);
-        assertFalse(result.isSuccess());
         System.out.println(result.getMessages().get(0));
         assertTrue(result.getMessages().get(0).contains("already"));
     }
@@ -251,8 +250,8 @@ class ShiftServiceTest {
         shift.setShiftId(0);
         shift.setScheduleId(2);
         shift.setEmployeeId(1);
-        shift.setStartTime(LocalDateTime.parse("2022-06-05 06:59:00", formatter));
-        shift.setEndTime(LocalDateTime.parse("2022-06-05 10:59:00", formatter));
+        shift.setStartTime(LocalDateTime.parse("2022-09-05 06:59:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-05 10:59:00", formatter));
         shift.setEarned("someAmount");
 
         Result<Shift> result = service.create(shift);
@@ -267,12 +266,11 @@ class ShiftServiceTest {
         shift.setShiftId(0);
         shift.setScheduleId(2);
         shift.setEmployeeId(1);
-        shift.setStartTime(LocalDateTime.parse("2022-06-05 10:59:00", formatter));
-        shift.setEndTime(LocalDateTime.parse("2022-06-05 16:59:00", formatter));
         shift.setEarned("someAmount");
+        shift.setStartTime(LocalDateTime.parse("2022-09-04 06:00:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-05 12:00:00", formatter));
 
         Result<Shift> result = service.create(shift);
-        assertFalse(result.isSuccess());
         System.out.println(result.getMessages().get(0));
         assertTrue(result.getMessages().get(0).contains("already"));
     }
@@ -283,22 +281,37 @@ class ShiftServiceTest {
         shift.setShiftId(0);
         shift.setScheduleId(2);
         shift.setEmployeeId(1);
-        shift.setStartTime(LocalDateTime.parse("2022-06-05 06:00:00", formatter));
-        shift.setEndTime(LocalDateTime.parse("2022-06-05 16:00:00", formatter));
         shift.setEarned("someAmount");
+        shift.setStartTime(LocalDateTime.parse("2022-09-04 05:00:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-06 16:00:00", formatter));
 
         Result<Shift> result = service.create(shift);
+        assertTrue(result.isSuccess());
+
+        shift.setStartTime(LocalDateTime.parse("2022-09-03 05:00:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-09-07 16:00:00", formatter));
+        result = service.create(shift);
+        
         assertFalse(result.isSuccess());
-        System.out.println(result.getMessages().get(0));
         assertTrue(result.getMessages().get(0).contains("already"));
     }
 
     @Test
     void shouldUpdate() {
-        Shift shift = service.findById(7);
-        shift.setEmployeeId(3);
+        Shift shift = new Shift();
+        shift.setShiftId(0);
+        shift.setScheduleId(2);
+        shift.setEmployeeId(5);
+        shift.setStartTime(LocalDateTime.parse("2022-10-05 06:00:00", formatter));
+        shift.setEndTime(LocalDateTime.parse("2022-10-05 16:00:00", formatter));
+        shift.setEarned("someAmount");
 
-        Result<Shift> result = service.update(shift);
+        Result<Shift> result = service.create(shift);
+        assertTrue(result.isSuccess());
+
+        shift.setEmployeeId(3);
+        result = service.update(shift);
+
         assertNotNull(result.getPayload());
         assertTrue(result.isSuccess());
     }

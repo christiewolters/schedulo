@@ -81,10 +81,12 @@ public class AvailabilityService {
 
         if (availability.getStartTime() == null) {
             result.addMessage("Availability Start time is required", ResultType.INVALID);
+            return result;
         }
 
         if (availability.getEndTime() == null) {
             result.addMessage("Availability End time is required", ResultType.INVALID);
+            return result;
         }
 
         if (availability.getEndTime().isBefore(availability.getStartTime()) || availability.getEndTime().isEqual(availability.getStartTime())) {
@@ -99,7 +101,9 @@ public class AvailabilityService {
 
             for (Availability existingAvailability : existingAvailabilities){
                 if (availability.getStartTime().isEqual(existingAvailability.getStartTime()) &&
-                    availability.getEndTime().isEqual(existingAvailability.getEndTime())){
+                    availability.getEndTime().isEqual(existingAvailability.getEndTime()) &&
+                        availability.getEmployeeId() == existingAvailability.getEmployeeId() &&
+                    availability.getAvailabilityId() != existingAvailability.getAvailabilityId()){
                     result.addMessage("Can not add a duplicate availability", ResultType.INVALID);
                 }
             }

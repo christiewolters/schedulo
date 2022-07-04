@@ -104,6 +104,13 @@ body {
     display: none;
 }
 
+.remove-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+}
+
 
 /* Trash Button */
 .remove-btn-icon {

@@ -3,7 +3,7 @@ import Navbar from "../Components/Navbar";
 function ManagerHome() {
   return (
     <>
-      <h3 className="text-center">Manager's Home Page</h3>
+      <h3 className="text-center">Manager Home Page</h3>
       <h6 className="text-center pl-5 pr-5">Welcome to your company's convenient home shift scheduler!
         <br />
         <br />

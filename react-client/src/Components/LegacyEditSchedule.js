@@ -3,125 +3,101 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import AuthContext from '../AuthContext';
 
-function EditSchedule() {
+function LegacyEditSchedule() {
     const auth = useContext(AuthContext);
 
     //Extract scheduleId from browser path
     const { scheduleId } = useParams();
-    const [schedule, setSchedule] = useState(null);
-    const [employees, setEmployees] = useState([]);
-    const [shifts, setShifts] = useState([]);
-    const [availabilities, setAvailabilities] = useState([]);
-    const [isLoaded, setIsLoaded] = useState([]);
-
+    let schedule = null;
+    let employees = [];
+    let shifts = [];
+    let availabilities = [];
     let dateList = [];
     const [errors, setErrors] = useState([]);
+    const [isLoaded, setIsLoaded] = useState([]);
 
     //Add form
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
 
+    async function pleaseMount() {
+        getSchedule().then(() => {
+            console.log("schedule : " + JSON.stringify(schedule));
+        });
 
-    useEffect(() => {
-        const init = async () => {
-            const getScheduleRes = await getSchedule();
-            setSchedule(getScheduleRes);
-            console.log(schedule);
-            const getEmployeeRes = await getEmployees();
-            setEmployees(getEmployeeRes);
-            console.log(employees);
-            const getAvailabilitiesRes = await getAvailabilities();
-            setAvailabilities(getAvailabilitiesRes);
-            console.log(availabilities);
-            const getShiftsRes = await getShifts();
-            setShifts(getShiftsRes);
-            console.log(shifts);
-        }
-        init();
-        setIsLoaded(true);
-        console.log("done");
-        loadTable();
-    }, [])
+        getShifts().then(() => {
+            console.log("shifts : " + JSON.stringify(shifts));
+        });
 
-    const getSchedule = async () => {
-        if (!scheduleId) { return; }
+        getEmployees().then(() => {
+            console.log("employees : " + employees);
+        })
 
-        const init = {
-            headers: {
-                'Authorization': `Bearer ${auth.user.token}`
-            },
-        };
+        getAvailabilities().then(() => {
+            console.log("availabilities : " + availabilities);
+        })
+    };
 
-        const response = await fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init);
-        if (response.status == 200) {
-            console.log("got a 200 status");
-            return response.json();
-        } else {
-            console.log("Did not get a status in schedule");
-            return Promise.reject(`Unexpected status code: ${response.status}`);
-        }
-    }
-
-    const getEmployees = async () => {
-
-        const init = {
-            headers: {
-                'Authorization': `Bearer ${auth.user.token}`
-            },
-        };
-
-        const response = await fetch(`http://localhost:8080/api/employees`, init);
-        if (response.status == 200) {
-            console.log("got a 200 status");
-            return response.json();
-        } else {
-            console.log("Did not get a status in employees");
-            return Promise.reject(`Unexpected status code: ${response.status}`);
-        }
-    }
-
-    const getAvailabilities = async () => {
-
-        const init = {
-            headers: {
-                'Authorization': `Bearer ${auth.user.token}`
-            },
-        };
-
-        const response = await fetch(`http://localhost:8080/api/availabilities`, init);
-        if (response.status == 200) {
-            console.log("got a 200 status");
-            return response.json();
-        } else {
-            console.log("Did not get a status in availabilities");
-            return Promise.reject(`Unexpected status code: ${response.status}`);
-        }
-    }
-
-    const getShifts = async () => {
-        if (!scheduleId) { return; }
-
-        const init = {
-            headers: {
-                'Authorization': `Bearer ${auth.user.token}`
-            },
-        };
-
-        const response = await fetch(`http://localhost:8080/api/shifts/schedule/${scheduleId}`, init);
-        if (response.status == 200) {
-            console.log("got a 200 status");
-            const newData = await response.json();
-            const withObjects = newData.map(shift => {
-                shift.startTime = new Date(shift.startTime);
-                shift.endTime = new Date(shift.endTime);
-                return shift;
+    async function pleaseMount2() {
+        getSchedule()
+        .then((data) => {
+            console.log("schedule : " + JSON.stringify(schedule));
+            return data;})
+        .then((data) => {
+            getShifts().then((data) => {
+            console.log("shifts : " + JSON.stringify(shifts));
+            return data;
+        })
+        .then((data) => {
+            getEmployees().then((data) => {
+                console.log("employees : " + employees);
+                loadTable();
+                return data;
             })
-            return withObjects;
-        } else {
-            console.log("Did not get a status in shifts");
-            return Promise.reject(`Unexpected status code: ${response.status}`);
-        }
+            .then((data) => {
+                getAvailabilities().then((data) => {
+                    console.log("availabilities : " + availabilities);
+                    return data;
+                })})})})}
+
+    pleaseMount2().then(console.log("Finished mount."));
+
+    async function loadPage() {
+        await getSchedule();
+        console.log("schedule : " + JSON.stringify(schedule));
+        await getShifts();
+        console.log("shifts : " + JSON.stringify(shifts));
+        await getEmployees();
+        console.log("employees : " + employees);
+        await getAvailabilities();
+        console.log("availabilities : " + availabilities);
+        console.log("Done");
     }
+
+
+
+    //FIRST, get scheduling dates using id in the browser path
+    async function getSchedule() {
+        //Make sure we have an id value
+        if (scheduleId) {
+            const init = {
+                headers: {
+                    'Authorization': `Bearer ${auth.user.token}`
+                },
+            };
+            await fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init)
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        return Promise.reject(`Unexpected status code: ${response.status}`);
+                    }
+                })
+                .then(data => { schedule = data; console.log(schedule); setIsLoaded(true); return data; })
+                .then(data => { makeDateList(data); return data; })
+                .catch(console.log);
+        }
+    };
 
     //Converts dates in schedule to a list of each weekday/date
     function makeDateList(name) {
@@ -139,11 +115,10 @@ function EditSchedule() {
     //Builds and displays HTML data
     function loadTable() {
         console.log("entered loadTable");
-        if (schedule === null || shifts === null || employees.length === 0) {
+        if (schedule === null || shifts.lenth === 0 || employees.length === 0) {
             console.log("Couldn't load.");
             return;
         }
-        console.log("got past if");
         //sets min and max values to form elements
         adjustDates();
 
@@ -158,6 +133,7 @@ function EditSchedule() {
 
 
         const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
         let bodyHtml = "";
         for (const employee of employees) {
             bodyHtml += `<tr><td>${employee.firstName} ${employee.lastName}</td>`;
@@ -165,37 +141,99 @@ function EditSchedule() {
             for (const currDate of dates) {
                 bodyHtml += "<td>";
                 let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)))
-                    .sort((a, b) => a.startTime - b.startTime);
-                for (let i = 0; i < currShifts.length; i++) {
-                    if (i > 0) { bodyHtml += `<br/>`; }
+                .sort((a,b) => a.startTime - b.startTime);
+                for(let i = 0; i < currShifts.length ; i++){
+                    if(i > 0){bodyHtml += `<br/>`;}
                     bodyHtml += `${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}`;
                     bodyHtml += `
-                    <button type="button" className="remove-btn-icon pr-4" onClick="handleDeleteShift(${currShifts[i].shiftId})">
-                    <i className="glyphicon glyphicon-trash"></i>
-                </button>`;
+                    <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    </button>`;
+                
                 }
                 bodyHtml += "</td>";
             }
             bodyHtml += "</tr>";
         }
+        console.log("setting to html");
         tableBody.innerHTML = bodyHtml;
-    }
-
-
-    async function loadPage() {
-        await getSchedule();
-        console.log("schedule : " + JSON.stringify(schedule));
-        await getShifts();
-        console.log("shifts : " + JSON.stringify(shifts));
-        await getEmployees();
-        console.log("employees : " + employees);
-        await getAvailabilities();
-        console.log("availabilities : " + availabilities);
-        console.log("Done");
+        console.log("reached for loop");
+        for(let i = 0 ; i < shifts.length ;i++){
+            console.log("entered loop");
+            const buttonEl = document.getElementById("button" + shifts[i].shiftId);
+            console.log(buttonEl);
+            // Add event listener
+            buttonEl.addEventListener('click', function(){handleDeleteShift(shifts[i].shiftId)});
+        }
     }
 
 
 
+
+    //Get a list of all employees at the company
+    async function getEmployees() {
+        const init = {
+            headers: {
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+        };
+        await fetch(`http://localhost:8080/api/employees`, init)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(data => { employees = data })
+            .catch(console.log);
+    };
+
+
+    //Get a list of all availabilities
+    async function getAvailabilities() {
+        const init = {
+            headers: {
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+        };
+        await fetch(`http://localhost:8080/api/availabilities`, init)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(data => availabilities = data)
+            .catch(console.log);
+    };
+
+
+
+    //THIRD, get a list of all shifts for the schedule
+    async function getShifts() {
+        const init = {
+            headers: {
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+        };
+        await fetch(`http://localhost:8080/api/shifts/schedule/${scheduleId}`, init)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(data => data.map(shift => {
+                shift.startTime = new Date(shift.startTime);
+                shift.endTime = new Date(shift.endTime);
+                return shift;
+            }))
+            .then(data => shifts = data)
+            .catch(console.log);
+    };
 
 
     //Select Employee options on add
@@ -264,8 +302,8 @@ function EditSchedule() {
     }, [startTime, endTime])
 
     //update min and max values on calendar
-    function adjustDates() {
-        if (!schedule || !schedule.startDate || !schedule.endDate) { return; }
+    function adjustDates () {
+        if(!schedule || !schedule.startDate || !schedule.endDate){return;}
         const formStartTime = document.getElementById('formStartTime');
         const formEndTime = document.getElementById('formEndTime');
         formStartTime.setAttribute("min", schedule.startDate + "T00:00:00");
@@ -325,8 +363,12 @@ function EditSchedule() {
             .catch(console.log);
     };
 
+    //   //delete
+    //   function handleDeleteShift(scheduleId) {
+    //     alert(`Called handleDeleteShift with scheduleId ${scheduleId}`);
+    //   }
 
-    function clearForm() {
+      function clearForm() {
         const formStartTime = document.getElementById('formStartTime');
         const formEndTime = document.getElementById('formEndTime');
         const employeeIdForm = document.getElementById('employeeIdForm');
@@ -335,16 +377,48 @@ function EditSchedule() {
         employeeIdForm.value = null;
         setStartTime('');
         setEndTime('');
-    }
+      }
 
-    //delete
-    const handleDeleteShift = (shiftId) => {
-        alert("Called handleDeleteShift");
-    }
+      function makePublishButton() {
+        const newButton = document.createElement("button");
+
+      }
+
+
+
+      const handleDeleteShift = (shiftId) => {
+        const shift = shifts.find(shift => shift.shiftId === shiftId);
+    
+        if (window.confirm(`Delete shift ${shift.startTime}-${shift.endTime}?`)) {
+          const init = {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${auth.user.token}`
+            },
+          };
+    
+          fetch(`http://localhost:8080/api/shifts/${shiftId}`, init)
+            .then(response => {
+              if (response.status === 204) {
+                // create a copy of the shifts array
+                // remove the shift that we need to delete
+                const newShifts = shifts.filter(shift => shift.shiftId !== shiftId);
+    
+                // update the solar panels state variable
+                shifts = newShifts;
+                loadTable();
+              } else {
+                return Promise.reject(`Unexpected status code: ${response.status}`);
+              }
+            })
+            .catch(console.log);
+        }
+      };
+
+
 
     return (
         <>
-    
             <h3 className="text-center">Edit Schedule</h3>
 
             {errors.length > 0 &&
@@ -359,9 +433,9 @@ function EditSchedule() {
             <form id="addForm">
                 <fieldset><legend>Add Shift</legend>
                     <label htmlFor="formStartTime">Starting:</label>
-                    <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" onChange={(event) => { setStartTime(event.target.value); adjustDates(); }} required></input>
+                    <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" onChange={(event) => {setStartTime(event.target.value); adjustDates();}} required></input>
                     <label htmlFor="formEndTime">Finishing:</label>
-                    <input type="datetime-local" className="form-control inline" id="formEndTime" name="formEndTime" onChange={(event) => { setEndTime(event.target.value); adjustDates(); }} required></input>
+                    <input type="datetime-local" className="form-control inline" id="formEndTime" name="formEndTime" onChange={(event) => {setEndTime(event.target.value); adjustDates();}} required></input>
                     <label htmlFor="employeeIdForm">Employee:</label>
                     <select id="employeeIdForm" name="employeeIdForm" required></select>
 
@@ -383,12 +457,12 @@ function EditSchedule() {
 
             </table>
 
-            {isLoaded && (
-                <button type="button" className={schedule.finalized ? "btn btn-info btn-block disabled" : "btn btn-info btn-block"}>Publish</button>
-                )}
-
+            {schedule && 
+            <button type="button" className={schedule.finalized ? "btn btn-info btn-block disabled" : "btn btn-info btn-block"}>Publish</button>
+            }
+            
         </>
     );
 }
 
-export default EditSchedule;
+export default LegacyEditSchedule;

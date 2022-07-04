@@ -11,6 +11,7 @@ import NotFound from './Pages/NotFound';
 import NoPermission from './Pages/NoPermission';
 import ViewSchedules from './Pages/ViewSchedules';
 import EditSchedule from './Components/EditSchedule';
+import LegacyEditSchedule from './Components/LegacyEditSchedule';
 import Availability from './Pages/Availability';
 import Shifts from './Pages/Shifts';
 import Navbar from './Components/Navbar';
@@ -119,7 +120,7 @@ function App() {
             <Route path="/schedules/edit/:scheduleId" exact>
               {!auth.user ? (<Redirect to="/login" />)
                 : auth.user.hasRole("ROLE_MANAGER") ?
-                  (<EditSchedule />) : (<NoPermission />)}
+                  (<LegacyEditSchedule />) : (<NoPermission />)}
             </Route>
 
             <Route path="/employee/availability">

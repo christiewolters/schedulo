@@ -32,6 +32,16 @@ body {
     width: 50px;
 }
 
+.red {
+    color:rgb(241, 242, 246);
+    background-color: #DA4453;
+}
+
+td-style {
+    border-right: solid 1px #f00; 
+    border-left: solid 1px #f00;
+  }
+
 /* END LOGIN PAGE */
 
 
@@ -109,6 +119,10 @@ body {
     height: 20px;
     padding: 0;
     margin: 0;
+}
+
+.vertical-align {
+    vertical-align: middle;
 }
 
 

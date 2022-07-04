@@ -141,23 +141,23 @@ function LegacyEditSchedule() {
         tableBody.innerHTML = "";
         let bodyHtml = "";
         for (const employee of employees) {
-            bodyHtml += `<tr><td>${employee.firstName} ${employee.lastName}</td>`;
+            bodyHtml += `<tr><td class="vertical-align">${employee.firstName} ${employee.lastName}</td>`;
 
             for (const currDate of dates) {
-                bodyHtml += "<td>";
+                bodyHtml += `<td class="pl-0 pr-0 ml-0 mr-0 pt-4 pb-4">`;
                 let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)))
                     .sort((a, b) => a.startTime - b.startTime);
                 for (let i = 0; i < currShifts.length; i++) {
                     if (i > 0) { bodyHtml += `<br/>`; }
-                    bodyHtml += `${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}`;
+                    bodyHtml += `<span class="red p-2">${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}`;
                     if (!isFinal) {
                         bodyHtml += `
-                    <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn">
+                    <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn mb-1">
                     <i class="glyphicon glyphicon-remove"></i>
-                    </button>`;
+                    </button></span>`;
                     }
                 }
-                bodyHtml += "</td>";
+                bodyHtml += "</div></td>";
             }
             bodyHtml += "</tr>";
         }
@@ -451,7 +451,6 @@ function LegacyEditSchedule() {
 
     return (
         <>
-            <h3 className="text-center">Edit Schedule</h3>
 
             {errors.length > 0 &&
                 <div className="alert alert-danger">
@@ -497,7 +496,7 @@ function LegacyEditSchedule() {
                 </div>
             )}
             <div className="panel panel-info">
-            <div className="panel-heading"><h3 className="panel-title">Unpublished Schedule</h3></div>
+            <div className="panel-heading"><h3 className="panel-title">Schedule</h3></div>
             <table className="table">
                 <thead >
                     <tr id="tableHead">

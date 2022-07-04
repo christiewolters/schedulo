@@ -14,7 +14,7 @@ function LegacyEditSchedule() {
     let availabilities = [];
     let dateList = [];
     const [errors, setErrors] = useState([]);
-    const [isLoaded, setIsLoaded] = useState([]);
+    const [isFinal, setIsFinal] = useState(true);
 
     //Add form
     const [startTime, setStartTime] = useState('');
@@ -40,25 +40,30 @@ function LegacyEditSchedule() {
 
     async function pleaseMount2() {
         getSchedule()
-        .then((data) => {
-            console.log("schedule : " + JSON.stringify(schedule));
-            return data;})
-        .then((data) => {
-            getShifts().then((data) => {
-            console.log("shifts : " + JSON.stringify(shifts));
-            return data;
-        })
-        .then((data) => {
-            getEmployees().then((data) => {
-                console.log("employees : " + employees);
-                loadTable();
+            .then((data) => {
+                console.log("schedule : " + JSON.stringify(schedule));
                 return data;
             })
             .then((data) => {
-                getAvailabilities().then((data) => {
-                    console.log("availabilities : " + availabilities);
+                getShifts().then((data) => {
+                    console.log("shifts : " + JSON.stringify(shifts));
                     return data;
-                })})})})}
+                })
+                    .then((data) => {
+                        getEmployees().then((data) => {
+                            console.log("employees : " + employees);
+                            loadTable();
+                            return data;
+                        })
+                            .then((data) => {
+                                getAvailabilities().then((data) => {
+                                    console.log("availabilities : " + availabilities);
+                                    return data;
+                                })
+                            })
+                    })
+            })
+    }
 
     pleaseMount2().then(console.log("Finished mount."));
 
@@ -93,7 +98,7 @@ function LegacyEditSchedule() {
                         return Promise.reject(`Unexpected status code: ${response.status}`);
                     }
                 })
-                .then(data => { schedule = data; console.log(schedule); setIsLoaded(true); return data; })
+                .then(data => { schedule = data; console.log(schedule); setIsFinal(schedule.finalized); return data; })
                 .then(data => { makeDateList(data); return data; })
                 .catch(console.log);
         }
@@ -120,7 +125,7 @@ function LegacyEditSchedule() {
             return;
         }
         //sets min and max values to form elements
-        adjustDates();
+        //adjustDates();
 
         const tableHead = document.getElementById("tableHead");
         let headHtml = "<th>Employees</th>";
@@ -141,29 +146,33 @@ function LegacyEditSchedule() {
             for (const currDate of dates) {
                 bodyHtml += "<td>";
                 let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)))
-                .sort((a,b) => a.startTime - b.startTime);
-                for(let i = 0; i < currShifts.length ; i++){
-                    if(i > 0){bodyHtml += `<br/>`;}
+                    .sort((a, b) => a.startTime - b.startTime);
+                for (let i = 0; i < currShifts.length; i++) {
+                    if (i > 0) { bodyHtml += `<br/>`; }
                     bodyHtml += `${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}`;
-                    bodyHtml += `
+                    if (!isFinal) {
+                        bodyHtml += `
                     <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn">
                     <i class="glyphicon glyphicon-remove"></i>
                     </button>`;
-                
+                    }
                 }
                 bodyHtml += "</td>";
             }
             bodyHtml += "</tr>";
         }
+
         console.log("setting to html");
         tableBody.innerHTML = bodyHtml;
         console.log("reached for loop");
-        for(let i = 0 ; i < shifts.length ;i++){
-            console.log("entered loop");
-            const buttonEl = document.getElementById("button" + shifts[i].shiftId);
-            console.log(buttonEl);
-            // Add event listener
-            buttonEl.addEventListener('click', function(){handleDeleteShift(shifts[i].shiftId)});
+        if (!isFinal) {
+            for (let i = 0; i < shifts.length; i++) {
+                console.log("entered loop");
+                const buttonEl = document.getElementById("button" + shifts[i].shiftId);
+                console.log(buttonEl);
+                // Add event listener
+                buttonEl.addEventListener('click', function () { handleDeleteShift(shifts[i].shiftId) });
+            }
         }
     }
 
@@ -302,8 +311,8 @@ function LegacyEditSchedule() {
     }, [startTime, endTime])
 
     //update min and max values on calendar
-    function adjustDates () {
-        if(!schedule || !schedule.startDate || !schedule.endDate){return;}
+    function adjustDates() {
+        if (!schedule || !schedule.startDate || !schedule.endDate) { return; }
         const formStartTime = document.getElementById('formStartTime');
         const formEndTime = document.getElementById('formEndTime');
         formStartTime.setAttribute("min", schedule.startDate + "T00:00:00");
@@ -368,7 +377,7 @@ function LegacyEditSchedule() {
     //     alert(`Called handleDeleteShift with scheduleId ${scheduleId}`);
     //   }
 
-      function clearForm() {
+    function clearForm() {
         const formStartTime = document.getElementById('formStartTime');
         const formEndTime = document.getElementById('formEndTime');
         const employeeIdForm = document.getElementById('employeeIdForm');
@@ -377,44 +386,67 @@ function LegacyEditSchedule() {
         employeeIdForm.value = null;
         setStartTime('');
         setEndTime('');
-      }
+    }
 
-      function makePublishButton() {
+    function makePublishButton() {
         const newButton = document.createElement("button");
 
-      }
+    }
 
 
 
-      const handleDeleteShift = (shiftId) => {
+    const handleDeleteShift = (shiftId) => {
         const shift = shifts.find(shift => shift.shiftId === shiftId);
-    
-        if (window.confirm(`Delete shift ${shift.startTime}-${shift.endTime}?`)) {
-          const init = {
-            method: 'DELETE',
-            headers: {
-              'Authorization': `Bearer ${auth.user.token}`
-            },
-          };
-    
-          fetch(`http://localhost:8080/api/shifts/${shiftId}`, init)
-            .then(response => {
-              if (response.status === 204) {
-                // create a copy of the shifts array
-                // remove the shift that we need to delete
-                const newShifts = shifts.filter(shift => shift.shiftId !== shiftId);
-    
-                // update the solar panels state variable
-                shifts = newShifts;
-                loadTable();
-              } else {
-                return Promise.reject(`Unexpected status code: ${response.status}`);
-              }
-            })
-            .catch(console.log);
-        }
-      };
 
+        if (window.confirm(`Delete shift ${shift.startTime}-${shift.endTime}?`)) {
+            const init = {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${auth.user.token}`
+                },
+            };
+
+            fetch(`http://localhost:8080/api/shifts/${shiftId}`, init)
+                .then(response => {
+                    if (response.status === 204) {
+                        // create a copy of the shifts array
+                        // remove the shift that we need to delete
+                        const newShifts = shifts.filter(shift => shift.shiftId !== shiftId);
+
+                        // update the solar panels state variable
+                        shifts = newShifts;
+                        loadTable();
+                    } else {
+                        return Promise.reject(`Unexpected status code: ${response.status}`);
+                    }
+                })
+                .catch(console.log);
+        }
+    };
+
+
+    const handlePublish = async () => {
+        if (window.confirm(`Are you certain you want to publish this schedule? You will not be able to make changes later.`)) {
+            schedule.finalized = true;
+            console.log(JSON.stringify(schedule));
+            const init = {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${auth.user.token}`
+                },
+                body: JSON.stringify(schedule)
+            };
+
+            const response = await fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init);
+            if (response.status == 200) {
+                console.log("got a 200 status");
+                return response.json();
+            } else {
+                console.log("Did not get a status in schedule");
+                return Promise.reject(`Unexpected status code: ${response.status}`);
+            }
+        }
+    }
 
 
     return (
@@ -430,37 +462,54 @@ function LegacyEditSchedule() {
                 </div>
             }
 
-            <form id="addForm">
-                <fieldset><legend>Add Shift</legend>
-                    <label htmlFor="formStartTime">Starting:</label>
-                    <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" onChange={(event) => {setStartTime(event.target.value); adjustDates();}} required></input>
-                    <label htmlFor="formEndTime">Finishing:</label>
-                    <input type="datetime-local" className="form-control inline" id="formEndTime" name="formEndTime" onChange={(event) => {setEndTime(event.target.value); adjustDates();}} required></input>
-                    <label htmlFor="employeeIdForm">Employee:</label>
-                    <select id="employeeIdForm" name="employeeIdForm" required></select>
+            {!isFinal && (
+                <div className="row mt-4 mb-4">
+                    <div className="col-md-6">
+                        <form id="addForm" className="modal-content">
+                            <div className="modal-header">
+                                <legend className="modal-title">Add Shift</legend>
+                            </div>
+                            <div className="modal-body">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <label htmlFor="formStartTime">Start Shift</label>
+                                        <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" onChange={(event) => { setStartTime(event.target.value); adjustDates(); }} required></input>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label htmlFor="formEndTime">End Shift</label>
+                                        <input type="datetime-local" className="form-control inline" id="formEndTime" name="formEndTime" onChange={(event) => { setEndTime(event.target.value); adjustDates(); }} required></input>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <label htmlFor="employeeIdForm">Employee</label>
+                                        <select id="employeeIdForm" name="employeeIdForm" className="form-control inline" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn btn-primary" onClick={handleAdd}>Add Shift</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="col-md-6">
+                        <button type="button" className="btn btn-info" onClick={handlePublish}>Publish</button>
+                    </div>
 
-
-                    <button className="blue largebutton" onClick={handleAdd}>Add Shift</button>
-                </fieldset>
-            </form>
-
+                </div>
+            )}
+            <div className="panel panel-info">
+            <div className="panel-heading"><h3 className="panel-title">Unpublished Schedule</h3></div>
             <table className="table">
-                <thead>
+                <thead >
                     <tr id="tableHead">
                     </tr>
                 </thead>
                 <tbody id="tableBody">
 
+
+
                 </tbody>
-
-
-
             </table>
-
-            {schedule && 
-            <button type="button" className={schedule.finalized ? "btn btn-info btn-block disabled" : "btn btn-info btn-block"}>Publish</button>
-            }
-            
+            </div>
         </>
     );
 }

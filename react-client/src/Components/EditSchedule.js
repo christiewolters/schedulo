@@ -382,10 +382,9 @@ function EditSchedule() {
 
 
             </table>
+            <button type="button" className="btn btn-info btn-block">Publish</button>
+            <button type="button" className={schedule.finalized ? "btn btn-info btn-block disabled" : "btn btn-info btn-block"}>Publish</button>
 
-            {isLoaded && (
-                <button type="button" className={schedule.finalized ? "btn btn-info btn-block disabled" : "btn btn-info btn-block"}>Publish</button>
-                )}
 
         </>
     );

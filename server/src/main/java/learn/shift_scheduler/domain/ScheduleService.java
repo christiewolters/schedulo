@@ -100,7 +100,8 @@ public class ScheduleService {
             List<Schedule> existingSchedules = repository.findAll();
             for (Schedule existingSchedule : existingSchedules){
                 if( !schedule.getStartDate().isAfter(existingSchedule.getEndDate() ) &&
-                        !schedule.getEndDate().isBefore(existingSchedule.getStartDate())  ){
+                        !schedule.getEndDate().isBefore(existingSchedule.getStartDate())  &&
+                            schedule.getScheduleId() != existingSchedule.getScheduleId()){
                     result.addMessage("Schedules can not overlap", ResultType.INVALID);
                 }
             }

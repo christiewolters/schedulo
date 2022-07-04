@@ -432,15 +432,15 @@ function LegacyEditSchedule() {
             const init = {
                 method: 'PUT',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${auth.user.token}`
                 },
                 body: JSON.stringify(schedule)
             };
 
             const response = await fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init);
-            if (response.status == 200) {
-                console.log("got a 200 status");
-                return response.json();
+            if (response.status == 204) {
+                alert("Shift published successfully!");
             } else {
                 console.log("Did not get a status in schedule");
                 return Promise.reject(`Unexpected status code: ${response.status}`);

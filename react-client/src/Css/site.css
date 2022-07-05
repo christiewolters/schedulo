@@ -44,6 +44,17 @@ td-style {
 
 /* END LOGIN PAGE */
 
+/*VIEW SHIFTS PAGE*/
+.top-border {
+    border-top: #dbdada 2px solid;
+}
+
+.width-33percent {
+    width: 33%;
+}
+
+
+/*END VIEW SHIFTS PAGE*/
 
 /* VIEW SCHEDULES PAGE */
 .list-group>li {

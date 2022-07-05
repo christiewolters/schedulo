@@ -11,7 +11,7 @@ function EmployeeShiftList() {
   useEffect(() => {
     const init = {
       headers: {
-        'Authorization' : `Bearer ${auth.user.token}`
+        'Authorization': `Bearer ${auth.user.token}`
       },
     };
     fetch('http://localhost:8080/api/shifts/user', init)
@@ -23,8 +23,9 @@ function EmployeeShiftList() {
         }
       })
       .then(data => {
-        let sortedArr = data.sort((a,b) => new Date(b.startTime) - new Date(a.startTime));
-        setShifts(sortedArr);})
+        let sortedArr = data.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+        setShifts(sortedArr);
+      })
       .catch(console.log);
   }, [auth.user]);
 
@@ -46,22 +47,54 @@ function EmployeeShiftList() {
       <table className="table table-hover table-sm">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
+            <th className="width-33percent">Date</th>
+            <th className="width-33percent text-center">Start Time</th>
+            <th className="width-33percent text-center">End Time</th>
           </tr>
         </thead>
         <tbody>
-          {shifts ? shifts.map(shift => (
-            <tr key={shift.shiftId} className={(new Date(shift.startTime) < new Date()) ? "gray" : "" }>
+          {shifts.filter(s => new Date(s.endTime) >= new Date()).length ? shifts.filter(s => new Date(s.endTime) >= new Date()).map(shift => (
+            <tr key={shift.shiftId} className={(new Date(shift.startTime) < new Date()) ? "" : ""}>
               <td>{getDay(shift.startTime)}</td>
-              <td>{dateFormat(shift.startTime)}</td>
-              <td>{dateFormat(shift.endTime)}</td>
+              <td className="text-center">{dateFormat(shift.startTime)}</td>
+              <td className="text-center">{dateFormat(shift.endTime)}</td>
             </tr>
-          )) : (<tr>You have no shifts to display.</tr>)}
+          )) : (<tr><td colSpan="3" className="text-center">You have no upcoming shifts to display.</td></tr>)}
 
         </tbody>
       </table>
+
+      <div className="panel-group panel-group-lists collapse in" id="accordion2" style={{}}>
+        <div className="panel">
+          <div className="panel-heading">
+            <h4 className="panel-title top-border">
+              <a data-toggle="collapse" data-parent="#accordion2" href="#collapseFour" className="collapsed">
+                <strong>Past Shifts</strong>
+              </a>
+            </h4>
+          </div>
+          <div id="collapseFour" className="panel-collapse collapse" style={{ height: "0px" }}>
+            <div className="">
+              
+
+            <table className="table table-hover table-sm">
+        <tbody>
+          {shifts.filter(s => new Date(s.endTime) < new Date()).length ? shifts.filter(s => new Date(s.endTime) < new Date()).map(shift => (
+            <tr key={shift.shiftId} className={(new Date(shift.startTime) < new Date()) ? "gray" : ""}>
+              <td className="width-33percent">{getDay(shift.startTime)}</td>
+              <td className="width-33percent text-center">{dateFormat(shift.startTime)}</td>
+              <td className="width-33percent text-center">{dateFormat(shift.endTime)}</td>
+            </tr>
+          )) : (<tr><td>You have no shifts to display.</td></tr>)}
+
+        </tbody>
+      </table>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

@@ -22,7 +22,9 @@ function EmployeeShiftList() {
           return Promise.reject(`Unexpected status code: ${response.status}`);
         }
       })
-      .then(data => setShifts(data))
+      .then(data => {
+        let sortedArr = data.sort((a,b) => new Date(b.startTime) - new Date(a.startTime));
+        setShifts(sortedArr);})
       .catch(console.log);
   }, [auth.user]);
 
@@ -51,7 +53,7 @@ function EmployeeShiftList() {
         </thead>
         <tbody>
           {shifts ? shifts.map(shift => (
-            <tr key={shift.shiftId}>
+            <tr key={shift.shiftId} className={(new Date(shift.startTime) < new Date()) ? "gray" : "" }>
               <td>{getDay(shift.startTime)}</td>
               <td>{dateFormat(shift.startTime)}</td>
               <td>{dateFormat(shift.endTime)}</td>

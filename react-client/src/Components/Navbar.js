@@ -30,7 +30,7 @@ function Navbar() {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <span><Link to="/" className="navbar-brand">Shift Scheduler</Link></span>
+                        <span><Link to="/" className="navbar-brand">Schedulo</Link></span>
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
 

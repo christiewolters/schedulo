@@ -110,6 +110,7 @@ function App() {
                 : auth.user.hasRole("ROLE_MANAGER") ?
                   (<ViewSchedules />) : (<NoPermission />)}
             </Route>
+            
             <Route path="/manager/register" exact>
             {!auth.user ? (<Redirect to="/login" />)
                 : auth.user.hasRole("ROLE_MANAGER") ?

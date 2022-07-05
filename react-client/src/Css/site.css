@@ -105,9 +105,9 @@ td-style {
 /* END VIEW SCHEDULES PAGE */
 
 /* EDIT SCHEDULE */
-.grayed-out {
-    background-color: #AAB2BD;
-    color: #DA4453;
+.gray {
+    background-color: #E6E9ED;
+    color: #AAB2BD;
 }
 
 .hide {

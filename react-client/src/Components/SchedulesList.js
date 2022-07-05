@@ -161,7 +161,11 @@ function SchedulesList() {
                         <div className="parent list-group-item" key={schedule.scheduleId}>
                         <Link to={`/schedules/edit/${schedule.scheduleId}`} 
                             className={schedule.finalized ? "list-group-item text-center fake-disabled" : "list-group-item text-center"} >
-                            {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')}
+                                 { schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
+                                 {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} - 
+                                 { schedule.endDate.getMonth() + 1<= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
+                                 {schedule.endDate.getDate() + 1 <= 9 ? `0${schedule.endDate.getDate() + 1}` : schedule.endDate.getDate() + 1}/{schedule.endDate.getFullYear()}
+                           {/* {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')} */}
                             </Link>
                             <span className="child vertical-center">
                                 {schedule.finalized && (
@@ -179,7 +183,10 @@ function SchedulesList() {
                     {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
                         <div className="parent list-group-item" key={schedule.scheduleId}>
                             <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center fake-disabled">
-                                {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')}
+                            { schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
+                                 {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} - 
+                                 { schedule.endDate.getMonth() + 1<= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
+                                 {schedule.endDate.getDate() + 1 <= 9 ? `0${schedule.endDate.getDate() + 1}` : schedule.endDate.getDate() + 1}/{schedule.endDate.getFullYear()}
                                 </Link>
                                 <span className="child vertical-center">
                                     {schedule.finalized && (

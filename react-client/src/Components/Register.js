@@ -13,8 +13,8 @@ function Register(){
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [wage, setWage] = useState(0);
-    const [role, setRole] = useState('')
+    const [wage, setWage] = useState(10);
+    const [role, setRole] = useState("none")
     const history = useHistory();
 
     const handleSubmit = (event) => {
@@ -50,6 +50,10 @@ function Register(){
 
 
         async function createAppUser() {
+            if (role === "none"){
+                setErrors(["Role must be selected"]);
+                return;
+            }
             await fetch('http://localhost:8080/api/appuser', init)
                 .then(response => {
                     if (response.status === 201) {
@@ -79,24 +83,26 @@ function Register(){
 
         async function createEmployee() {
             console.log(employee);
-            await fetch('http://localhost:8080/api/employees', employeeInit)
-            .then(response => {
-                if (response.status === 201) {
-                    return response.json();
-                } else {
-                    return Promise.reject(`Unexpected status code: ${response.status}`);
-                }
-            })
-            .then(data => {
-                if (!data.employeeId) {
-                    setErrors(data);
-                }
-                else {
-                    alert("Creation Successful");
-                    history.push('/');
-                };
-            })
-            .catch(console.log);
+            if (role !== "none"){
+                await fetch('http://localhost:8080/api/employees', employeeInit)
+                .then(response => {
+                    if (response.status === 201) {
+                        return response.json();
+                    } else {
+                        return Promise.reject(`Unexpected status code: ${response.status}`);
+                    }
+                })
+                .then(data => {
+                    if (!data.employeeId) {
+                        setErrors(data);
+                    }
+                    else {
+                        alert("Creation Successful");
+                        history.push('/');
+                    };
+                })
+                .catch(console.log);
+            }
         }
 
        
@@ -151,11 +157,6 @@ function Register(){
                 <label htmlFor="lastName">Employee Last Name:</label>
                 <input id="lastName" type="text"
                     onChange={(event) => setLastName(event.target.value)} value={lastName} />
-            </div>
-            <div>
-                <label htmlFor="wage">Employee Wage:</label>
-                <input id="wage" type="number"
-                    onChange={(event) => setWage(parseInt(event.target.value))} value={wage} />
             </div>
             <div>
                 <button type="submit">Register</button>

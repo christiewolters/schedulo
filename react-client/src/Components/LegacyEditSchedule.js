@@ -291,7 +291,7 @@ function LegacyEditSchedule() {
                                 availHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
                             }
                             else {
-                                unavailHtml += `<option value="${employee.employeeId}" disabled>${employee.firstName} ${employee.lastName}</option>`;
+                                unavailHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
                             }
 
                         }

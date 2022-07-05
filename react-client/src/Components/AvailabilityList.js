@@ -136,26 +136,27 @@ function AvailabilityList() {
         </div>
       }
 
-      <table className="table table-striped table-hover table-sm">
+      <table className="table table-hover table-sm">
         <thead className="thead-dark">
           <tr>
             <th>Availability</th>
-            <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
-          {availabilities.map(availability => (
-            <tr key={availability.availabilityId}>
-              <td className="text-center">{date.format(availability.startTime, 'ddd, MMM D, YYYY')} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, 'ddd, MMM D, YYYY')} {date.format(availability.endTime, 'h:mm A')}</td>
-              <td>
-                <div className="float-right mr-2">
+          <ul className="list-group">
+          {availabilities.sort((a,b) => a.startTime < b.startTime).map(availability => (
+            <li key={availability.availabilityId} className="list-group-item">
+              <div className="parent text-center">{date.format(availability.startTime, `ddd, D, MMM`)} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, `ddd, D, MMM`)} {date.format(availability.endTime, 'h:mm A')}
+              <div className="child">
+                
                   <button className="btn btn-danger btn-sm" onClick={() => handleDeleteAvail(availability.availabilityId)}>
                     <i className="bi bi-trash"></i> Delete
                   </button>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </li>
           ))}
+          </ul>
         </tbody>
       </table>
 
@@ -187,7 +188,7 @@ function AvailabilityList() {
               </form>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-success" form="addForm" id="addModalButton" data-dismiss={errors.length !== 0 ? "" : "modal"} onClick={handleAdd}>Add</button>
+              <button className="btn btn-success" form="addForm" id="addModalButton" data-dismiss="modal" onClick={handleAdd}>Add</button>
               <button className="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
           </div>

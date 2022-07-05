@@ -8,12 +8,12 @@ function Navbar() {
 
 
 
-      const location = useLocation();
-      const [url, setUrl] = useState(null);
+    const location = useLocation();
+    const [url, setUrl] = useState(null);
 
-      useEffect(() => {
+    useEffect(() => {
         setUrl(location.pathname);
-      }, [location]);
+    }, [location]);
 
     if (!auth || auth.user === null) {
         return null;
@@ -37,7 +37,6 @@ function Navbar() {
 
                         <ul className="nav navbar-nav">
 
-                            <li className={(url === "/shifts" ? "active" : "")} ><Link to="/shifts">My Shifts</Link></li>
 
                             {auth.user.hasRole("ROLE_EMPLOYEE") && (
                                 <>
@@ -47,14 +46,19 @@ function Navbar() {
 
                             {auth.user.hasRole("ROLE_MANAGER") && (
                                 <>
-                                    <li  className={(url === "/manager/schedules" ? "active" : "")}><Link to="/manager/schedules">Schedules</Link></li>
-                                    <li className={(url === "/manager/register" ? "active" : "")}><Link to="/manager/register">Register an Account</Link></li>
+                                    <li className={(url === "/manager/schedules" ? "active" : "")}><Link to="/manager/schedules">Schedules</Link></li>
+                                </>
+                            )}
+
+                            <li className={(url === "/shifts" ? "active" : "")} ><Link to="/shifts">My Shifts</Link></li>
+
+                            {auth.user.hasRole("ROLE_MANAGER") && (
+                                <>
+                                    <li className={(url === "/manager/register" ? "active" : "")}><Link to="/manager/register">Register</Link></li>
                                 </>
                             )}
 
                         </ul>
-
-
 
                         {auth.user && (
                             <p className="navbar-text navbar-right">

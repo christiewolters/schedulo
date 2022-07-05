@@ -115,6 +115,12 @@ td-style {
 
 /* END VIEW SCHEDULES PAGE */
 
+/* AVAILABILITY PAGE*/
+.width-100percent{
+    width: 100%;
+}
+/*END AVAILABILITY PAGE*/
+
 /* EDIT SCHEDULE */
 .gray {
     background-color: #E6E9ED;

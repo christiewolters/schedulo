@@ -160,7 +160,7 @@ function SchedulesList() {
                     {schedules.filter(s => s.endDate - new Date() >= 0).map(schedule => (
                         <div className="parent list-group-item" key={schedule.scheduleId}>
                         <Link to={`/schedules/edit/${schedule.scheduleId}`} 
-                            className={schedule.finalized ? "list-group-item text-center fake-disabled" : "list-group-item text-center"} >
+                            className="list-group-item text-center">
                                  { schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
                                  {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} - 
                                  { schedule.endDate.getMonth() + 1<= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
@@ -168,9 +168,9 @@ function SchedulesList() {
                            {/* {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')} */}
                             </Link>
                             <span className="child vertical-center">
-                                {schedule.finalized && (
-                                    <span>locked</span>
-                                )}
+                            {schedule.finalized && (
+                                        <i className="	glyphicon glyphicon-lock pr-4"></i>
+                                    )}
                                 <button type="button" className="remove-btn-icon pr-4" onClick={() => handleDeleteSchedule(schedule.scheduleId)}>
                                     <i className="glyphicon glyphicon-trash"></i>
                                 </button>
@@ -181,7 +181,7 @@ function SchedulesList() {
 
                     <div className="list-subheader">Past Schedules</div>
                     {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
-                        <div className="parent list-group-item" key={schedule.scheduleId}>
+                        <div className="parent list-group-item gray" key={schedule.scheduleId}>
                             <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center fake-disabled">
                             { schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
                                  {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} - 

@@ -67,10 +67,10 @@ function EmployeeShiftList() {
       <div className="panel-group panel-group-lists collapse in" id="accordion2" style={{}}>
         <div className="panel">
           <div className="panel-heading">
-            <h4 className="panel-title top-border">
-              <a data-toggle="collapse" data-parent="#accordion2" href="#collapseFour" className="collapsed">
+            <h4 className="panel-title">
+              <button data-toggle="collapse" data-parent="#accordion2" href="#collapseFour" className="collapsed btn btn-block">
                 <strong>Past Shifts</strong>
-              </a>
+              </button>
             </h4>
           </div>
           <div id="collapseFour" className="panel-collapse collapse" style={{ height: "0px" }}>

@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import AuthContext from '../AuthContext';
 import DisplayErrors from './DisplayErrors';
-import {Link, useHistory } from 'react-router-dom';
+import {useHistory } from 'react-router-dom';
 
 function Register(){
     const auth = useContext(AuthContext);
@@ -121,8 +121,9 @@ function Register(){
             <div>
                 <label htmlFor="role">Role: </label>
                 <select id="role" onChange={(event) => setRole(event.target.value)} value={role}>
-                    <option>EMPLOYEE</option>
-                    <option>MANAGER</option>
+                    <option value="none" selected hidden>Select a Role</option>
+                    <option value="EMPLOYEE">EMPLOYEE</option>
+                    <option value="MANAGER">MANAGER</option>
                 </select>
             </div>
             <div>

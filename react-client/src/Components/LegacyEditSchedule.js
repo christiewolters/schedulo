@@ -98,7 +98,7 @@ function LegacyEditSchedule() {
                         return Promise.reject(`Unexpected status code: ${response.status}`);
                     }
                 })
-                .then(data => { schedule = data; console.log(schedule); setIsFinal(schedule.finalized); return data; })
+                .then(data => { schedule = data; console.log(schedule); setIsFinal(schedule.finalized); adjustDates(); return data; })
                 .then(data => { makeDateList(data); return data; })
                 .catch(console.log);
         }
@@ -291,7 +291,7 @@ function LegacyEditSchedule() {
                                 availHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
                             }
                             else {
-                                unavailHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
+                                unavailHtml += `<option value="${employee.employeeId}" disabled>${employee.firstName} ${employee.lastName}</option>`;
                             }
 
                         }
@@ -473,7 +473,8 @@ function LegacyEditSchedule() {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label htmlFor="formStartTime">Start Shift</label>
-                                        <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" onChange={(event) => { setStartTime(event.target.value); adjustDates(); }} required></input>
+                                        <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" 
+                                         onChange={(event) => { setStartTime(event.target.value); adjustDates(); }} required></input>
                                     </div>
                                     <div className="col-md-6">
                                         <label htmlFor="formEndTime">End Shift</label>

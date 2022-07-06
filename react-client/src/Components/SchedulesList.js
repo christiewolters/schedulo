@@ -138,18 +138,10 @@ function SchedulesList() {
             }
 
 
-            <div className="pb-4 pt-4">
+            <div className="pb-4 pt-2">
                 <button data-dismiss="modal" data-toggle="modal" data-target="#addModal" className="btn btn-primary mt-2 mr-2"><i className="glyphicon glyphicon-plus pr-3"></i>Add Schedule</button>
             </div>
 
-            {/* <div className="parent title-spacing center">
-                    <div className="child">
-                        <button className="btn btn-primary my-4 mr-4" onClick={() => history.push('/schedules/add')}>
-                            <i className="bi bi-plus-circle"></i> Add Schedule
-                        </button>
-                    </div>
-                    <h5 className="mt-4 pt-3 inline">Upcoming Schedules</h5>
-                </div> */}
 
             <div className="list-group">
                 <div className="list-subheader">Current Schedules</div>

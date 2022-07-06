@@ -8,7 +8,7 @@ function ViewSchedules() {
                 <div className="schedule_image">
                 </div>
                 <div className="flex-child-list special">
-                        <h3 className="mb-0 mt-0 blue">Schedules</h3>
+                        <h3 className="mb-0 mt-0 pb-0 mb-0 blue">Schedules</h3>
                         <SchedulesList />
                 </div>
             </div>

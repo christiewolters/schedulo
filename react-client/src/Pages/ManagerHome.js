@@ -9,7 +9,7 @@ function ManagerHome() {
         <h6 className="lead text-center mt-0">Making scheduling easier by giving employees the freedom to set their availability from home.</h6>
         <div className="well width-300  align-center center centered-button">
           
-        <Link className="btn btn-primary btn-block little-opacity" to="/employee/availability">Build Your Schedule</Link>
+        <Link className="btn btn-primary btn-block little-opacity" to="/manager/schedules">Build Your Schedule</Link>
         <Link className="btn btn-link btn-block" to="/shifts">View your Shifts.</Link>
         </div>
       </div>

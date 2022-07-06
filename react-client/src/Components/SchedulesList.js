@@ -178,8 +178,13 @@ function SchedulesList() {
                         </Link>
                         <span className="child vertical-center">
                             {schedule.finalized && (
-                                <i className="	glyphicon glyphicon-lock pr-4"></i>
+                                <i className="	glyphicon glyphicon-lock pr-6"></i>
                             )}
+                            {!schedule.finalized &&
+                            <button type="button" className="remove-btn-icon pr-4" onClick={() => handleDeleteSchedule(schedule.scheduleId)}>
+                            <i className="glyphicon glyphicon-trash"></i>
+                        </button>
+                            }
 
                         </span>
 

@@ -131,19 +131,6 @@ body {
     color: #3BAFDA;
  }
 
- th h4#day {
-    color: #3BAFDA;
-    padding-top: 10px;
-    margin-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
- }
-
- th small#tabledate {
-    color: #7a7a7a;
-    font-weight: lighter;
- }
-
  .page {
     height: 100%;
  }
@@ -189,11 +176,6 @@ body {
     background-color: #DA4453;
 }
 
-td-style {
-    border-right: solid 1px #f00; 
-    border-left: solid 1px #f00;
-  }
-
 /* END LOGIN PAGE */
 
 /*VIEW SHIFTS PAGE*/
@@ -226,10 +208,6 @@ td-style {
 }
 
 .center {
-    text-align: center !important;
-}
-
-.panel.panel-heading.table.tableHead.th {
     text-align: center !important;
 }
 
@@ -304,6 +282,24 @@ th {
     vertical-align: middle;
 }
 
+
+th h4#day {
+    color: #3BAFDA;
+    padding-top: 10px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+ }
+
+ th small#tabledate {
+    color: #7a7a7a;
+    font-weight: lighter;
+ }
+
+ #edit-table td {
+    border-right: solid 1px #dbdbdb; 
+ }
+
 #time-slot {
     margin-left: 2px;
     margin-right: 2px;
@@ -311,12 +307,44 @@ th {
     margin-top: 0;
     padding: 5px;
     border-radius: 5px;
-    background-color: #3BAFDA;
+    background-color: #AAB2BD;
     color: white;
     text-align: left;
     padding-left: 10px;
     height: 32px;
+    padding-right: 2.0rem;
 }
+
+#center {
+    text-align: center;
+}
+
+#back-button {
+    position: relative;
+    top: -10px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+}
+
+#back-button-icon {
+    font-size: 3.5em;
+}
+
+#finalize-btn {
+    position: relative;
+    top: 10px;
+    right: 50px;
+}
+
+.invisi-btn {
+    background-color: rgba(255,255,255,0);
+    border: 0;
+    margin-top: 0.6rem;
+    margin-right: 0.5rem;
+}
+
+/* END EDIT SCHEDULE */
 
 
 /* REGISTER */
@@ -355,6 +383,40 @@ th {
 }
 
 /* End Trash Button */
+
+
+/* Back Button */
+.back-btn-icon {
+    color: #3BAFDA;
+    /*$grapefruit-dark*/
+    background-color: transparent;
+    border: transparent;
+    padding-left: 3px;
+    padding-right: 6px;
+}
+
+.back-btn-icon.disabled {
+    color: #AAB2BD;
+    /*$mediumgray-dark*/
+    background-color: transparent;
+}
+
+.back-btn-icon:hover,
+.back-btn-icon:focus,
+.back-btn-icon:active,
+.back-btn-icon.active {
+    color: #146c8b;
+    /*$grapefruit-light*/
+    background-color: transparent;
+}
+
+.back-btn-icon:active,
+.back-btn-icon.active {
+    color: #AAB2BD;
+    /*$mediumgray-dark*/
+}
+
+/* End Back Button */
 
 
 /* Add Button */

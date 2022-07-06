@@ -99,7 +99,15 @@ function LegacyEditSchedule() {
                         return Promise.reject(`Unexpected status code: ${response.status}`);
                     }
                 })
-                .then(data => { schedule = data; console.log(schedule); setIsFinal(schedule.finalized); adjustDates(); return data; })
+                .then(data => {
+                    schedule = data;
+                    console.log(schedule);
+                    if (new Date(schedule.startDate) < new Date()) { setIsFinal(true); }
+                    else { setIsFinal(schedule.finalized); }
+
+                    adjustDates();
+                    return data;
+                })
                 .then(data => { makeDateList(data); return data; })
                 .catch(console.log);
         }
@@ -365,7 +373,7 @@ function LegacyEditSchedule() {
 
 
     const handlePublish = async () => {
-        if (window.confirm(`Finalizing this schedule will send these shifts to your employees. You will be unable to edit or change shifts later. Are you certain you want to publish this schedule?`)) {
+        if (window.confirm(`Finalizing this schedule will send these shifts to your employees. You will be unable to edit or change this schedule later. Are you certain you want to finalize?`)) {
             schedule.finalized = true;
             console.log(JSON.stringify(schedule));
             const init = {
@@ -389,8 +397,8 @@ function LegacyEditSchedule() {
     }
 
 
-      //Builds and displays HTML data
-      function loadTable() {
+    //Builds and displays HTML data
+    function loadTable() {
         console.log("entered loadTable");
         if (schedule === null || shifts.lenth === 0 || employees.length === 0) {
             console.log("Couldn't load.");
@@ -413,20 +421,21 @@ function LegacyEditSchedule() {
         tableBody.innerHTML = "";
         let bodyHtml = "";
         for (const employee of employees) {
-            bodyHtml += `<tr><td class="vertical-align pr-0 mr-0">${employee.firstName} ${employee.lastName}</td>`;
+            bodyHtml += `<tr><td className="vertical-align pr-0 mr-0">${employee.firstName} ${employee.lastName}</td>`;
 
             for (const currDate of dates) {
-                bodyHtml += `<td class="pl-0 pr-0 ml-0 mr-0 pt-4 pb-4">`;
+                bodyHtml += `<td className="pl-0 pr-0 ml-0 mr-0 pt-4 pb-4">`;
                 let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)))
                     .sort((a, b) => a.startTime - b.startTime);
                 for (let i = 0; i < currShifts.length; i++) {
                     if (i > 0) { bodyHtml += `</div><br/>`; }
-                    bodyHtml += `<div id="time-slot"><small>${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}</small>`;
+                    bodyHtml += `<div id=${isFinal ? "center" : "time-slot"} class=${isFinal ? "center" : "parent"}><small>${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}</small>`;
                     if (!isFinal) {
                         bodyHtml += `
-                    <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn mb-1">
+                        <div class="child">
+                    <button type="button" id=${"button" + currShifts[i].shiftId} class="invisi-btn">
                     <i class="glyphicon glyphicon-remove"></i>
-                    </button>`;
+                    </button></div>`;
                     }
                 }
                 bodyHtml += "</div></td>";
@@ -452,7 +461,14 @@ function LegacyEditSchedule() {
 
     return (
         <>
-<button onClick={() => history.goBack()}><i class="	glyphicon glyphicon-circle-arrow-left"></i></button>
+            <div className="parent">
+                <button id="back-button" className="back-btn-icon" aria-hidden="true" onClick={() => history.goBack()}><i id="back-button-icon" className="glyphicon glyphicon-circle-arrow-left"></i></button>
+                {!isFinal &&
+                    <div className="child">
+                        <button type="button" id="finalize-btn" className="btn btn-warning width-200 mb-5" onClick={handlePublish}><i className="glyphicon glyphicon-lock mr-3"></i>Finalize and Share</button>
+                    </div>
+                }
+            </div>
             {errors.length > 0 &&
                 <div className="alert alert-danger">
                     <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -461,6 +477,16 @@ function LegacyEditSchedule() {
                     ))}
                 </div>
             }
+            <div className="panel panel-info">
+                <table id="edit-table" className="table">
+                    <thead>
+                        <tr id="tableHead" className="no-wrap">
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" className="no-wrap">
+                    </tbody>
+                </table>
+            </div>
 
             {!isFinal && (
                 <div className="row mt-4 mb-4 ml-3 mr-3">
@@ -479,10 +505,10 @@ function LegacyEditSchedule() {
                                 <div className="col-md-4 pt-3">
                                     <label htmlFor="employeeIdForm">Employee</label>
                                     <select id="employeeIdForm" name="employeeIdForm" className="form-control inline" required></select>
-                                    
+
                                 </div>
                                 <div className="col-md-2">
-                                <button className="btn btn-primary btn-block inline float-left mt-6" onClick={handleAdd}>Add Shift</button>
+                                    <button className="btn btn-primary btn-block inline float-left mt-6" onClick={handleAdd}>Add Shift</button>
                                 </div>
                             </div>
                         </div>
@@ -493,20 +519,6 @@ function LegacyEditSchedule() {
                 </div>
 
             )}
-            <div className="panel panel-info">
-                <table className="table">
-                    <thead>
-                        <tr id="tableHead" className="no-wrap">
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody" className="no-wrap">
-                    </tbody>
-                </table>
-            </div>
-
-            <div className="row text-center">
-                    <button type="button" className="btn btn-primary width-200 mb-5" onClick={handlePublish}>Finalize and Share</button>
-            </div>
         </>
     );
 }

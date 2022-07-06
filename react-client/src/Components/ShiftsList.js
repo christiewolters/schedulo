@@ -52,7 +52,10 @@ function EmployeeShiftList() {
           </tr>
         </thead>
         <tbody>
-          {shifts.filter(s => new Date(s.endTime) >= new Date()).length ? shifts.filter(s => new Date(s.endTime) >= new Date()).map(shift => (
+          {shifts.filter(s => new Date(s.endTime) >= new Date()).length ? 
+          shifts.filter(s => new Date(s.endTime) >= new Date())
+          .sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
+          .map(shift => (
             <tr key={shift.shiftId} className={(new Date(shift.startTime) < new Date()) ? "" : ""}>
               <td>{getDay(shift.startTime)}</td>
               <td className="text-center">{dateFormat(shift.startTime)}</td>

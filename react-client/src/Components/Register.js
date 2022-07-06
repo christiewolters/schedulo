@@ -159,7 +159,7 @@ function Register() {
                                 <div className="radio inline pr-5">
                                     <label htmlFor="employee">Employee </label>
                                 </div>
-                                <input type="radio" id="employee" className="iradio_flat" name="role" value={role} onClick={(event) => setRole(event.target.value)} />
+                                <input type="radio" id="employee" className="iradio_flat" name="role" value="EMPLOYEE" onClick={(event) => setRole(event.target.value)} />
 
                             </div>
 
@@ -167,7 +167,7 @@ function Register() {
                                 <div className="radio inline pr-5">
                                     <label htmlFor="manager">Manager </label>
                                 </div>
-                                <input type="radio" id="manager" className="iradio_flat" name="role" value={role} onClick={(event) => setRole(event.target.value)} />
+                                <input type="radio" id="manager" className="iradio_flat" name="role" value="MANAGER" onClick={(event) => setRole(event.target.value)} />
                             </div>
                         </div>
                         </form>

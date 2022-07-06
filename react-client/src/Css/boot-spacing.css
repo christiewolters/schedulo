@@ -47,6 +47,9 @@
 .mx-5 { margin-right:3rem!important;margin-left:3rem!important; }
 .my-5 { margin-top:3rem!important;margin-bottom:3rem!important; }
 
+.mt-6 {margin-top:3.5rem!important;}
+.ml-6 { margin-left:4.5rem!important; }
+
 .mt-auto { margin-top:auto!important; }
 .mr-auto { margin-right:auto!important; }
 .mb-auto { margin-bottom:auto!important; }

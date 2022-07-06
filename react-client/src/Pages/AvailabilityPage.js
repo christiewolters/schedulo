@@ -11,7 +11,7 @@ function Availability() {
           <div className="flex-child-list">
           <div className="container">
           <h3 className="mb-0 blue">Availability</h3>
-            <h5 className="lead mt-0">Set hours you are available to work each week. You boss may schedule you within these time slots.</h5>
+            <h5 className="lead mt-0">Set hours you are available to work each week. Your boss may schedule you within these time slots.</h5>
           
             <AvailabilityList />
             </div>

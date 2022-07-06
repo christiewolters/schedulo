@@ -10,7 +10,6 @@ import ManagerHome from './Pages/ManagerHome';
 import NotFound from './Pages/NotFound';
 import NoPermission from './Pages/NoPermission';
 import ViewSchedules from './Pages/SchedulesPage';
-import EditSchedule from './Components/EditSchedule';
 import LegacyEditSchedule from './Components/LegacyEditSchedule';
 import Availability from './Pages/AvailabilityPage';
 import Shifts from './Pages/ShiftsPage';

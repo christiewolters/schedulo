@@ -13,6 +13,7 @@ function LegacyEditSchedule() {
     let shifts = [];
     let availabilities = [];
     let dateList = [];
+    let history = useHistory();
     const [errors, setErrors] = useState([]);
     const [isFinal, setIsFinal] = useState(true);
 
@@ -116,68 +117,6 @@ function LegacyEditSchedule() {
         dateList = dateArray;
         return dateArray;
     };
-
-    //Builds and displays HTML data
-    function loadTable() {
-        console.log("entered loadTable");
-        if (schedule === null || shifts.lenth === 0 || employees.length === 0) {
-            console.log("Couldn't load.");
-            return;
-        }
-        //sets min and max values to form elements
-        //adjustDates();
-
-        const tableHead = document.getElementById("tableHead");
-        let headHtml = "<th>Employees</th>";
-        const dates = makeDateList(schedule);
-        console.log("dates: " + JSON.stringify(dates));
-        for (const currDate of dates) {
-            headHtml += `<th>${date.format(currDate, 'ddd, MMM D, YYYY')}</th>`;
-        }
-        tableHead.innerHTML = headHtml;
-
-
-        const tableBody = document.getElementById("tableBody");
-        tableBody.innerHTML = "";
-        let bodyHtml = "";
-        for (const employee of employees) {
-            bodyHtml += `<tr><td class="vertical-align">${employee.firstName} ${employee.lastName}</td>`;
-
-            for (const currDate of dates) {
-                bodyHtml += `<td class="pl-0 pr-0 ml-0 mr-0 pt-4 pb-4">`;
-                let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)))
-                    .sort((a, b) => a.startTime - b.startTime);
-                for (let i = 0; i < currShifts.length; i++) {
-                    if (i > 0) { bodyHtml += `<br/>`; }
-                    bodyHtml += `<span class="red p-2">${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}`;
-                    if (!isFinal) {
-                        bodyHtml += `
-                    <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn mb-1">
-                    <i class="glyphicon glyphicon-remove"></i>
-                    </button></span>`;
-                    }
-                }
-                bodyHtml += "</div></td>";
-            }
-            bodyHtml += "</tr>";
-        }
-
-        console.log("setting to html");
-        tableBody.innerHTML = bodyHtml;
-        console.log("reached for loop");
-        if (!isFinal) {
-            for (let i = 0; i < shifts.length; i++) {
-                console.log("entered loop");
-                const buttonEl = document.getElementById("button" + shifts[i].shiftId);
-                console.log(buttonEl);
-                // Add event listener
-                buttonEl.addEventListener('click', function () { handleDeleteShift(shifts[i].shiftId) });
-            }
-        }
-    }
-
-
-
 
     //Get a list of all employees at the company
     async function getEmployees() {
@@ -291,7 +230,7 @@ function LegacyEditSchedule() {
                                 availHtml += `<option value="${employee.employeeId}">${employee.firstName} ${employee.lastName}</option>`;
                             }
                             else {
-                                unavailHtml += `<option value="${employee.employeeId}" disabled>${employee.firstName} ${employee.lastName}</option>`;
+                                unavailHtml += `<option value="${employee.employeeId}" >${employee.firstName} ${employee.lastName}</option>`;
                             }
 
                         }
@@ -426,7 +365,7 @@ function LegacyEditSchedule() {
 
 
     const handlePublish = async () => {
-        if (window.confirm(`Are you certain you want to publish this schedule? You will not be able to make changes later.`)) {
+        if (window.confirm(`Finalizing this schedule will send these shifts to your employees. You will be unable to edit or change shifts later. Are you certain you want to publish this schedule?`)) {
             schedule.finalized = true;
             console.log(JSON.stringify(schedule));
             const init = {
@@ -439,7 +378,7 @@ function LegacyEditSchedule() {
             };
 
             const response = await fetch(`http://localhost:8080/api/schedules/${scheduleId}`, init);
-            if (response.status == 204) {
+            if (response.status === 204) {
                 alert("Shift published successfully!");
                 loadPage();
             } else {
@@ -450,9 +389,70 @@ function LegacyEditSchedule() {
     }
 
 
+      //Builds and displays HTML data
+      function loadTable() {
+        console.log("entered loadTable");
+        if (schedule === null || shifts.lenth === 0 || employees.length === 0) {
+            console.log("Couldn't load.");
+            return;
+        }
+        //sets min and max values to form elements
+        //adjustDates();
+
+        const tableHead = document.getElementById("tableHead");
+        let headHtml = "<th></th>";
+        const dates = makeDateList(schedule);
+        console.log("dates: " + JSON.stringify(dates));
+        for (const currDate of dates) {
+            headHtml += `<th><h4 id="day">${date.format(currDate, 'ddd')}</h4><small id="tabledate">${date.format(currDate, 'MMM D, YYYY')}</small></th>`;
+        }
+        tableHead.innerHTML = headHtml;
+
+
+        const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
+        let bodyHtml = "";
+        for (const employee of employees) {
+            bodyHtml += `<tr><td class="vertical-align pr-0 mr-0">${employee.firstName} ${employee.lastName}</td>`;
+
+            for (const currDate of dates) {
+                bodyHtml += `<td class="pl-0 pr-0 ml-0 mr-0 pt-4 pb-4">`;
+                let currShifts = shifts.filter(shift => shift.employeeId === employee.employeeId && date.isSameDay(currDate, new Date(shift.startTime)))
+                    .sort((a, b) => a.startTime - b.startTime);
+                for (let i = 0; i < currShifts.length; i++) {
+                    if (i > 0) { bodyHtml += `</div><br/>`; }
+                    bodyHtml += `<div id="time-slot"><small>${date.format(currShifts[i].startTime, 'h:mm A')} - ${date.format(currShifts[i].endTime, 'h:mm A')}</small>`;
+                    if (!isFinal) {
+                        bodyHtml += `
+                    <button type="button" id=${"button" + currShifts[i].shiftId} class="btn btn-danger remove-btn mb-1">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    </button>`;
+                    }
+                }
+                bodyHtml += "</div></td>";
+            }
+            bodyHtml += "</tr>";
+        }
+
+        console.log("setting to html");
+        tableBody.innerHTML = bodyHtml;
+        console.log("reached for loop");
+        if (!isFinal) {
+            for (let i = 0; i < shifts.length; i++) {
+                console.log("entered loop");
+                const buttonEl = document.getElementById("button" + shifts[i].shiftId);
+                console.log(buttonEl);
+                // Add event listener
+                buttonEl.addEventListener('click', function () { handleDeleteShift(shifts[i].shiftId) });
+            }
+        }
+    }
+
+
+
     return (
         <>
-
+<button onClick={() => history.goBack()}><i class="	glyphicon glyphicon-circle-arrow-left"></i></button>
             {errors.length > 0 &&
                 <div className="alert alert-danger">
                     <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -463,53 +463,49 @@ function LegacyEditSchedule() {
             }
 
             {!isFinal && (
-                <div className="row mt-4 mb-4">
-                    <div className="col-md-6">
-                        <form id="addForm" className="modal-content">
-                            <div className="modal-header">
-                                <legend className="modal-title">Add Shift</legend>
-                            </div>
-                            <div className="modal-body">
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label htmlFor="formStartTime">Start Shift</label>
-                                        <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime" 
-                                         onChange={(event) => { setStartTime(event.target.value); adjustDates(); }} required></input>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label htmlFor="formEndTime">End Shift</label>
-                                        <input type="datetime-local" className="form-control inline" id="formEndTime" name="formEndTime" onChange={(event) => { setEndTime(event.target.value); adjustDates(); }} required></input>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <label htmlFor="employeeIdForm">Employee</label>
-                                        <select id="employeeIdForm" name="employeeIdForm" className="form-control inline" required></select>
-                                    </div>
+                <div className="row mt-4 mb-4 ml-3 mr-3">
+                    <form id="addForm" className="modal-content">
+                        <div className="modal-body ml-6 pt-4">
+                            <div className="row">
+                                <div className="col-md-3 pt-3">
+                                    <label htmlFor="formStartTime">Start Shift</label>
+                                    <input type="datetime-local" className="form-control inline" id="formStartTime" name="formStartTime"
+                                        onChange={(event) => { setStartTime(event.target.value); adjustDates(); }} required></input>
+                                </div>
+                                <div className="col-md-3 pt-3">
+                                    <label htmlFor="formEndTime">End Shift</label>
+                                    <input type="datetime-local" className="form-control inline" id="formEndTime" name="formEndTime" onChange={(event) => { setEndTime(event.target.value); adjustDates(); }} required></input>
+                                </div>
+                                <div className="col-md-4 pt-3">
+                                    <label htmlFor="employeeIdForm">Employee</label>
+                                    <select id="employeeIdForm" name="employeeIdForm" className="form-control inline" required></select>
+                                    
+                                </div>
+                                <div className="col-md-2">
+                                <button className="btn btn-primary btn-block inline float-left mt-6" onClick={handleAdd}>Add Shift</button>
                                 </div>
                             </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-primary" onClick={handleAdd}>Add Shift</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div className="col-md-6">
-                        <button type="button" className="btn btn-info" onClick={handlePublish}>Publish</button>
-                    </div>
+                        </div>
+                        <div className="modal-footer">
 
+                        </div>
+                    </form>
                 </div>
+
             )}
             <div className="panel panel-info">
-            <div className="panel-heading"><h3 className="panel-title">Schedule</h3></div>
-            <table className="table">
-                <thead >
-                    <tr id="tableHead">
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
+                <table className="table">
+                    <thead>
+                        <tr id="tableHead" className="no-wrap">
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" className="no-wrap">
+                    </tbody>
+                </table>
+            </div>
 
-
-
-                </tbody>
-            </table>
+            <div className="row text-center">
+                    <button type="button" className="btn btn-primary width-200 mb-5" onClick={handlePublish}>Finalize and Share</button>
             </div>
         </>
     );

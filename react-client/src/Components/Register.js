@@ -51,7 +51,6 @@ function Register() {
 
         async function createAppUser() {
             if (role === "none") {
-                console.log(role);
                 setErrors(["Role must be selected"]);
                 return;
             }
@@ -83,7 +82,7 @@ function Register() {
         }
 
         async function createEmployee() {
-            console.log(employee);
+
             if (role !== "none") {
                 await fetch('http://localhost:8080/api/employees', employeeInit)
                     .then(response => {
@@ -123,11 +122,12 @@ function Register() {
 
     return (
         <>
-            <h3 className="blue text-center">Register a New Employee</h3>
+            
             <div className="modal-dialog mt-0">
+            
                 <div className="modal-content pl-5">
                     <div className="modal-header">
-
+                    <h4 id="register-title" className="blue">Register New Employees</h4>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={handleSubmit} id="register_form">
@@ -174,7 +174,7 @@ function Register() {
                     </div>
                     <div className="modal-footer">
                     {errors.size === 0 ? null : <DisplayErrors errors={errors} />}
-                        <button type="submit" form="register_form" className="btn btn-primary">Register Employee</button>
+                        <button type="submit" form="register_form" className="btn btn-primary mr-5 mb-3">Register Employee</button>
                     </div>
 
                 </div>

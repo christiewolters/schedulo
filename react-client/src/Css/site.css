@@ -131,6 +131,19 @@ body {
     color: #3BAFDA;
  }
 
+ th h4#day {
+    color: #3BAFDA;
+    padding-top: 10px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+ }
+
+ th small#tabledate {
+    color: #7a7a7a;
+    font-weight: lighter;
+ }
+
  .page {
     height: 100%;
  }
@@ -188,6 +201,10 @@ td-style {
     border-top: #dbdada 2px solid;
 }
 
+.no-wrap {
+    white-space: nowrap;
+}
+
 .width-33percent {
     width: 33%;
 }
@@ -209,6 +226,14 @@ td-style {
 }
 
 .center {
+    text-align: center !important;
+}
+
+.panel.panel-heading.table.tableHead.th {
+    text-align: center !important;
+}
+
+th {
     text-align: center;
 }
 
@@ -279,6 +304,24 @@ td-style {
     vertical-align: middle;
 }
 
+#time-slot {
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #3BAFDA;
+    color: white;
+    text-align: left;
+    padding-left: 10px;
+    height: 32px;
+}
+
+
+/* REGISTER */
+
+/*REGISTER END*/
 
 /* Trash Button */
 .remove-btn-icon {

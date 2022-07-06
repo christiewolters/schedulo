@@ -1,6 +1,7 @@
 import date from 'date-and-time';
 import { useEffect, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import image from '../Images/calendar-pana.svg';
 
 import AuthContext from '../AuthContext';
 import DisplayErrors from './DisplayErrors';
@@ -123,7 +124,8 @@ function AvailabilityList() {
 
   return (
     <>
-      <button data-dismiss="modal" className="btn btn-primary my-4" data-toggle="modal" data-target="#addModal">
+
+      <button data-dismiss="modal" className="btn btn-primary" data-toggle="modal" data-target="#addModal">
         Add Availability
       </button>
 
@@ -136,29 +138,23 @@ function AvailabilityList() {
         </div>
       }
 
-      <table className="table table-hover table-sm">
-        <thead className="thead-dark">
-          <tr>
-            <th>Availability</th>
-          </tr>
-        </thead>
-        <tbody>
+
           <ul className="list-group">
-          {availabilities.sort((a,b) => a.startTime < b.startTime).map(availability => (
-            <li key={availability.availabilityId} className="list-group-item">
-              <div className="parent text-center">{date.format(availability.startTime, `ddd, D, MMM`)} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, `ddd, D, MMM`)} {date.format(availability.endTime, 'h:mm A')}
-              <div className="child">
-                
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDeleteAvail(availability.availabilityId)}>
-                    <i className="bi bi-trash"></i> Delete
-                  </button>
+            {availabilities.sort((a, b) => a.startTime < b.startTime).map(availability => (
+              <li key={availability.availabilityId} className={availability.endTime > new Date() ? "list-group-item" : "list-group-item gray"}>
+                <div className="parent text-center">{date.format(availability.startTime, `ddd, D, MMM`)} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, `ddd, D, MMM`)} {date.format(availability.endTime, 'h:mm A')}
+                  <div className="child">
+
+                    <button className="remove-btn-icon pr-4" onClick={() => handleDeleteAvail(availability.availabilityId)}>
+                      <i className="glyphicon glyphicon-trash"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))}
           </ul>
-        </tbody>
-      </table>
+
+
 
       {/* END OF PAGE - MODALS BELOW*/}
 
@@ -218,11 +214,6 @@ function AvailabilityList() {
           </div>
         </div>
       </div> */}
-
-
-
-
-
 
     </>
   );

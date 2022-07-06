@@ -84,66 +84,68 @@ function App() {
   if (!restoreLoginAttemptCompleted) {
     return null;
   }
+
   return (
 
-    
-    
-      <AuthContext.Provider value={auth}>
-        <Router>
+
+
+    <AuthContext.Provider value={auth}>
+      <Router>
           <Navbar />
-        <div className="container">
-          <Switch>
+          <div className="container">
+            <Switch>
 
-            <Route path="/" exact>
-              {!auth.user ? (<Redirect to="/login" />)
-                : auth.user.hasRole("ROLE_MANAGER") ?
-                  (<ManagerHome />) : (<EmployeeHome />)}
-            </Route>
+              <Route path="/" exact>
+                {!auth.user ? (<Redirect to="/login" />)
+                  : auth.user.hasRole("ROLE_MANAGER") ?
+                    (<ManagerHome />) : (<EmployeeHome />)}
+              </Route>
 
-            <Route path="/login">
-              {auth.user ?
-                (<Redirect to="/" />) : (<Login />)}
-            </Route>
+              <Route path="/login">
+                {auth.user ?
+                  (<Redirect to="/" />) : (<Login />)}
+              </Route>
 
-            <Route path="/manager/schedules" exact>
-              {!auth.user ? (<Redirect to="/login" />)
-                : auth.user.hasRole("ROLE_MANAGER") ?
-                  (<ViewSchedules />) : (<NoPermission />)}
-            </Route>
-            
-            <Route path="/manager/register" exact>
-            {!auth.user ? (<Redirect to="/login" />)
-                : auth.user.hasRole("ROLE_MANAGER") ?
-                  (<Register />) : (<NoPermission />)}
-            </Route>
-            
+              <Route path="/manager/schedules" exact>
+                {!auth.user ? (<Redirect to="/login" />)
+                  : auth.user.hasRole("ROLE_MANAGER") ?
+                    (<ViewSchedules />) : (<NoPermission />)}
+              </Route>
 
-            <Route path="/schedules/edit/:scheduleId" exact>
-              {!auth.user ? (<Redirect to="/login" />)
-                : auth.user.hasRole("ROLE_MANAGER") ?
-                  (<LegacyEditSchedule />) : (<NoPermission />)}
-            </Route>
+              <Route path="/manager/register" exact>
+                {!auth.user ? (<Redirect to="/login" />)
+                  : auth.user.hasRole("ROLE_MANAGER") ?
+                    (<Register />) : (<NoPermission />)}
+              </Route>
 
-            <Route path="/employee/availability">
-              {!auth.user ? (<Redirect to="/login" />)
-                : auth.user.hasRole("ROLE_EMPLOYEE") ?
-                  (<Availability />) : (<NoPermission />)}
-            </Route>
 
-            <Route path="/shifts" exact>
-              {!auth.user ? (<Redirect to="/login" />)
-                : <Shifts />}
-            </Route>
+              <Route path="/schedules/edit/:scheduleId" exact>
+                {!auth.user ? (<Redirect to="/login" />)
+                  : auth.user.hasRole("ROLE_MANAGER") ?
+                    (<LegacyEditSchedule />) : (<NoPermission />)}
+              </Route>
 
-            <Route>
-              <NotFound />
-            </Route>
+              <Route path="/employee/availability">
+                {!auth.user ? (<Redirect to="/login" />)
+                  : auth.user.hasRole("ROLE_EMPLOYEE") ?
+                    (<Availability />) : (<NoPermission />)}
+              </Route>
 
-          </Switch>
+              <Route path="/shifts" exact>
+                {!auth.user ? (<Redirect to="/login" />)
+                  : <Shifts />}
+              </Route>
+
+              <Route>
+                <NotFound />
+              </Route>
+
+            </Switch>
           </div>
-        </Router>
-      </AuthContext.Provider>
-    
+      </Router>
+
+    </AuthContext.Provider>
+
   );
 }
 export default App;

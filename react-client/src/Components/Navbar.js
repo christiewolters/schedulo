@@ -21,7 +21,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className="navbar navbar-inverse" role="navigation">
+            <nav className="navbar" role="navigation">
                 <div className="container-fluid">
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-7">
@@ -40,7 +40,7 @@ function Navbar() {
 
                             {auth.user.hasRole("ROLE_EMPLOYEE") && (
                                 <>
-                                    <li className={(url === "/employee/availability" ? "active" : "")}><Link to="/employee/availability">My Availability</Link></li>
+                                    <li className={(url === "/employee/availability" ? "active" : "")}><Link to="/employee/availability">Availability</Link></li>
                                 </>
                             )}
 
@@ -50,7 +50,7 @@ function Navbar() {
                                 </>
                             )}
 
-                            <li className={(url === "/shifts" ? "active" : "")} ><Link to="/shifts">My Shifts</Link></li>
+                            <li className={(url === "/shifts" ? "active" : "")} ><Link to="/shifts">Shifts</Link></li>
 
                             {auth.user.hasRole("ROLE_MANAGER") && (
                                 <>

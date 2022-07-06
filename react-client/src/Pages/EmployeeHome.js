@@ -2,21 +2,19 @@ import Navbar from "../Components/Navbar";
 import EmployeeShiftList from "../Components/EmployeeShiftList";
 
 function EmployeeHome() {
-    return (
-      <>
-      <h3 className="text-center">Employee Home Page</h3>
-      <h6 className="text-center pl-5 pr-5">Welcome to your company's convenient home shift scheduler!
-        <br />
-        <br />
-        This app makes scheduling easier by letting you share your availability with your managers from home, 
-        so you are only scheduled when you want to be scheduled!
-        <br />
-        <br />
-        Start by setting up your availability so your employer can begin scheduling you! When next week's schedule is
-        finalized, you'll see your shifts on the My Shifts page.
-      </h6>
-      </>
-    );
-  }
-  
-  export default EmployeeHome;
+  return (
+    <>
+      <div className="home_image">
+        <h3 className="strong text-center mb-0">Welcome to <span className="blue">Schedulo!</span></h3>
+        <h6 className="lead text-center mt-0">A comfortable solution to setting your work schedule around your life.</h6>
+        <div class="well width-300  align-center center centered-button">
+          
+        <button type="button" class="btn btn-primary btn-block little-opacity">Build Your Schedule</button>
+        <button className="btn btn-link btn-block">View your Shifts.</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default EmployeeHome;

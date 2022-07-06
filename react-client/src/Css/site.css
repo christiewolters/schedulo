@@ -18,6 +18,14 @@ body {
     display: inline-block;
 }
 
+.navbar-toggle {
+    background-color: #3BAFDA;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: rgb(241, 242, 246);
+}
+
 .home_image {
     background-image: url( '../Images/home-pana.svg' );
     background-repeat: no-repeat;

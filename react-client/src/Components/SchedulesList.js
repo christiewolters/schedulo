@@ -31,7 +31,7 @@ function SchedulesList() {
                 schedule.startDate = new Date(schedule.startDate);
                 schedule.endDate = new Date(schedule.endDate);
                 return schedule;
-            }))
+            }).sort((a,b) => a.startDate - b.startDate))
             .then(data => setSchedules(data))
             .catch(console.log);
     }, [auth.user.token, schedules]); // An empty dependency array tells to run our side effect once when the component is initially loaded.    
@@ -145,7 +145,8 @@ function SchedulesList() {
 
             <div className="list-group">
                 <div className="list-subheader">Current Schedules</div>
-                {schedules.filter(s => s.endDate - new Date() >= 0).map(schedule => (
+                {schedules.filter(s => s.endDate - new Date() >= 0)
+                .map(schedule => (
                     <div className="parent list-group-item" key={schedule.scheduleId}>
                         <Link to={`/schedules/edit/${schedule.scheduleId}`}
                             className="list-group-item text-center">
@@ -168,7 +169,9 @@ function SchedulesList() {
                 ))}
 
                 <div className="list-subheader">Past Schedules</div>
-                {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
+                {schedules.filter(s => (s.endDate - new Date()) < 0)
+                .sort((a,b) => b.startDate - a.startDate)
+                .map(schedule => (
                     <div className="parent list-group-item gray" key={schedule.scheduleId}>
                         <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center fake-disabled">
                             {schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/

@@ -1,3 +1,15 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+    /* border: 1px solid gray; */
+}
+
+/* .container {
+    width: 100% !important;
+} */
+
 body {
     background-color: rgb(241, 242, 246)
 }
@@ -17,12 +29,36 @@ body {
  .availability_image {
     background-image: url( '../Images/calendar-pana.svg' );
     background-repeat: no-repeat;
+    background-position: right;
     height: 480px;
-    background-position: -130px -10px;
+    width: 50%;
+    background-size: cover;
+ }
+
+ .shifts_image {
+    background-image: url( '../Images/coffee-shop-pana.svg' );
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    height: 480px;
+    width: 50%;
+    background-size: contain;
+ }
+
+ .flex-container{
+    display: flex;
+ }
+
+ .flex-child-list {
+    width: 45%;
+    min-width: 500px;
  }
 
 .width-50percent {
     width: 50%;
+}
+
+.width-100percent{
+    width: 100%;
 }
 
 .width-300 {
@@ -39,6 +75,15 @@ body {
 
 .width-50 {
     width: 50px;
+}
+
+.transparent {
+    background-color: none;
+}
+
+.gray-text {
+    color:#7a7a7a;
+    font-weight: normal;
 }
 
  .blue {
@@ -169,9 +214,6 @@ td-style {
 /* END VIEW SCHEDULES PAGE */
 
 /* AVAILABILITY PAGE*/
-.width-100percent{
-    width: 100%;
-}
 
 /*END AVAILABILITY PAGE*/
 

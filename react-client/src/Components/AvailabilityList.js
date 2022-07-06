@@ -124,14 +124,15 @@ function AvailabilityList() {
 
   return (
     <>
-
-      <button data-dismiss="modal" className="btn btn-primary" data-toggle="modal" data-target="#addModal">
+      <div className="pb-4">
+      <button data-dismiss="modal" className="btn btn-primary width-200" data-toggle="modal" data-target="#addModal">
         Add Availability
       </button>
+      </div>
 
       {errors.length > 0 &&
-        <div class="alert alert-danger">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <div className="alert alert-danger">
+          <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
           <strong>Oh snap! We couldn't do that! </strong>{errors.map(error => (<span key={error}>
             {error}. </span>
           ))}

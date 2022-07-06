@@ -40,16 +40,15 @@ function EmployeeShiftList() {
   }
 
   return (
-    <section className="panel panel-default">
-      <div className="panel-heading">
-        <h4 className="m-0 p-0">My Shifts</h4>
-      </div>
+    <>
+    <h3 className="blue">Shifts</h3>
+    <section className="panel transparent">
       <table className="table table-hover table-sm">
         <thead>
           <tr>
-            <th className="width-33percent">Date</th>
-            <th className="width-33percent text-center">Start Time</th>
-            <th className="width-33percent text-center">End Time</th>
+            <th className="width-33percent gray-text">Date</th>
+            <th className="width-33percent text-center gray-text">Start</th>
+            <th className="width-33percent text-center gray-text">End</th>
           </tr>
         </thead>
         <tbody>
@@ -96,6 +95,7 @@ function EmployeeShiftList() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 

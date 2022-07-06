@@ -1,5 +1,5 @@
 import Navbar from "../Components/Navbar";
-import EmployeeShiftList from "../Components/EmployeeShiftList";
+import EmployeeShiftList from "../Components/ShiftsList";
 
 function EmployeeHome() {
   return (

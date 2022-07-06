@@ -92,7 +92,7 @@ function App() {
     <AuthContext.Provider value={auth}>
       <Router>
           <Navbar />
-          <div className="container">
+          {/* <div className="container"> */}
             <Switch>
 
               <Route path="/" exact>
@@ -141,7 +141,7 @@ function App() {
               </Route>
 
             </Switch>
-          </div>
+          {/* </div> */}
       </Router>
 
     </AuthContext.Provider>

@@ -1,5 +1,4 @@
-import Navbar from "../Components/Navbar";
-import EmployeeShiftList from "../Components/ShiftsList";
+import { Link } from "react-router-dom";
 
 function EmployeeHome() {
   return (
@@ -9,8 +8,8 @@ function EmployeeHome() {
         <h6 className="lead text-center mt-0">A comfortable solution to setting your work schedule around your life.</h6>
         <div class="well width-300  align-center center centered-button">
           
-        <button type="button" class="btn btn-primary btn-block little-opacity">Build Your Schedule</button>
-        <button className="btn btn-link btn-block">View your Shifts.</button>
+        <Link className="btn btn-primary btn-block little-opacity" to="/employee/availability">Build Your Schedule</Link>
+        <Link className="btn btn-link btn-block" to="/shifts">View your Shifts.</Link>
         </div>
       </div>
     </>

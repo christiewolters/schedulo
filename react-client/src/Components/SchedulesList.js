@@ -41,49 +41,49 @@ function SchedulesList() {
 
 
     //add
-  const handleAdd = (event) => {
-    event.preventDefault();
+    const handleAdd = (event) => {
+        event.preventDefault();
 
-    const form = document.getElementById('addForm');
-    const formData = new FormData(form);
+        const form = document.getElementById('addForm');
+        const formData = new FormData(form);
 
-    const schedule = {
-    scheduleId : 0,
-      startDate : formData.get('startDate'),
-      endDate : formData.get('endDate'),
-      finalized : false
-    }
+        const schedule = {
+            scheduleId: 0,
+            startDate: formData.get('startDate'),
+            endDate: formData.get('endDate'),
+            finalized: false
+        }
 
-    const init = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${auth.user.token}`
-      },
-      body: JSON.stringify(schedule)
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+            body: JSON.stringify(schedule)
+        };
+
+        fetch('http://localhost:8080/api/schedules', init)
+            .then(response => {
+                if (response.status === 201 || response.status === 400) {
+                    return response.json();
+                } else {
+                    return Promise.reject(`Unexpected status code: ${response.status}`);
+                }
+            })
+            .then(data => {
+                if (data.scheduleId) {
+                    console.log(JSON.stringify(data));
+                    //TODO: display success message
+                    schedules.push(data);
+
+                } else {
+                    //unhappy path
+                    setErrors(data);
+                }
+            })
+            .catch(console.log);
     };
-
-    fetch('http://localhost:8080/api/schedules', init)
-      .then(response => {
-        if (response.status === 201 || response.status === 400) {
-          return response.json();
-        } else {
-          return Promise.reject(`Unexpected status code: ${response.status}`);
-        }
-      })
-      .then(data => {
-        if (data.scheduleId) {
-          console.log(JSON.stringify(data));
-          //TODO: display success message
-          schedules.push(data);
-
-        } else {
-          //unhappy path
-          setErrors(data);
-        }
-      })
-      .catch(console.log);
-  };
 
 
 
@@ -137,16 +137,12 @@ function SchedulesList() {
                 </div>
             }
 
-            <section className="panel panel-default">
-                <div className="panel-heading parent">
-                    <h4 className="m-0 p-0 inline">My Schedules</h4>
-                    <div className="child">
-                        <button data-dismiss="modal" data-toggle="modal" data-target="#addModal" className="btn btn-success mt-2 mr-2"><i className="glyphicon glyphicon-plus"></i></button>
-                    </div>
-                </div>
 
+            <div className="pb-4 pt-4">
+                <button data-dismiss="modal" data-toggle="modal" data-target="#addModal" className="btn btn-primary mt-2 mr-2"><i className="glyphicon glyphicon-plus pr-3"></i>Add Schedule</button>
+            </div>
 
-                {/* <div className="parent title-spacing center">
+            {/* <div className="parent title-spacing center">
                     <div className="child">
                         <button className="btn btn-primary my-4 mr-4" onClick={() => history.push('/schedules/add')}>
                             <i className="bi bi-plus-circle"></i> Add Schedule
@@ -155,51 +151,50 @@ function SchedulesList() {
                     <h5 className="mt-4 pt-3 inline">Upcoming Schedules</h5>
                 </div> */}
 
-                <div className="list-group">
-                    <div className="list-subheader">Current Schedules</div>
-                    {schedules.filter(s => s.endDate - new Date() >= 0).map(schedule => (
-                        <div className="parent list-group-item" key={schedule.scheduleId}>
-                        <Link to={`/schedules/edit/${schedule.scheduleId}`} 
+            <div className="list-group">
+                <div className="list-subheader">Current Schedules</div>
+                {schedules.filter(s => s.endDate - new Date() >= 0).map(schedule => (
+                    <div className="parent list-group-item" key={schedule.scheduleId}>
+                        <Link to={`/schedules/edit/${schedule.scheduleId}`}
                             className="list-group-item text-center">
-                                 { schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
-                                 {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} - 
-                                 { schedule.endDate.getMonth() + 1<= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
-                                 {schedule.endDate.getDate() + 1 <= 9 ? `0${schedule.endDate.getDate() + 1}` : schedule.endDate.getDate() + 1}/{schedule.endDate.getFullYear()}
-                           {/* {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')} */}
-                            </Link>
-                            <span className="child vertical-center">
+                            {schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
+                            {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} -
+                            {schedule.endDate.getMonth() + 1 <= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
+                            {schedule.endDate.getDate() + 1 <= 9 ? `0${schedule.endDate.getDate() + 1}` : schedule.endDate.getDate() + 1}/{schedule.endDate.getFullYear()}
+                            {/* {date.format(schedule.startDate, 'MM/DD/YYYY')} - {date.format(schedule.endDate, 'MM/DD/YYYY')} */}
+                        </Link>
+                        <span className="child vertical-center">
                             {schedule.finalized && (
-                                        <i className="	glyphicon glyphicon-lock pr-4"></i>
-                                    )}
-                                <button type="button" className="remove-btn-icon pr-4" onClick={() => handleDeleteSchedule(schedule.scheduleId)}>
-                                    <i className="glyphicon glyphicon-trash"></i>
-                                </button>
-                            </span>
-                        
-                        </div>
-                    ))}
+                                <i className="	glyphicon glyphicon-lock pr-4"></i>
+                            )}
+                            <button type="button" className="remove-btn-icon pr-4" onClick={() => handleDeleteSchedule(schedule.scheduleId)}>
+                                <i className="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </span>
 
-                    <div className="list-subheader">Past Schedules</div>
-                    {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
-                        <div className="parent list-group-item gray" key={schedule.scheduleId}>
-                            <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center fake-disabled">
-                            { schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
-                                 {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} - 
-                                 { schedule.endDate.getMonth() + 1<= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
-                                 {schedule.endDate.getDate() + 1 <= 9 ? `0${schedule.endDate.getDate() + 1}` : schedule.endDate.getDate() + 1}/{schedule.endDate.getFullYear()}
-                                </Link>
-                                <span className="child vertical-center">
-                                    {schedule.finalized && (
-                                        <i className="	glyphicon glyphicon-lock pr-4"></i>
-                                    )}
+                    </div>
+                ))}
 
-                                </span>
-                            
-                        </div>
-                    ))}
-                </div>
+                <div className="list-subheader">Past Schedules</div>
+                {schedules.filter(s => (s.endDate - new Date()) < 0).map(schedule => (
+                    <div className="parent list-group-item gray" key={schedule.scheduleId}>
+                        <Link to={`/schedules/edit/${schedule.scheduleId}`} className="list-group-item text-center fake-disabled">
+                            {schedule.startDate.getMonth() + 1 <= 9 ? `0${schedule.startDate.getMonth() + 1}` : schedule.startDate.getMonth() + 1}/
+                            {schedule.startDate.getDate() + 1 <= 9 ? `0${schedule.startDate.getDate() + 1}` : schedule.startDate.getDate() + 1}/{schedule.startDate.getFullYear()} -
+                            {schedule.endDate.getMonth() + 1 <= 9 ? ` 0${schedule.endDate.getMonth() + 1}` : schedule.endDate.getMonth() + 1}/
+                            {schedule.endDate.getDate() + 1 <= 9 ? `0${schedule.endDate.getDate() + 1}` : schedule.endDate.getDate() + 1}/{schedule.endDate.getFullYear()}
+                        </Link>
+                        <span className="child vertical-center">
+                            {schedule.finalized && (
+                                <i className="	glyphicon glyphicon-lock pr-4"></i>
+                            )}
 
-            </section>
+                        </span>
+
+                    </div>
+                ))}
+            </div>
+
 
 
             {/* Add Modal */}
@@ -228,7 +223,7 @@ function SchedulesList() {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button className="btn btn-success" form="addForm" id="addModalButton" data-dismiss="modal" onClick={handleAdd}>Add</button>
+                            <button className="btn btn-primary" form="addForm" id="addModalButton" data-dismiss="modal" onClick={handleAdd}>Add Schedule</button>
                             <button className="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

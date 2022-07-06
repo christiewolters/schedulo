@@ -3,17 +3,17 @@ import './Css/boot-spacing.css';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import Login from './Components/Login';
+import Login from './Pages/Login';
 import AuthContext from './AuthContext';
 import EmployeeHome from './Pages/EmployeeHome';
 import ManagerHome from './Pages/ManagerHome';
 import NotFound from './Pages/NotFound';
 import NoPermission from './Pages/NoPermission';
-import ViewSchedules from './Pages/ViewSchedules';
+import ViewSchedules from './Pages/SchedulesPage';
 import EditSchedule from './Components/EditSchedule';
 import LegacyEditSchedule from './Components/LegacyEditSchedule';
-import Availability from './Pages/Availability';
-import Shifts from './Pages/Shifts';
+import Availability from './Pages/AvailabilityPage';
+import Shifts from './Pages/ShiftsPage';
 import Navbar from './Components/Navbar';
 import Register from './Components/Register'
 

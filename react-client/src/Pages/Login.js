@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import AuthContext from '../AuthContext';
-import DisplayErrors from './DisplayErrors';
+import DisplayErrors from '../Components/DisplayErrors';
 
 function Login() {
   const [username, setUsername] = useState('');

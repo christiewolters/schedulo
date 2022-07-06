@@ -35,6 +35,16 @@ body {
     background-size: cover;
  }
 
+ .schedule_image {
+    background-image: url( '../Images/whole-year-pana.svg' );
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 480px;
+    width: 50%;
+    min-width: 300px;
+    background-size: contain;
+ }
+
  .shifts_image {
     background-image: url( '../Images/coffee-shop-pana.svg' );
     background-repeat: no-repeat;
@@ -48,9 +58,29 @@ body {
     display: flex;
  }
 
+ @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+    .schedule_image {
+        display: none;
+    }
+    .special {
+        width: auto !important;
+        position: relative;
+        margin-left: 5%;
+        min-width: none;
+    }
+  }
+
  .flex-child-list {
     width: 45%;
     min-width: 500px;
+ }
+
+ .special {
+    margin-right: 5%;
+    min-width: 400px;
  }
 
 .width-50percent {

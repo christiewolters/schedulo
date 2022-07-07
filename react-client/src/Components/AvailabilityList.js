@@ -78,7 +78,7 @@ function AvailabilityList() {
       })
       .then(data => {
         if (data.availabilityId) {
-          console.log(JSON.stringify(data));
+
           //TODO: display success message
           //close modal
           //TODO: RELOAD DATA ON PAGE (should automatically happen if availabilities changes)

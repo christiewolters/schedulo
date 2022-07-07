@@ -22,43 +22,32 @@ function LegacyEditSchedule() {
     const [endTime, setEndTime] = useState('');
 
     async function pleaseMount() {
-        getSchedule().then(() => {
-            console.log("schedule : " + JSON.stringify(schedule));
-        });
+        getSchedule()
 
-        getShifts().then(() => {
-            console.log("shifts : " + JSON.stringify(shifts));
-        });
+        getShifts()
 
-        getEmployees().then(() => {
-            console.log("employees : " + employees);
-        })
+        getEmployees()
 
-        getAvailabilities().then(() => {
-            console.log("availabilities : " + availabilities);
-        })
+        getAvailabilities()
     };
 
     async function pleaseMount2() {
         getSchedule()
             .then((data) => {
-                console.log("schedule : " + JSON.stringify(schedule));
+
                 return data;
             })
             .then((data) => {
                 getShifts().then((data) => {
-                    console.log("shifts : " + JSON.stringify(shifts));
                     return data;
                 })
                     .then((data) => {
                         getEmployees().then((data) => {
-                            console.log("employees : " + employees);
                             loadTable();
                             return data;
                         })
                             .then((data) => {
                                 getAvailabilities().then((data) => {
-                                    console.log("availabilities : " + availabilities);
                                     return data;
                                 })
                             })
@@ -66,18 +55,17 @@ function LegacyEditSchedule() {
             })
     }
 
-    pleaseMount2().then(console.log("Finished mount."));
+    pleaseMount2();
 
     async function loadPage() {
         await getSchedule();
-        console.log("schedule : " + JSON.stringify(schedule));
+
         await getShifts();
-        console.log("shifts : " + JSON.stringify(shifts));
+
         await getEmployees();
-        console.log("employees : " + employees);
+
         await getAvailabilities();
-        console.log("availabilities : " + availabilities);
-        console.log("Done");
+
     }
 
 
@@ -227,9 +215,9 @@ function LegacyEditSchedule() {
                     })
                     .then(availdata => {
                         selectAvailabilities = availdata;
-                        console.log("select ranges: " + startTime + " - " + endTime);
+
                         let whoAvail = selectAvailabilities.filter(a => ((new Date(a.startTime) <= new Date(startTime)) && (new Date(endTime) <= new Date(a.endTime))));
-                        console.log("whoAvail" + JSON.stringify(whoAvail));
+
                         let availHtml = "";
                         let unavailHtml = "";
                         for (const employee of selectEmployees) {
@@ -390,7 +378,6 @@ function LegacyEditSchedule() {
                 alert("Shift published successfully!");
                 loadPage();
             } else {
-                console.log("Did not get a status in schedule");
                 return Promise.reject(`Unexpected status code: ${response.status}`);
             }
         }
@@ -399,7 +386,6 @@ function LegacyEditSchedule() {
 
     //Builds and displays HTML data
     function loadTable() {
-        console.log("entered loadTable");
         if (schedule === null || shifts.lenth === 0 || employees.length === 0) {
             console.log("Couldn't load.");
             return;
@@ -410,7 +396,6 @@ function LegacyEditSchedule() {
         const tableHead = document.getElementById("tableHead");
         let headHtml = "<th></th>";
         const dates = makeDateList(schedule);
-        console.log("dates: " + JSON.stringify(dates));
         for (const currDate of dates) {
             headHtml += `<th><h4 id="day">${date.format(currDate, 'ddd')}</h4><small id="tabledate">${date.format(currDate, 'MMM D, YYYY')}</small></th>`;
         }
@@ -443,12 +428,12 @@ function LegacyEditSchedule() {
             bodyHtml += "</tr>";
         }
 
-        console.log("setting to html");
+
         tableBody.innerHTML = bodyHtml;
-        console.log("reached for loop");
+
         if (!isFinal) {
             for (let i = 0; i < shifts.length; i++) {
-                console.log("entered loop");
+
                 const buttonEl = document.getElementById("button" + shifts[i].shiftId);
                 console.log(buttonEl);
                 // Add event listener

@@ -84,7 +84,9 @@ function AvailabilityList() {
           //TODO: RELOAD DATA ON PAGE (should automatically happen if availabilities changes)
 
           availabilities.push(data);
-
+          if(availabilities.length === 1){
+            window.location.reload();
+          }
         } else {
           //unhappy path
           setErrors(data);
@@ -141,7 +143,7 @@ function AvailabilityList() {
 
       <section className="panel transparent">
         <ul className="list-group">
-          {availabilities.sort((a, b) => a.startTime < b.startTime).map(availability => (
+          {availabilities.length > 0 ? availabilities.sort((a, b) => a.startTime < b.startTime).map(availability => (
             <li key={availability.availabilityId} className={availability.endTime > new Date() ? "list-group-item" : "list-group-item gray"}>
               <div className="parent text-center">{date.format(availability.startTime, `ddd, D, MMM`)} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, `ddd, D, MMM`)} {date.format(availability.endTime, 'h:mm A')}
                 <div className="child">
@@ -152,7 +154,7 @@ function AvailabilityList() {
                 </div>
               </div>
             </li>
-          ))}
+          )) : <li className="list-group-item text-center">Add an availability to get started!</li>}
         </ul>
       </section>
 

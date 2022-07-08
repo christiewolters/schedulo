@@ -125,9 +125,9 @@ function AvailabilityList() {
   return (
     <>
       <div className="pb-4">
-      <button data-dismiss="modal" className="btn btn-primary width-200" data-toggle="modal" data-target="#addModal">
-        Add Availability
-      </button>
+        <button data-dismiss="modal" className="btn btn-primary width-200" data-toggle="modal" data-target="#addModal">
+          Add Availability
+        </button>
       </div>
 
       {errors.length > 0 &&
@@ -139,22 +139,22 @@ function AvailabilityList() {
         </div>
       }
 
+      <section className="panel transparent">
+        <ul className="list-group">
+          {availabilities.sort((a, b) => a.startTime < b.startTime).map(availability => (
+            <li key={availability.availabilityId} className={availability.endTime > new Date() ? "list-group-item" : "list-group-item gray"}>
+              <div className="parent text-center">{date.format(availability.startTime, `ddd, D, MMM`)} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, `ddd, D, MMM`)} {date.format(availability.endTime, 'h:mm A')}
+                <div className="child">
 
-          <ul className="list-group">
-            {availabilities.sort((a, b) => a.startTime < b.startTime).map(availability => (
-              <li key={availability.availabilityId} className={availability.endTime > new Date() ? "list-group-item" : "list-group-item gray"}>
-                <div className="parent text-center">{date.format(availability.startTime, `ddd, D, MMM`)} {date.format(availability.startTime, 'h:mm A')} - {date.format(availability.endTime, `ddd, D, MMM`)} {date.format(availability.endTime, 'h:mm A')}
-                  <div className="child">
-
-                    <button className="remove-btn-icon pr-4" onClick={() => handleDeleteAvail(availability.availabilityId)}>
-                      <i className="glyphicon glyphicon-trash"></i>
-                    </button>
-                  </div>
+                  <button className="remove-btn-icon pr-4" onClick={() => handleDeleteAvail(availability.availabilityId)}>
+                    <i className="glyphicon glyphicon-trash"></i>
+                  </button>
                 </div>
-              </li>
-            ))}
-          </ul>
-
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
 
 
       {/* END OF PAGE - MODALS BELOW*/}

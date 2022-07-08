@@ -27,61 +27,99 @@ body {
 }
 
 .home_image {
-    background-image: url( '../Images/home-pana.svg' );
+    background-image: url('../Images/home-pana.svg');
     background-repeat: no-repeat;
     width: 100%;
     height: 550px;
     background-position: bottom;
- }
+}
 
- .availability_image {
-    background-image: url( '../Images/calendar-pana.svg' );
-    background-repeat: no-repeat;
-    background-position: right;
-    height: 480px;
-    width: 50%;
-    background-size: cover;
- }
 
- .schedule_image {
-    background-image: url( '../Images/whole-year-pana.svg' );
+.availability_image {
+    background-image: url('../Images/calendar-pana.svg');
     background-repeat: no-repeat;
     background-position: center;
     height: 480px;
     width: 50%;
     min-width: 300px;
     background-size: contain;
- }
+}
 
- .shifts_image {
-    background-image: url( '../Images/coffee-shop-pana.svg' );
+
+
+.schedule_image {
+    background-image: url('../Images/whole-year-pana.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 480px;
+    width: 50%;
+    min-width: 300px;
+    background-size: contain;
+}
+
+.shifts_image {
+    background-image: url('../Images/coffee-shop-pana.svg');
     background-repeat: no-repeat;
     background-position: right bottom;
     height: 480px;
     width: 50%;
     background-size: contain;
- }
+}
 
- .flex-container{
-    display: flex;
- }
+@media (min-width: 1500px) {
 
- @media (max-width: 767px) {
-    .flex-container {
-      flex-direction: column;
+    .shifts_image,
+    .availability_image {
+        max-width: 1500px;
+        display: inline-block;
+        margin-right: auto;
+        margin-left: auto;
     }
+}
+
+@media (max-width: 767px) {
+    .flex-container {
+        flex-direction: column;
+    }
+
     .schedule_image {
         display: none;
     }
+
+    .availability_image {
+        display: none;
+    }
+
     .special {
         width: auto !important;
         position: relative;
         margin-left: 5%;
         min-width: none;
     }
-  }
 
-  .box {
+    .avail-special {
+        width: auto !important;
+        position: relative;
+        margin-left: 5%;
+        min-width: none;
+    }
+
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-right {
+    justify-content: space-around;
+}
+
+.flex-child-list {
+    width: 45%;
+    min-width: 500px;
+}
+
+.box {
     display: inline;
     border: 1px rgb(189, 188, 188) solid;
     border-radius: 5px;
@@ -90,23 +128,27 @@ body {
     padding-bottom: 15px;
     padding-right: 10px;
     padding-left: 5px;
-  }
+}
 
- .flex-child-list {
-    width: 45%;
-    min-width: 500px;
- }
-
- .special {
+.special {
     margin-right: 5%;
     min-width: 400px;
- }
+}
+
+.avail-special {
+    margin-right: 5%;
+    min-width: 450px;
+}
 
 .width-50percent {
     width: 50%;
 }
 
-.width-100percent{
+.width-80percent {
+    width: 80%;
+}
+
+.width-100percent {
     width: 100%;
 }
 
@@ -131,35 +173,35 @@ body {
 }
 
 .gray-text {
-    color:#7a7a7a;
+    color: #7a7a7a;
     font-weight: normal;
 }
 
- .blue {
+.blue {
     color: #3BAFDA;
- }
+}
 
- .page {
+.page {
     height: 100%;
- }
+}
 
- .align-center  {
+.align-center {
     margin-left: auto;
     margin-right: auto;
- }
+}
 
- /*HOME*/
- .centered-button {
+/*HOME*/
+.centered-button {
     position: relative;
     top: 30%;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .little-opacity {
     opacity: 0.9;
 }
 
- /*END HOME*/
+/*END HOME*/
 
 /* LOGIN PAGE */
 .form-label {
@@ -180,7 +222,7 @@ body {
 }
 
 .red {
-    color:rgb(241, 242, 246);
+    color: rgb(241, 242, 246);
     background-color: #DA4453;
 }
 
@@ -240,7 +282,7 @@ th {
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-  }
+}
 
 .list-subheader {
     background-color: #AAB2BD;
@@ -297,16 +339,16 @@ th h4#day {
     margin-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 0px;
- }
+}
 
- th small#tabledate {
+th small#tabledate {
     color: #7a7a7a;
     font-weight: lighter;
- }
+}
 
- #edit-table td {
-    border-right: solid 1px #dbdbdb; 
- }
+#edit-table td {
+    border-right: solid 1px #dbdbdb;
+}
 
 #time-slot {
     margin-left: 2px;
@@ -346,7 +388,7 @@ th h4#day {
 }
 
 .invisi-btn {
-    background-color: rgba(255,255,255,0);
+    background-color: rgba(255, 255, 255, 0);
     border: 0;
     margin-top: 0.6rem;
     margin-right: 0.5rem;
@@ -360,9 +402,8 @@ th h4#day {
 /*REGISTER END*/
 
 /* Trash Button */
-.remove-btn-icon {
+/* .remove-btn-icon {
     color: #DA4453;
-    /*$grapefruit-dark*/
     background-color: transparent;
     border: transparent;
     padding-left: 3px;
@@ -371,7 +412,6 @@ th h4#day {
 
 .remove-btn-icon.disabled {
     color: #AAB2BD;
-    /*$mediumgray-dark*/
     background-color: transparent;
 }
 
@@ -380,23 +420,20 @@ th h4#day {
 .remove-btn-icon:active,
 .remove-btn-icon.active {
     color: #ED5565;
-    /*$grapefruit-light*/
     background-color: transparent;
 }
 
 .remove-btn-icon:active,
 .remove-btn-icon.active {
     color: #AAB2BD;
-    /*$mediumgray-dark*/
-}
+} */
 
 /* End Trash Button */
 
 
 /* Back Button */
-.back-btn-icon {
+/* .back-btn-icon {
     color: #3BAFDA;
-    /*$grapefruit-dark*/
     background-color: transparent;
     border: transparent;
     padding-left: 3px;
@@ -405,7 +442,6 @@ th h4#day {
 
 .back-btn-icon.disabled {
     color: #AAB2BD;
-    /*$mediumgray-dark*/
     background-color: transparent;
 }
 
@@ -414,48 +450,12 @@ th h4#day {
 .back-btn-icon:active,
 .back-btn-icon.active {
     color: #146c8b;
-    /*$grapefruit-light*/
     background-color: transparent;
 }
 
 .back-btn-icon:active,
 .back-btn-icon.active {
     color: #AAB2BD;
-    /*$mediumgray-dark*/
-}
+} */
 
 /* End Back Button */
-
-
-/* Add Button */
-.plus-btn-icon {
-    color: #3BAFDA;
-    /*$aqua-dark*/
-    background-color: transparent;
-    border: transparent;
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-.plus-btn-icon.disabled {
-    color: #AAB2BD;
-    /*$mediumgray-dark*/
-    background-color: transparent;
-}
-
-.plus-btn-icon:hover,
-.plus-btn-icon:focus,
-.plus-btn-icon:active,
-.plus-btn-icon.active {
-    color: #4FC1E9;
-    /*$aqua-light*/
-    background-color: transparent;
-}
-
-.plus-btn-icon:active,
-.plus-btn-icon.active {
-    color: #AAB2BD;
-    /*$mediumgray-dark*/
-}
-
-/* End Add Button */

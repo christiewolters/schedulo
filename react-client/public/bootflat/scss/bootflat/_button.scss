@@ -206,6 +206,68 @@ $button-shadow:                  inset 0 1px 2px rgba(0, 0, 0, .125) !default;
    * --------------------------------------------------
    */
 
+   /* TRASH BUTTON */
+   .remove-btn-icon {
+    color: $button-danger;
+    /*$grapefruit-dark*/
+    background-color: transparent;
+    border: transparent;
+    padding-left: 3px;
+    padding-right: 6px;
+}
+
+.remove-btn-icon.disabled {
+    color: $button-danger;
+    background-color: transparent;
+    @include opacity($opacity: $button-opacity, $filter: true);
+}
+
+.remove-btn-icon:hover,
+.remove-btn-icon:focus,
+.remove-btn-icon:active,
+.remove-btn-icon.active {
+    color: $button-danger-hover;
+    /*$grapefruit-light*/
+    background-color: transparent;
+}
+
+.remove-btn-icon:active,
+.remove-btn-icon.active {
+    @include opacity($opacity: $button-opacity, $filter: true);
+}
+
+
+/*BACK ICON BUTTON*/
+.back-btn-icon {
+    color: $button-primary;
+    /*$grapefruit-dark*/
+    background-color: transparent;
+    border: transparent;
+    padding-left: 3px;
+    padding-right: 6px;
+}
+
+.back-btn-icon.disabled {
+    /*$mediumgray-dark*/
+    background-color: transparent;
+    @include opacity($opacity: $button-opacity, $filter: true);
+}
+
+.back-btn-icon:hover,
+.back-btn-icon:focus,
+.back-btn-icon:active,
+.back-btn-icon.active {
+    color: $button-primary-hover;
+    /*$grapefruit-light*/
+    background-color: transparent;
+}
+
+.back-btn-icon:active,
+.back-btn-icon.active {
+    /*$mediumgray-dark*/
+    @include opacity($opacity: $button-opacity, $filter: true);
+}
+
 }
 
 

@@ -248,6 +248,71 @@ blockquote {
 * My custom buttons
 * --------------------------------------------------
 */
+/* TRASH BUTTON */
+.remove-btn-icon {
+  color: #DA4453;
+  /*$grapefruit-dark*/
+  background-color: transparent;
+  border: transparent;
+  padding-left: 3px;
+  padding-right: 6px;
+}
+
+.remove-btn-icon.disabled {
+  color: #DA4453;
+  background-color: transparent;
+  opacity: 0.45;
+  filter: alpha(opacity=45);
+}
+
+.remove-btn-icon:hover,
+.remove-btn-icon:focus,
+.remove-btn-icon:active,
+.remove-btn-icon.active {
+  color: #ED5565;
+  /*$grapefruit-light*/
+  background-color: transparent;
+}
+
+.remove-btn-icon:active,
+.remove-btn-icon.active {
+  opacity: 0.45;
+  filter: alpha(opacity=45);
+}
+
+/*BACK ICON BUTTON*/
+.back-btn-icon {
+  color: #3BAFDA;
+  /*$grapefruit-dark*/
+  background-color: transparent;
+  border: transparent;
+  padding-left: 3px;
+  padding-right: 6px;
+}
+
+.back-btn-icon.disabled {
+  /*$mediumgray-dark*/
+  background-color: transparent;
+  opacity: 0.45;
+  filter: alpha(opacity=45);
+}
+
+.back-btn-icon:hover,
+.back-btn-icon:focus,
+.back-btn-icon:active,
+.back-btn-icon.active {
+  color: #4FC1E9;
+  /*$grapefruit-light*/
+  background-color: transparent;
+}
+
+.back-btn-icon:active,
+.back-btn-icon.active {
+  /*$mediumgray-dark*/
+  opacity: 0.45;
+  filter: alpha(opacity=45);
+}
+
 /**
  * button-group
  * --------------------------------------------------

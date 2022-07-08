@@ -443,14 +443,11 @@ function LegacyEditSchedule() {
             bodyHtml += "</tr>";
         }
 
-        console.log("setting to html");
         tableBody.innerHTML = bodyHtml;
-        console.log("reached for loop");
         if (!isFinal) {
             for (let i = 0; i < shifts.length; i++) {
-                console.log("entered loop");
                 const buttonEl = document.getElementById("button" + shifts[i].shiftId);
-                console.log(buttonEl);
+
                 // Add event listener
                 buttonEl.addEventListener('click', function () { handleDeleteShift(shifts[i].shiftId) });
             }

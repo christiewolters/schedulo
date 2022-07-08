@@ -4,15 +4,18 @@ import EmployeeShiftList from "../Components/ShiftsList";
 function ManagerHome() {
   return (
     <>
-        <div className="flex-container shifts_image width-100percent">
-          <div className="flex-child-list">
+      <div className="flex-container shifts_image width-100percent">
+
+        <div className="flex-child-list">
           <div className="container">
-      <EmployeeShiftList />
-      </div>
+            <EmployeeShiftList />
           </div>
-          <div className="">
         </div>
-          </div>
+
+        <div className="">
+        </div>
+
+      </div>
     </>
   );
 }

@@ -64,7 +64,7 @@ function App() {
       .then(data => {
         // Add an employee property to the user object.
         userToLogin.employee = data;
-        console.log(userToLogin);
+
         // update the global user state variable
         setUser(userToLogin);
       })
@@ -79,7 +79,7 @@ function App() {
     login,
     logout
   };
-  console.log(auth);
+
   if (!restoreLoginAttemptCompleted) {
     return null;
   }

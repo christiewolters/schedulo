@@ -1,0 +1,23 @@
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzaGlmdC1zY2hlZHVsZXItYXBpIiwic3ViIjoiam9obkBzbWl0aC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfTUFOQUdFUiIsImFwcFVzZXJJZCI6MSwiZXhwIjoxNjU2ODI1MDYyfQ.-dnMi5hAqe_yWldVfCp9DIk8HoAqKcURrTo4bk0FsXY
+
+###
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+###
+
+POST http://localhost:8080/api/appuser HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+{
+  "username": "patrick@star.com",
+  "password": "P@ssw0rd!",
+  "role": "MANAGER"
+}
